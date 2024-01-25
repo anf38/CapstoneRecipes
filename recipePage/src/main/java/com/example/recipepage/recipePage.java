@@ -6,6 +6,7 @@ public class recipePage {
         System.out.println("hello world ");
 
         layout myLayout = new layout ("javafx or swing?");
+        myLayout.setModel("both!");
         System.out.println(myLayout.getModel());
     }
 }
