@@ -1,4 +1,3 @@
-
 package com.example.recipepage;
 import com.example.recipepage.model.layout;
 public class recipePage {
