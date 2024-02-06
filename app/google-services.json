@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "807350067589",
+    "project_id": "capstone-recipes-f4b00",
+    "storage_bucket": "capstone-recipes-f4b00.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807350067589:android:9e1d71eaebb429238764ec",
+        "android_client_info": {
+          "package_name": "com.example.pantrypal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeg31cuIn-O0-qr2AMXha0xWlCVmknN-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
