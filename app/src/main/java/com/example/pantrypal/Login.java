@@ -6,12 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.Checkable;
-import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,13 +21,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
     TextInputEditText editTextEmail, editTextPassword;
-    TextView emailPassError;
     Button buttonLogin;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
     TextView textView;
-    CheckBox mCheckBox;
-
 
     @Override
     public void onStart() { //if the user is already logged in, then it will bring them to the main page
@@ -52,11 +45,9 @@ public class Login extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
-        emailPassError = findViewById(R.id.emailPassError);
         buttonLogin = findViewById(R.id.LoginBtn);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
-        mCheckBox = findViewById(R.id.passCheckBox);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,17 +67,11 @@ public class Login extends AppCompatActivity {
 
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(Login.this, "Enter email", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
-                    emailPassError.setText("Enter email");
-                    emailPassError.setVisibility(View.VISIBLE);
                     return;
                 }
 
                 if(TextUtils.isEmpty(password)){
                     Toast.makeText(Login.this, "Enter password", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
-                    emailPassError.setText("Enter password");
-                    emailPassError.setVisibility(View.VISIBLE);
                     return;
                 }
 
@@ -101,24 +86,11 @@ public class Login extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                    emailPassError.setText("Email and/or password is incorrect");
-                                    emailPassError.setVisibility(View.VISIBLE);
                                     Toast.makeText(Login.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-            }
-        });
-
-        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { //shows the password if checkboxed
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)  {
-                if (isChecked) {
-                    editTextPassword.setTransformationMethod(null);
-                } else {
-                    editTextPassword.setTransformationMethod(new PasswordTransformationMethod());
-                }
             }
         });
     }

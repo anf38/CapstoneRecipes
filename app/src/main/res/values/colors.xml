@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#B30024</color>
-    <color name="purple_500">#B30024</color>
+    <color name="purple_200">#FC9486</color>
+    <color name="purple_500">#CF4444</color>
     <color name="purple_700">#B30024</color>
-    <color name="teal_200">#B30024</color>
-    <color name="teal_700">#B30024</color>
-    //unfortunately this is needed for code not to break ^
-    //its because of dark mode
-
-    <color name="black">#000000</color>
+    <color name="teal_200">#E8C384</color>
+    <color name="teal_700">#4B6541</color>
+    <color name="black">#205E21</color>
     <color name="white">#FFFFFF</color>
-    <color name="pale_red">#FC9486</color>
-    <color name="light_red">#CF4444</color>
-    <color name="red">#B30024</color>
-    <color name="pale_yellow">#FBE7DC</color>
-    <color name="yellow">#F6C28A</color>
-    <color name="olive_green">#4B6541</color>
-    <color name="green">#205E21</color>
 </resources>

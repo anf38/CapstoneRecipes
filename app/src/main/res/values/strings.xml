@@ -8,5 +8,4 @@
     <string name="Register">Register</string>
     <string name="Click_to_login">Click to Login</string>
     <string name="logout">logout</string>
-    <string name="show_password">Show Password</string>
 </resources>
