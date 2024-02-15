@@ -6,8 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Checkable;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +29,9 @@ public class Login extends AppCompatActivity {
     FirebaseAuth mAuth;
     ProgressBar progressBar;
     TextView textView;
+
+    CheckBox mCheckBox;
+
 
     @Override
     public void onStart() { //if the user is already logged in, then it will bring them to the main page
@@ -48,6 +55,7 @@ public class Login extends AppCompatActivity {
         buttonLogin = findViewById(R.id.LoginBtn);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
+        mCheckBox = findViewById(R.id.passCheckBox);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,6 +99,17 @@ public class Login extends AppCompatActivity {
                                 }
                             }
                         });
+            }
+        });
+
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { //shows the password if checkboxed
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)  {
+                if (isChecked) {
+                    editTextPassword.setTransformationMethod(null);
+                } else {
+                    editTextPassword.setTransformationMethod(new PasswordTransformationMethod());
+                }
             }
         });
     }
