@@ -33,6 +33,9 @@ public class Login extends AppCompatActivity {
     CheckBox mCheckBox;
 
 
+    CheckBox mCheckBox;
+
+
     @Override
     public void onStart() { //if the user is already logged in, then it will bring them to the main page
         super.onStart();
