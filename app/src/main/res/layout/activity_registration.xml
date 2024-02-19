@@ -30,6 +30,13 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/emailError"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="email error" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -43,11 +50,12 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
+    <TextView
+        android:id="@+id/passwordError"
         android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="password error" />
 
     <CheckBox
         android:id="@+id/passCheckBox"
@@ -69,6 +77,12 @@
         android:id="@+id/loginNow"
         android:text="@string/Click_to_login"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
 </LinearLayout>
