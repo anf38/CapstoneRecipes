@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Registration extends AppCompatActivity {
     TextInputEditText editTextEmail, editTextPassword;
+    TextView emailError, passwordError;
     Button buttonReg;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
@@ -47,6 +48,8 @@ public class Registration extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
+        emailError = findViewById(R.id.emailError);
+        passwordError = findViewById(R.id.passwordError);
         buttonReg = findViewById(R.id.RegisterBtn);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
@@ -68,16 +71,6 @@ public class Registration extends AppCompatActivity {
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText()); //same as -> password = editTextPassword.getText().toString();
 
-                if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(Registration.this, "Enter email", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(Registration.this, "Enter password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -93,6 +86,42 @@ public class Registration extends AppCompatActivity {
                                     // If sign in fails, display a message to the user.
                                     Toast.makeText(Registration.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
+
+                                    if (TextUtils.isEmpty(email)) {
+                                        emailError.setVisibility(View.VISIBLE); // Make the TextView visible
+                                        emailError.setText("Enter email");
+                                    } else if(!email.contains("@")){
+                                        emailError.setVisibility(View.VISIBLE);
+                                        emailError.setText("Email must contain @ symbol");
+                                    } else {
+                                        emailError.setText(null);
+                                        emailError.setVisibility(View.GONE);
+                                    }
+
+                                    if (TextUtils.isEmpty(password)) {
+                                        passwordError.setVisibility(View.VISIBLE);
+                                        passwordError.setText("Enter password");
+                                    } else if (password.length() < 8) {
+                                        passwordError.setVisibility(View.VISIBLE);
+                                        passwordError.setText("Password must be at least 8 characters long");
+                                    } else if (password.contains(" ")) {
+                                        passwordError.setVisibility(View.VISIBLE);
+                                        passwordError.setText("Password must not contain spaces");
+                                    }else if (!password.matches(".*\\d.*")) {
+                                        passwordError.setVisibility(View.VISIBLE);
+                                        passwordError.setText("Password must contain at least one number");
+                                    } else if (!password.matches(".*[!@#$%^&*].*")) {
+                                        passwordError.setVisibility(View.VISIBLE);
+                                        passwordError.setText("Password must contain at least one special character");
+                                    }
+                                    else {
+                                        emailError.setVisibility(View.GONE);
+                                        passwordError.setText(null);
+                                        if (!task.isSuccessful()) {
+                                            emailError.setVisibility(View.VISIBLE);
+                                            emailError.setText("Email is already taken");
+                                        }
+                                    }
                                 }
                             }
                         });
