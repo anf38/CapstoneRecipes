@@ -2,6 +2,7 @@ package com.example.pantrypal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -22,13 +24,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Registration extends AppCompatActivity {
-    TextInputEditText editTextEmail, editTextPassword;
-    TextView emailError, passwordError;
-    Button buttonReg;
-    FirebaseAuth mAuth;
-    ProgressBar progressBar;
-    TextView textView;
-    CheckBox mCheckBox;
+    private TextInputEditText editTextEmail, editTextPassword;
+    private TextView emailError, passwordError;
+    private Button buttonReg;
+    private FirebaseAuth mAuth;
+    private ProgressBar progressBar;
+    private TextView textView;
+    private CheckBox mCheckBox;
+
     @Override
     public void onStart() { //if the user is already logged in, then it will bring them to the main page
         super.onStart();
@@ -90,7 +93,7 @@ public class Registration extends AppCompatActivity {
                                     if (TextUtils.isEmpty(email)) {
                                         emailError.setVisibility(View.VISIBLE); // Make the TextView visible
                                         emailError.setText("Enter email");
-                                    } else if(!email.contains("@")){
+                                    } else if (!email.contains("@")) {
                                         emailError.setVisibility(View.VISIBLE);
                                         emailError.setText("Email must contain @ symbol");
                                     } else {
@@ -107,14 +110,13 @@ public class Registration extends AppCompatActivity {
                                     } else if (password.contains(" ")) {
                                         passwordError.setVisibility(View.VISIBLE);
                                         passwordError.setText("Password must not contain spaces");
-                                    }else if (!password.matches(".*\\d.*")) {
+                                    } else if (!password.matches(".*\\d.*")) {
                                         passwordError.setVisibility(View.VISIBLE);
                                         passwordError.setText("Password must contain at least one number");
                                     } else if (!password.matches(".*[!@#$%^&*].*")) {
                                         passwordError.setVisibility(View.VISIBLE);
                                         passwordError.setText("Password must contain at least one special character");
-                                    }
-                                    else {
+                                    } else {
                                         emailError.setVisibility(View.GONE);
                                         passwordError.setText(null);
                                         if (!task.isSuccessful()) {
@@ -129,7 +131,7 @@ public class Registration extends AppCompatActivity {
         });
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { //shows the password if checkboxed
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)  {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     editTextPassword.setTransformationMethod(null);
                 } else {
