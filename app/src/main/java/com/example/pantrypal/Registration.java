@@ -39,7 +39,7 @@ public class Registration extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
