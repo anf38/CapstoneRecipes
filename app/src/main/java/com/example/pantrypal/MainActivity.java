@@ -26,26 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ImageView backArrow = findViewById(R.id.backArrow);
-        ImageView menu = findViewById(R.id.menu);
-        //TextView title = findViewById(R.id.toolbar_title);
-
         auth = FirebaseAuth.getInstance();
-
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"backspace", Toast.LENGTH_SHORT).show();
-            }
-        });
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"backspace", Toast.LENGTH_SHORT).show();
-            }
-        });
-        //title.setText("PantryPal");
     }
 }
 
