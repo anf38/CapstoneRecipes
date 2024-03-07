@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -14,19 +15,21 @@ import androidx.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.Arrays;
+
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class NewRecipe extends AppCompatActivity {
     TextInputEditText recipeName, recipeIngredients, recipeInstructions;
-    Button cancelRecipeButton, createRecipeButton;
+    Button cancelRecipeButton, createRecipeButton, addTagsButton;
     FirebaseFirestore firestore;
     DatabaseReference databaseReference;
     CreateRecipe createRecipe;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class NewRecipe extends AppCompatActivity {
         recipeInstructions = findViewById(R.id.recipeInstructions);
         cancelRecipeButton = findViewById(R.id.cancelRecipeButton);
         createRecipeButton = findViewById(R.id.createRecipeButton);
+        progressBar = findViewById(R.id.progressBar);
+        addTagsButton = findViewById(R.id.addTagsButton);
 
         createRecipe = new CreateRecipe();
 
@@ -45,6 +50,15 @@ public class NewRecipe extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        addTagsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Registration.class);
                 startActivity(intent);
                 finish();
             }
@@ -60,29 +74,30 @@ public class NewRecipe extends AppCompatActivity {
                 String name = createRecipe.getName();
                 String[] ingredients = createRecipe.getIngredients();
                 String[] instructions = createRecipe.getInstructions();
-                Uri picture = createRecipe.getPictureUri();
 
                 Map<String, Object> recipe = new HashMap<>();
                 recipe.put("Name", name);
-                recipe.put("Ingredients", ingredients);
-                recipe.put("Instructions", instructions);
+                recipe.put("Ingredients", Arrays.asList(ingredients)); // Convert to list
+                recipe.put("Instructions", Arrays.asList(instructions)); // Convert to list
 
-                firestore.collection("recipe").add(recipe).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(NewRecipe.this, "recipe added successfully", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(NewRecipe.this, "Failed to add recipe: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
+                firestore.collection("recipe").add(recipe)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Toast.makeText(NewRecipe.this, "Recipe added successfully", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(NewRecipe.this, "Failed to add recipe: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
+
     }
 }
