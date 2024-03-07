@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#F6C28A"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -66,7 +67,7 @@
                 android:id="@+id/recipeIngredients"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:hint="recipe ingredients"
+                android:hint="Ingredients"
                 android:textSize="15sp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -78,8 +79,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/recipeInstructions"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:hint="recipe instructions"
+                android:layout_height="60dp"
+                android:hint="Instructions"
                 android:textSize="15sp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -92,68 +93,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <CheckBox
-                android:id="@+id/tripCategoryActivity"
-                android:layout_width="150dp"
+
+            <Button
+                android:id="@+id/addTagsButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="Add Tags" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="50dp" >
+                <!--tags would get put here when the user selects them
+                the button should take them to the tags page where it gets
+                put here after getting selected-->
 
-                android:text="baking" />
-
-            <CheckBox
-                android:id="@+id/tripCategoryFees"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-
-                android:text="cooking"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <CheckBox
-                android:id="@+id/tripCategoryFood"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-
-                android:text="easy" />
-            <CheckBox
-                android:id="@+id/tripCategoryEmergency"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-
-                android:text="hard"/>
-
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="109dp"
+            android:layout_height="wrap_content"
             android:gravity="bottom"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/cancelRecipeButton"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxWidth="40dp"
                 android:text="Cancel" />
 
-            <TextView
-                android:layout_width="175dp"
-                android:layout_height="40dp"
-                android:background="@color/white"
-                android:padding="5dp"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="25sp" />
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:visibility="invisible" />
 
             <Button
                 android:id="@+id/createRecipeButton"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:maxWidth="40dp"
                 android:text="Create" />
 
         </LinearLayout>
+
 
 
 

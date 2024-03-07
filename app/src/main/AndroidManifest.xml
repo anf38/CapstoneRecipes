@@ -29,6 +29,19 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+        <activity
+            android:name=".NewRecipe"
+            android:exported="false" />
+        <activity
+            android:name=".Search"
+            android:exported="false" />
+        <activity
+            android:name=".Favorites"
+            android:exported="false" />
+        <activity
+            android:name=".IngredientsSearch"
+            android:exported="false" />
+
     </application>
 
 </manifest>
