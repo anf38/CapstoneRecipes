@@ -41,6 +41,9 @@
         <activity
             android:name=".IngredientsSearch"
             android:exported="false" />
+        <activity
+            android:name=".ViewRecipe"
+            android:exported="false" />
 
     </application>
 

@@ -3,10 +3,13 @@ import android.content.Intent;
 import android.content.om.FabricatedOverlay;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,13 +25,63 @@ public class MainActivity extends AppCompatActivity {
         nav = findViewById(R.id.nav);
         nav.setSelectedItemId(R.id.homeIcon);
 
+        // Inside your activity or fragment
 
+// Get references to all the CardViews (new)
+        CardView firstNewCard = findViewById(R.id.firstNewCard);
+        CardView secondNewCard = findViewById(R.id.secondNewCard);
+        CardView thirdNewCard = findViewById(R.id.thirdNewCard);
+        CardView fourthNewCard = findViewById(R.id.fourthNewCard);
+        CardView fifthNewCard = findViewById(R.id.fifthNewCard);
+        CardView sixthNewCard = findViewById(R.id.sixthNewCard);
+        // Get references to all the CardViews (recommended)
+        CardView firstRecCard = findViewById(R.id.firstRecCard);
+        CardView secondRecCard = findViewById(R.id.secondRecCard);
+        CardView thirdRecCard = findViewById(R.id.thirdRecCard);
+        CardView fourthRecCard = findViewById(R.id.fourthRecCard);
+        CardView fifthRecCard = findViewById(R.id.fifthRecCard);
+        CardView sixthRecCard = findViewById(R.id.sixthRecCard);
+        // Get references to all the CardViews (Trending)
+        CardView firstTrendCard = findViewById(R.id.firstTrendCard);
+        CardView secondTrendCard = findViewById(R.id.secondTrendCard);
+        CardView thirdTrendCard = findViewById(R.id.thirdTrendCard);
+        CardView fourthTrendCard = findViewById(R.id.fourthTrendCard);
+        CardView fifthTrendCard = findViewById(R.id.fifthTrendCard);
+        CardView sixthTrendCard = findViewById(R.id.sixthTrendCard);
+// Add references to other CardViews as needed
 
+// Create an OnClickListener for all CardViews
+        View.OnClickListener cardClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Perform action when any CardView is clicked, such as navigating to a new activity
+                Intent intent = new Intent(MainActivity.this, ViewRecipe.class);
+                startActivity(intent);
+            }
+        };
 
+// Set the same OnClickListener to all CardViews
+        firstNewCard.setOnClickListener(cardClickListener);
+        secondNewCard.setOnClickListener(cardClickListener);
+        thirdNewCard.setOnClickListener(cardClickListener);
+        fourthNewCard.setOnClickListener(cardClickListener);
+        fifthNewCard.setOnClickListener(cardClickListener);
+        sixthNewCard.setOnClickListener(cardClickListener);
 
-        //goal: make it so that the screen outputs the top 4 most recently created recipes
+        firstNewCard.setOnClickListener(cardClickListener);
+        secondNewCard.setOnClickListener(cardClickListener);
+        thirdNewCard.setOnClickListener(cardClickListener);
+        fourthNewCard.setOnClickListener(cardClickListener);
+        fifthNewCard.setOnClickListener(cardClickListener);
+        sixthNewCard.setOnClickListener(cardClickListener);
 
-
+        firstNewCard.setOnClickListener(cardClickListener);
+        secondNewCard.setOnClickListener(cardClickListener);
+        thirdNewCard.setOnClickListener(cardClickListener);
+        fourthNewCard.setOnClickListener(cardClickListener);
+        fifthNewCard.setOnClickListener(cardClickListener);
+        sixthNewCard.setOnClickListener(cardClickListener);
+// Set OnClickListener for other CardViews as needed
 
 
 
