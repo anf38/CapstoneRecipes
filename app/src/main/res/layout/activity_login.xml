@@ -26,6 +26,7 @@
             android:id="@+id/emailPassError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#FF0000"
             android:text="Email and/or password is incorrect"
             android:visibility="gone" />
 
