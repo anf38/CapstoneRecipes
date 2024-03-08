@@ -3,16 +3,20 @@ import android.content.Intent;
 import android.content.om.FabricatedOverlay;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     BottomNavigationView nav;
+    CardView imagesCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,14 +25,21 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         nav = findViewById(R.id.nav);
         nav.setSelectedItemId(R.id.homeIcon);
+        //imagesCard = findViewById(R.id.imageCard);
 
 
 
 
-
-        //goal: make it so that the screen outputs the top 4 most recently created recipes
-
-
+//
+//        //goal: make it so that the screen outputs the top 4 most recently created recipes
+//
+//        imagesCard.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, ViewRecipe.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
 
