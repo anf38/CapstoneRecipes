@@ -56,6 +56,9 @@
                 android:padding="5dp"
                 android:text="Ingredients"
                 android:textSize="20sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -73,7 +76,12 @@
                 android:background="@color/pale_yellow"
                 android:padding="5dp"
                 android:text="Instructions"
+                android:textColor="@color/black"
                 android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -90,7 +98,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/pale_yellow"
                 android:padding="5dp"
-                android:text="Instructions"
+                android:text="Comments"
+                android:textColor="@color/black"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -100,14 +109,18 @@
         android:id="@+id/commentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+
+        >
 
         <EditText
             android:id="@+id/add_comment"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:hint="Add a comment..."
+            android:textColor="@color/black"
             android:background="@color/pale_yellow"
+            android:paddingHorizontal="10dp"
             android:textSize="24dp"/>
 
         <TextView
@@ -115,6 +128,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/post"
             android:text="POST"
+            android:textColor="@color/black"
             android:padding="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
