@@ -1,4 +1,5 @@
 package com.example.pantrypal;
+
 import android.content.Intent;
 import android.content.om.FabricatedOverlay;
 import android.os.Bundle;
@@ -13,10 +14,10 @@ import androidx.cardview.widget.CardView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     BottomNavigationView nav;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         nav = findViewById(R.id.nav);
         nav.setSelectedItemId(R.id.homeIcon);
-
-        // Inside your activity or fragment
 
 // Get references to all the CardViews (new)
         CardView firstNewCard = findViewById(R.id.firstNewCard);
@@ -48,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         CardView fourthTrendCard = findViewById(R.id.fourthTrendCard);
         CardView fifthTrendCard = findViewById(R.id.fifthTrendCard);
         CardView sixthTrendCard = findViewById(R.id.sixthTrendCard);
-// Add references to other CardViews as needed
 
 // Create an OnClickListener for all CardViews
         View.OnClickListener cardClickListener = new View.OnClickListener() {
@@ -57,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 // Perform action when any CardView is clicked, such as navigating to a new activity
                 Intent intent = new Intent(MainActivity.this, ViewRecipe.class);
                 startActivity(intent);
+                finish();
             }
         };
 
@@ -68,25 +67,20 @@ public class MainActivity extends AppCompatActivity {
         fifthNewCard.setOnClickListener(cardClickListener);
         sixthNewCard.setOnClickListener(cardClickListener);
 
-        firstNewCard.setOnClickListener(cardClickListener);
-        secondNewCard.setOnClickListener(cardClickListener);
-        thirdNewCard.setOnClickListener(cardClickListener);
-        fourthNewCard.setOnClickListener(cardClickListener);
-        fifthNewCard.setOnClickListener(cardClickListener);
-        sixthNewCard.setOnClickListener(cardClickListener);
+        firstRecCard.setOnClickListener(cardClickListener);
+        secondRecCard.setOnClickListener(cardClickListener);
+        thirdRecCard.setOnClickListener(cardClickListener);
+        fourthRecCard.setOnClickListener(cardClickListener);
+        fifthRecCard.setOnClickListener(cardClickListener);
+        sixthRecCard.setOnClickListener(cardClickListener);
 
-        firstNewCard.setOnClickListener(cardClickListener);
-        secondNewCard.setOnClickListener(cardClickListener);
-        thirdNewCard.setOnClickListener(cardClickListener);
-        fourthNewCard.setOnClickListener(cardClickListener);
-        fifthNewCard.setOnClickListener(cardClickListener);
-        sixthNewCard.setOnClickListener(cardClickListener);
+        firstTrendCard.setOnClickListener(cardClickListener);
+        secondTrendCard.setOnClickListener(cardClickListener);
+        thirdTrendCard.setOnClickListener(cardClickListener);
+        fourthTrendCard.setOnClickListener(cardClickListener);
+        fifthTrendCard.setOnClickListener(cardClickListener);
+        sixthTrendCard.setOnClickListener(cardClickListener);
 // Set OnClickListener for other CardViews as needed
-
-
-
-
-
 
 
         nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
