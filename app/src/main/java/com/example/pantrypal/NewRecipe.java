@@ -12,14 +12,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.annotation.NonNull;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Arrays;
-
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +37,7 @@ public class NewRecipe extends AppCompatActivity {
         recipeInstructions = findViewById(R.id.recipeInstructions);
         cancelRecipeButton = findViewById(R.id.cancelRecipeButton);
         createRecipeButton = findViewById(R.id.createRecipeButton);
-        progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBarSub);
         addTagsButton = findViewById(R.id.addTagsButton);
 
         createRecipe = new CreateRecipe();
@@ -67,6 +63,7 @@ public class NewRecipe extends AppCompatActivity {
         createRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 createRecipe.setName(String.valueOf(recipeName.getText()));
                 createRecipe.setIngredients(String.valueOf(recipeIngredients.getText()).split("\n"));
                 createRecipe.setInstructions(String.valueOf(recipeInstructions.getText()).split("\n"));
@@ -80,19 +77,21 @@ public class NewRecipe extends AppCompatActivity {
                 recipe.put("Ingredients", Arrays.asList(ingredients)); // Convert to list
                 recipe.put("Instructions", Arrays.asList(instructions)); // Convert to list
 
-                firestore.collection("recipe").add(recipe)
+                firestore.collection("recipes").add(recipe)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
                                 Toast.makeText(NewRecipe.this, "Recipe added successfully", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
+                                progressBar.setVisibility(View.INVISIBLE);
                                 finish();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
+                                progressBar.setVisibility(View.INVISIBLE);
                                 Toast.makeText(NewRecipe.this, "Failed to add recipe: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
