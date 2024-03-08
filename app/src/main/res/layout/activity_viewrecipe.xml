@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F6C28A"
+    tools:context=".ViewRecipe">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/commentLayout"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/red"
+                android:padding="5dp"
+                android:text="Recipe Name"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+
+            <!-- ImageView to display the selected image -->
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="20dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/placeholder_image" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/light_red"
+                android:padding="5dp"
+                android:text="Ingredients"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pale_yellow"
+                android:padding="5dp"
+                android:text="Ingredients"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/light_red"
+                android:padding="5dp"
+                android:text="Instructions"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pale_yellow"
+                android:padding="5dp"
+                android:text="Instructions"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/light_red"
+                android:padding="5dp"
+                android:text="Comments"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pale_yellow"
+                android:padding="5dp"
+                android:text="Instructions"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/commentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <EditText
+            android:id="@+id/add_comment"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Add a comment..."
+            android:background="@color/pale_yellow"
+            android:textSize="24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/post"
+            android:text="POST"
+            android:padding="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@color/white"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,4 +1,14 @@
 package com.example.pantrypal;
 
-public class ViewRecipe {
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class ViewRecipe extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_viewrecipe); // Set the layout file for this activity
+    }
 }
