@@ -5,6 +5,7 @@ import android.content.om.FabricatedOverlay;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
+    ImageButton logoutBtn;
     BottomNavigationView nav;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         nav = findViewById(R.id.nav);
         nav.setSelectedItemId(R.id.homeIcon);
+        //logoutBtn = findViewById(R.id.logoutIcon);
 
 // Get references to all the CardViews (new)
         CardView firstNewCard = findViewById(R.id.firstNewCard);
@@ -82,6 +85,16 @@ public class MainActivity extends AppCompatActivity {
         sixthTrendCard.setOnClickListener(cardClickListener);
 // Set OnClickListener for other CardViews as needed
 
+
+//        logoutBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FirebaseAuth.getInstance().signOut();
+//                Intent intent = new Intent(getApplicationContext(), Login.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
         nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
