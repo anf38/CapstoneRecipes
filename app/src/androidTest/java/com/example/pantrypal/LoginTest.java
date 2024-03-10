@@ -1,5 +1,4 @@
 package com.example.pantrypal;
-import com.example.pantrypal.*;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
