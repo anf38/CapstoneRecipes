@@ -53,9 +53,9 @@ public class LoginTest {
 
         // Click on the login button
         onView(withId(R.id.LoginBtn)).check(matches(isDisplayed())).perform(click());
-
-
-        onView(ViewMatchers.withId(R.id.emailPassError)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));    }
+        
+        onView(ViewMatchers.withId(R.id.emailPassError)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+    }
 
     @Test
     public void testValidLogin() {
