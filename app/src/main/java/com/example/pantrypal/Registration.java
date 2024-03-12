@@ -2,18 +2,22 @@ package com.example.pantrypal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -29,6 +33,7 @@ public class Registration extends AppCompatActivity {
     ProgressBar progressBar;
     TextView textView;
     CheckBox mCheckBox;
+
     @Override
     public void onStart() { //if the user is already logged in, then it will bring them to the main page
         super.onStart();
@@ -54,6 +59,28 @@ public class Registration extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
         mCheckBox = findViewById(R.id.passCheckBox);
+
+        editTextEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    // Consume the enter key event to prevent newline insertion
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        editTextEmail.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    // Consume the enter key event to prevent newline insertion
+                    return true;
+                }
+                return false;
+            }
+        });
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,7 +175,7 @@ public class Registration extends AppCompatActivity {
         });
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { //shows the password if checkboxed
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)  {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     editTextPassword.setTransformationMethod(null);
                 } else {

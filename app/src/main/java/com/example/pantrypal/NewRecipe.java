@@ -72,6 +72,12 @@ public class NewRecipe extends AppCompatActivity {
                 String[] ingredients = createRecipe.getIngredients();
                 String[] instructions = createRecipe.getInstructions();
 
+                if (name.isEmpty() || ingredients[0].isEmpty() || instructions[0].isEmpty()) {
+                    Toast.makeText(NewRecipe.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    return;
+                }
+
                 Map<String, Object> recipe = new HashMap<>();
                 recipe.put("Name", name);
                 recipe.put("Ingredients", Arrays.asList(ingredients)); // Convert to list
