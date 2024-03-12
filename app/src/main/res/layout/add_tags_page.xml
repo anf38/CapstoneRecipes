@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp"
+            tools:context=".NewRecipe">
+
+            <TextView
+                android:id="@+id/RecipeTags"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/purple_500"
+                android:padding="5dp"
+                android:text="Recipe Tags"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+
+            <!-- Beginning of tags -->
+
+            <TextView
+                android:id="@+id/tagDifficulty"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:hint="Difficulty"
+                android:orientation="vertical"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/beginnerTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Beginner" />
+
+                <CheckBox
+                    android:id="@+id/easyTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Easy" />
+
+                <CheckBox
+                    android:id="@+id/moderateTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Moderate" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/AdvancedTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Advanced" />
+
+                <CheckBox
+                    android:id="@+id/hardTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Hard" />
+
+                <CheckBox
+                    android:id="@+id/expertTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Expert" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tagFlavor"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:hint="Flavor"
+                android:orientation="vertical"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/sweetFlavor"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sweet" />
+
+                <CheckBox
+                    android:id="@+id/sourFlavor"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sour" />
+
+                <CheckBox
+                    android:id="@+id/savoryTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Savory" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/saltyTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Salty" />
+
+                <CheckBox
+                    android:id="@+id/bitterTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Bitter" />
+
+                <CheckBox
+                    android:id="@+id/umamiTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Umami" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tagType"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:hint="Type"
+                android:orientation="vertical"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/drinkTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Drink" />
+
+                <CheckBox
+                    android:id="@+id/snackTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Snack" />
+
+                <CheckBox
+                    android:id="@+id/breakfastTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Breakfast" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/lunchTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Lunch" />
+
+                <CheckBox
+                    android:id="@+id/dinnerTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dinner" />
+
+                <CheckBox
+                    android:id="@+id/dessertTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dessert" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tagMeat"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:hint="Meat"
+                android:orientation="vertical"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/beefTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Beef" />
+
+                <CheckBox
+                    android:id="@+id/porkTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Pork" />
+
+                <CheckBox
+                    android:id="@+id/chickenTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Chicken" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/turkeyTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Turkey" />
+
+                <CheckBox
+                    android:id="@+id/duckTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Duck" />
+
+                <CheckBox
+                    android:id="@+id/poultryTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Poultry" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/fishTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Fish" />
+
+                <CheckBox
+                    android:id="@+id/lambTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Lamb" />
+
+                <CheckBox
+                    android:id="@+id/rabbitTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Rabbit" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/shellfishTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Shellfish" />
+
+                <CheckBox
+                    android:id="@+id/vegetarianTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Vegetarian" />
+
+                <CheckBox
+                    android:id="@+id/veganTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Vegan" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="109dp"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cancelRecipeButton"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel" />
+
+                <TextView
+                    android:layout_width="175dp"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:padding="5dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="25sp" />
+
+                <Button
+                    android:id="@+id/createRecipeButton"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="Add" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</ScrollView>

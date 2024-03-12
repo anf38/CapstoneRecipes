@@ -2,49 +2,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="15dp"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="15dp"
     tools:context=".Login">
 
+
     <TextView
-        android:text="@string/login"
-        android:textSize="25sp"
-        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:text="@string/login"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/emailPassError"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email and/or password is incorrect" />
+        android:text="Email and/or password is incorrect"
+        android:textColor="#FF0000"
+        android:visibility="gone" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
-            android:hint="@string/email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="@string/email" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
-            android:hint="@string/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/password"
             android:inputType="textPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -53,13 +55,13 @@
         android:id="@+id/passCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/show_password"/>
+        android:text="@string/show_password" />
 
     <Button
         android:id="@+id/LoginBtn"
-        android:text="@string/Login"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/Login" />
 
     <TextView
         android:id="@+id/loginNow"
@@ -73,8 +75,7 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:visibility="gone"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 </LinearLayout>
