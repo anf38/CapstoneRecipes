@@ -24,10 +24,15 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Registration extends AppCompatActivity {
-    TextInputEditText editTextEmail, editTextPassword;
-    TextView emailError, passwordError;
+    TextInputEditText editTextUsername, editTextEmail, editTextPassword, editTextConfirmPassword;
+    TextView usernameError, emailError, passwordError;
     Button buttonReg;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
@@ -51,14 +56,35 @@ public class Registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         mAuth = FirebaseAuth.getInstance();
+        editTextUsername = findViewById(R.id.username);
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
+        editTextConfirmPassword = findViewById(R.id.confirmPassword);
+        usernameError = findViewById(R.id.usernameError);
         emailError = findViewById(R.id.emailError);
         passwordError = findViewById(R.id.passwordError);
         buttonReg = findViewById(R.id.RegisterBtn);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
         mCheckBox = findViewById(R.id.passCheckBox);
+
+
+        //sends a true or false signal if something is being keyed in for username
+        editTextUsername.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                return actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
+            }
+        });
+
+// Set a key listener to intercept the user from entering a newline for username
+        editTextUsername.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // Consume the enter key event to prevent newline insertion
+                return keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN;
+            }
+        });
 
         editTextEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -94,11 +120,18 @@ public class Registration extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
-                String email, password;
+                String username,email, password, confirmPassword;
+                username = String.valueOf(editTextUsername.getText());
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText()); //same as -> password = editTextPassword.getText().toString();
+                confirmPassword = String.valueOf(editTextConfirmPassword.getText());
 
-
+                if (TextUtils.isEmpty(username)) {
+                    usernameError.setVisibility(View.VISIBLE); // Make the TextView visible
+                    usernameError.setText("Enter username");
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
                 if (TextUtils.isEmpty(email)) {
                     emailError.setVisibility(View.VISIBLE); // Make the TextView visible
                     emailError.setText("Enter email");
@@ -141,8 +174,12 @@ public class Registration extends AppCompatActivity {
                     passwordError.setText("Password must contain at least one special character");
                     progressBar.setVisibility(View.GONE);
                     return;
+                } else if (!password.equals(confirmPassword)) {
+                    passwordError.setVisibility(View.VISIBLE);
+                    passwordError.setText("Passwords must match");
+                    progressBar.setVisibility(View.GONE);
+                    return;
                 }
-
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -150,6 +187,19 @@ public class Registration extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    String uid = user.getUid();
+                                    String username = editTextUsername.getText().toString();
+
+                                    // Get reference to Firestore instance
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                                    // Reference to the "Users" collection in Firestore
+                                    DocumentReference userRef = db.collection("Users").document(uid);
+
+                                    // Create a map to hold the user data
+                                    Map<String, Object> userData = new HashMap<>();
+                                    userData.put("username", username);
                                     Toast.makeText(Registration.this, "Authentication created.",
                                             Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
