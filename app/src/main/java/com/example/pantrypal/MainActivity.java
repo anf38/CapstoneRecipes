@@ -1,17 +1,19 @@
 package com.example.pantrypal;
 
 import android.content.Intent;
-import android.content.om.FabricatedOverlay;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.example.pantrypal.apiTools.RecipeRetriever;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     ImageButton logoutBtn;
     BottomNavigationView nav;
+    RecipeRetriever recipeRetriever = new RecipeRetriever("192.168.12.196", 8080);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
         nav = findViewById(R.id.nav);
         nav.setSelectedItemId(R.id.homeIcon);
         //logoutBtn = findViewById(R.id.logoutIcon);
+
+        // Put image in daily recipe view
+        ImageView dailyRecipeView = findViewById(R.id.imageView);
+        Bitmap dailyRecipeImage = recipeRetriever.getRecipeImage(52772, false);
+        if (dailyRecipeImage != null)
+            dailyRecipeView.setImageBitmap(dailyRecipeImage);
 
 // Get references to all the CardViews (new)
         CardView firstNewCard = findViewById(R.id.firstNewCard);
@@ -83,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         fourthTrendCard.setOnClickListener(cardClickListener);
         fifthTrendCard.setOnClickListener(cardClickListener);
         sixthTrendCard.setOnClickListener(cardClickListener);
+
 // Set OnClickListener for other CardViews as needed
 
 

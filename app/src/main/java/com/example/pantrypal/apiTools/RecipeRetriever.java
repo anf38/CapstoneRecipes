@@ -1,4 +1,8 @@
-package com.example.pantrypal;
+package com.example.pantrypal.apiTools;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -6,16 +10,18 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-
-import javax.net.ssl.HttpsURLConnection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class RecipeRetriever {
     private final String serverAddress;
     private final int serverPort;
+
+    private final ExecutorService asyncExecutor = Executors.newCachedThreadPool();
 
     public RecipeRetriever(String serverAddress, int serverPort) {
         this.serverAddress = serverAddress;
@@ -23,35 +29,35 @@ public class RecipeRetriever {
     }
 
     public JSONObject lookUp(int recipeID) {
-        return makeRequest("/lookup?id=" + recipeID);
+        return retrieveJSON("/lookup?id=" + recipeID);
     }
 
     public JSONObject searchByName(String name) {
-        return makeRequest("/search?name=" + name.toLowerCase().replaceAll(" ", "_"));
+        return retrieveJSON("/search?name=" + name.toLowerCase().replaceAll(" ", "_"));
     }
 
     public JSONObject searchByFirstChar(char firstChar) {
-        return makeRequest("/search?firstchar=" + firstChar);
+        return retrieveJSON("/search?firstchar=" + firstChar);
     }
 
     public JSONObject randomRecipe() {
-        return makeRequest("/random");
+        return retrieveJSON("/random");
     }
 
     public JSONObject listCategoriesDetailed() {
-        return makeRequest("/categories");
+        return retrieveJSON("/categories");
     }
 
     public JSONObject listCategories() {
-        return makeRequest("/list?list=categories");
+        return retrieveJSON("/list?list=categories");
     }
 
     public JSONObject listAreas() {
-        return makeRequest("/list?list=areas");
+        return retrieveJSON("/list?list=areas");
     }
 
     public JSONObject listIngredients() {
-        return makeRequest("/list?list=ingredients");
+        return retrieveJSON("/list?list=ingredients");
     }
 
     public JSONObject filterByIngredients(List<String> ingredients) {
@@ -63,30 +69,37 @@ public class RecipeRetriever {
         }
         ingredientsString.deleteCharAt(ingredientsString.length() - 1); // remove last comma
 
-        return makeRequest("/filter?ingredients=" + ingredientsString);
+        return retrieveJSON("/filter?ingredients=" + ingredientsString);
     }
 
-    public JSONObject filterByIngredient(String ingredient)
-    {
-        return makeRequest("/filter?ingredients=" + ingredient.toLowerCase().replaceAll(" ", "_"));
+    public JSONObject filterByIngredient(String ingredient) {
+        return retrieveJSON("/filter?ingredients=" + ingredient.toLowerCase().replaceAll(" ", "_"));
     }
 
     public JSONObject filterByCategory(String category) {
-        return makeRequest("/filter?category=" + category);
+        return retrieveJSON("/filter?category=" + category);
     }
 
     public JSONObject filterByArea(String area) {
-        return makeRequest("/filter?area=" + area);
+        return retrieveJSON("/filter?area=" + area);
+    }
+
+    public Bitmap getRecipeImage(int recipeID, boolean small)
+    {
+        String smallRequest = small ? "&small=true" : "";
+        return retrieveImage("/mealimage?id=" + recipeID + smallRequest);
+    }
+
+    public Future<Bitmap> getRecipeImageAsync(int recipeID, boolean small) {
+        return asyncExecutor.submit(() -> getRecipeImage(recipeID, small));
     }
 
     // FIXME: This uses unsecure HTTP connection. Some extra steps are necessary to use HTTPS
-    private JSONObject makeRequest(String request) {
+    private JSONObject retrieveJSON(String request) {
         JSONObject recipeJSON = null;
 
         try {
-            URL url = new URL("http", serverAddress, serverPort, request);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            InputStream response = new BufferedInputStream(connection.getInputStream());
+            InputStream response = new BufferedInputStream(new URL("http", serverAddress, serverPort, request).openStream());
 
             int numBytesRead = -1;
             byte[] recipeByteArray = new byte[8192];
@@ -101,10 +114,23 @@ public class RecipeRetriever {
 
             response.close();
         } catch (IOException | JSONException e) {
-            e.printStackTrace();
-            return null;
+            Log.e("Retrieve JSON", e.getMessage());
         }
 
         return recipeJSON;
+    }
+
+    private Bitmap retrieveImage(String imageRequest) {
+        Bitmap image = null;
+
+        try {
+            InputStream imageStream = new URL("http", serverAddress, serverPort, imageRequest).openStream();
+            image = BitmapFactory.decodeStream(imageStream);
+        } catch (IOException e) {
+            Log.e("Retrieve Image", e.getMessage());
+            e.printStackTrace();
+        }
+
+        return image;
     }
 }

@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.example.pantrypal.apiTools.RecipeRetriever;
+
 import org.json.JSONObject;
 import org.junit.Test;
 
