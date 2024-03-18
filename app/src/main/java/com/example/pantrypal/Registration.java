@@ -40,7 +40,7 @@ public class Registration extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +71,52 @@ public class Registration extends AppCompatActivity {
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText()); //same as -> password = editTextPassword.getText().toString();
 
+
+                if (TextUtils.isEmpty(email)) {
+                    emailError.setVisibility(View.VISIBLE); // Make the TextView visible
+                    emailError.setText("Enter email");
+                    progressBar.setVisibility(View.GONE);
+
+                    return;
+                } else if (!email.contains("@")) {
+                    emailError.setVisibility(View.VISIBLE);
+                    emailError.setText("Email must contain @ symbol");
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                } else {
+                    emailError.setText(null);
+                    emailError.setVisibility(View.GONE);
+
+                }
+
+                if (TextUtils.isEmpty(password)) {
+                    passwordError.setVisibility(View.VISIBLE);
+                    passwordError.setText("Enter password");
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                } else if (password.length() < 8) {
+                    passwordError.setVisibility(View.VISIBLE);
+                    passwordError.setText("Password must be at least 8 characters long");
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                } else if (password.contains(" ")) {
+                    passwordError.setVisibility(View.VISIBLE);
+                    passwordError.setText("Password must not contain spaces");
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                } else if (!password.matches(".*\\d.*")) {
+                    passwordError.setVisibility(View.VISIBLE);
+                    passwordError.setText("Password must contain at least one number");
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                } else if (!password.matches(".*[!@#$%^&*].*")) {
+                    passwordError.setVisibility(View.VISIBLE);
+                    passwordError.setText("Password must contain at least one special character");
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
+
+
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -87,40 +133,13 @@ public class Registration extends AppCompatActivity {
                                     Toast.makeText(Registration.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
 
-                                    if (TextUtils.isEmpty(email)) {
-                                        emailError.setVisibility(View.VISIBLE); // Make the TextView visible
-                                        emailError.setText("Enter email");
-                                    } else if(!email.contains("@")){
+                                    emailError.setVisibility(View.GONE);
+                                    passwordError.setText(null);
+                                    if (!task.isSuccessful()) {
                                         emailError.setVisibility(View.VISIBLE);
-                                        emailError.setText("Email must contain @ symbol");
-                                    } else {
-                                        emailError.setText(null);
-                                        emailError.setVisibility(View.GONE);
-                                    }
+                                        emailError.setText("Invalid email/email is already taken");
+                                        progressBar.setVisibility(View.GONE);
 
-                                    if (TextUtils.isEmpty(password)) {
-                                        passwordError.setVisibility(View.VISIBLE);
-                                        passwordError.setText("Enter password");
-                                    } else if (password.length() < 8) {
-                                        passwordError.setVisibility(View.VISIBLE);
-                                        passwordError.setText("Password must be at least 8 characters long");
-                                    } else if (password.contains(" ")) {
-                                        passwordError.setVisibility(View.VISIBLE);
-                                        passwordError.setText("Password must not contain spaces");
-                                    }else if (!password.matches(".*\\d.*")) {
-                                        passwordError.setVisibility(View.VISIBLE);
-                                        passwordError.setText("Password must contain at least one number");
-                                    } else if (!password.matches(".*[!@#$%^&*].*")) {
-                                        passwordError.setVisibility(View.VISIBLE);
-                                        passwordError.setText("Password must contain at least one special character");
-                                    }
-                                    else {
-                                        emailError.setVisibility(View.GONE);
-                                        passwordError.setText(null);
-                                        if (!task.isSuccessful()) {
-                                            emailError.setVisibility(View.VISIBLE);
-                                            emailError.setText("Email is already taken");
-                                        }
                                     }
                                 }
                             }
