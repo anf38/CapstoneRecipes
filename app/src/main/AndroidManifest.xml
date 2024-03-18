@@ -34,7 +34,8 @@
             android:exported="false" />
         <activity
             android:name=".Search"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.PantryPal2"/>
         <activity
             android:name=".Favorites"
             android:exported="false" />
