@@ -10,13 +10,13 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -27,6 +27,22 @@ public class RecipeRetriever {
 
     public RecipeRetriever(String serverAddress) {
         this.serverAddress = serverAddress;
+    }
+
+    public void shutdown() {
+        asyncExecutor.shutdown(); // Disable new tasks from being submitted
+        try {
+            // Wait a while for existing tasks to terminate
+            if (!asyncExecutor.awaitTermination(3, TimeUnit.SECONDS)) {
+                asyncExecutor.shutdownNow(); // Cancel currently executing tasks
+                // Wait a while for tasks to respond to being cancelled
+                if (!asyncExecutor.awaitTermination(3, TimeUnit.SECONDS))
+                    Log.e(getClass().getSimpleName(), "ExecutorService did not shut down smoothly");
+            }
+        } catch (InterruptedException ie) {
+            // (Re-)Cancel if current thread also interrupted
+            asyncExecutor.shutdownNow();
+        }
     }
 
     public JSONObject lookUp(int recipeID) {
@@ -75,8 +91,7 @@ public class RecipeRetriever {
         return retrieveJSON("/categories");
     }
 
-    public Future<JSONObject> listCategoriesDetailedAsync()
-    {
+    public Future<JSONObject> listCategoriesDetailedAsync() {
         return asyncExecutor.submit(this::listCategoriesDetailed);
     }
 
@@ -92,8 +107,7 @@ public class RecipeRetriever {
         return retrieveJSON("/list?list=areas");
     }
 
-    public Future<JSONObject> listAreasAsync()
-    {
+    public Future<JSONObject> listAreasAsync() {
         return asyncExecutor.submit(this::listAreas);
     }
 
@@ -154,6 +168,15 @@ public class RecipeRetriever {
         return asyncExecutor.submit(() -> getRecipeImage(recipeID, small));
     }
 
+    public Bitmap getIngredientImage(String ingredientName, boolean small) {
+        String smallRequest = small ? "&small=true" : "";
+        return retrieveImage("/ingredientimage?ingredient=" + ingredientName + smallRequest);
+    }
+
+    public Future<Bitmap> getIngredientImageAsync(String ingredientName, boolean small) {
+        return asyncExecutor.submit(() -> getIngredientImage(ingredientName, small));
+    }
+
     private JSONObject retrieveJSON(String request) {
         JSONObject recipeJSON = null;
 
@@ -179,7 +202,7 @@ public class RecipeRetriever {
 
             response.close();
         } catch (IOException | JSONException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), e.getMessage());
             return null;
         }
 

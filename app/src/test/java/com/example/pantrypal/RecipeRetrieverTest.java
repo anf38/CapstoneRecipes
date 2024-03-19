@@ -7,16 +7,21 @@ import static org.junit.Assert.assertTrue;
 import com.example.pantrypal.apiTools.RecipeRetriever;
 
 import org.json.JSONObject;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 /**
  * Test class for the RecipeRetriever.
- * The Spring Boot server is required to be running on the local machine for these tests to pass.
- * Address: 127.0.0.1
- * Port: 8080
+ * The Spring Boot server is required to be running for these tests to pass
+ * Address: capstone-recipes-server-a64f8333ac1b.herokuapp.com
  */
 public class RecipeRetrieverTest {
     private static final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
+
+    @AfterClass
+    public static void shutdown() {
+        recipeRetriever.shutdown();
+    }
 
     @Test
     public void getRecipeByID() throws Exception {
