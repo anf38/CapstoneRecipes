@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     ImageButton logoutBtn;
     BottomNavigationView nav;
-    RecipeRetriever recipeRetriever = new RecipeRetriever("192.168.12.196", 8080);
+    RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

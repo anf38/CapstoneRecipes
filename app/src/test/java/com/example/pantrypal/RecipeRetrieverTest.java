@@ -16,7 +16,7 @@ import org.junit.Test;
  * Port: 8080
  */
 public class RecipeRetrieverTest {
-    private static final RecipeRetriever recipeRetriever = new RecipeRetriever("127.0.0.1", 8080);
+    private static final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
 
     @Test
     public void getRecipeByID() throws Exception {
@@ -38,8 +38,14 @@ public class RecipeRetrieverTest {
 
     @Test
     public void getRandomRecipe() throws Exception {
-        JSONObject randomRecipe = recipeRetriever.randomRecipe();
+        JSONObject randomRecipe = recipeRetriever.randomRecipe(false);
         assertTrue(randomRecipe.getJSONArray("meals").getJSONObject(0).has("strInstructions"));
+    }
+
+    @Test
+    public void getTenRandomRecipes() throws Exception {
+        JSONObject randomRecipes = recipeRetriever.randomRecipe(true);
+        assertEquals(10, randomRecipes.getJSONArray("meals").length());
     }
 
     @Test
