@@ -4,13 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/yellow"
     tools:context=".Search">
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:background="@color/pale_yellow"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
+        android:dividerHeight="8dp"
+    android:divider="@color/yellow"
+    />
 
     <TextView
         android:id="@+id/tv_emptyTextView"
@@ -19,6 +27,7 @@
         android:layout_centerInParent="true"
         android:text="No Results"
         android:textSize="20sp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:background="@color/white"/>
 
 </RelativeLayout>
