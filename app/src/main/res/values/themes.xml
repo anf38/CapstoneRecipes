@@ -14,9 +14,9 @@
         <!-- Customize your theme here. -->
     </style>
     <style name="Theme.PantryPal2" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <!-- Primary brand color (ActionBar color). -->
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item> <!-- Adjust this as needed -->
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -26,4 +26,5 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
 </resources>

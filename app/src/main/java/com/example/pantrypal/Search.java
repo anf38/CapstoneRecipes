@@ -1,11 +1,15 @@
 package com.example.pantrypal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +29,7 @@ public class Search extends AppCompatActivity {
     ListView listView;
     ArrayAdapter<String> arrayAdapter;
     List<String> recipeNames = new ArrayList<>();
+    List<String> recipeIds = new ArrayList<>(); // To store recipe document IDs
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +38,24 @@ public class Search extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
 
         listView = findViewById(R.id.listView);
-        //arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, name);
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, recipeNames);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, recipeNames);
         listView.setAdapter(arrayAdapter);
 
         fetchRecipesFromFirestore();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String recipeName = (String) parent.getItemAtPosition(position); // Get the clicked recipe name
+                int index = recipeNames.indexOf(recipeName); // Find the index of the clicked recipe name
+                if (index != -1) { // Check if the recipe name exists in the list
+                    String recipeId = recipeIds.get(index); // Get the corresponding recipe ID
+                    Intent intent = new Intent(Search.this, ViewRecipe.class);
+                    intent.putExtra("recipeId", recipeId);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     private void fetchRecipesFromFirestore() {
@@ -49,16 +67,15 @@ public class Search extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String recipeName = document.getString("Name");
+                                String recipeId = document.getId(); // Get recipe document ID
                                 recipeNames.add(recipeName);
+                                recipeIds.add(recipeId); // Add recipe document ID to list
                             }
-                            arrayAdapter.notifyDataSetChanged(); // Notify adapter after data is fetched
-                        } else {
-                            // Handle errors
+                            arrayAdapter.notifyDataSetChanged();
                         }
                     }
                 });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -101,27 +101,19 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
                 if (itemId == R.id.homeIcon) {
-                    Toast.makeText(MainActivity.this, "Home", Toast.LENGTH_LONG).show();
-                    // Handle navigation to Home activity if necessary
                     return true;
                 } else if (itemId == R.id.searchIcon) {
-                    Toast.makeText(MainActivity.this, "Search", Toast.LENGTH_LONG).show();
-                    // Handle navigation to Search activity
                     startActivity(new Intent(MainActivity.this, Search.class));
                     return true;
                 } else if (itemId == R.id.favoriteIcon) {
                     Toast.makeText(MainActivity.this, "Favorite", Toast.LENGTH_LONG).show();
-                    // Handle navigation to Favorite activity
                     startActivity(new Intent(MainActivity.this, Favorites.class));
                     return true;
                 } else if (itemId == R.id.submissionIcon) {
-                    Toast.makeText(MainActivity.this, "Submission", Toast.LENGTH_LONG).show();
-                    // Handle navigation to Submission activity
                     startActivity(new Intent(MainActivity.this, NewRecipe.class));
                     return true;
                 } else if (itemId == R.id.ingredientsIcon) {
                     Toast.makeText(MainActivity.this, "Ingredients", Toast.LENGTH_LONG).show();
-                    // Handle navigation to Ingredients activity
                     startActivity(new Intent(MainActivity.this, IngredientsSearch.class));
                     return true;
                 }

@@ -20,8 +20,9 @@
             android:padding="15dp">
 
             <TextView
+                android:id="@+id/recipeNameTextView"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/red"
                 android:padding="5dp"
                 android:text="Recipe Name"
@@ -41,7 +42,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/light_red"
                 android:padding="5dp"
                 android:text="Ingredients"
@@ -50,6 +51,7 @@
                 android:textSize="25sp" />
 
             <TextView
+                android:id="@+id/ingredientsTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/pale_yellow"
@@ -63,7 +65,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/light_red"
                 android:padding="5dp"
                 android:text="Instructions"
@@ -72,6 +74,7 @@
                 android:textSize="25sp" />
 
             <TextView
+                android:id="@+id/instructionsTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/pale_yellow"
@@ -86,7 +89,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/light_red"
                 android:padding="5dp"
                 android:text="Comments"
@@ -117,7 +120,7 @@
         <EditText
             android:id="@+id/add_comment"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="4dp"
             android:hint="Add a comment..."
             android:textColor="@color/black"
             android:background="@color/pale_yellow"
