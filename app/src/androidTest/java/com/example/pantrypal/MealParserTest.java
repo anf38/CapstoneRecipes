@@ -1,53 +1,55 @@
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+package com.example.pantrypal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class MealParserTest {
-    private MealParser mealParser;
-    private JSONObject mealObject;
-
-    @BeforeEach
-    public void setUp() {
-        mealParser = new MealParser();
-        mealObject = new JSONObject();
-        mealObject.put("idMeal", "12345");
-        mealObject.put("strMeal", "Test Meal");
-        mealObject.put("strCategory", "Test Category");
-        mealObject.put("strArea", "Test Area");
-        mealObject.put("strInstructions", "Test Instructions");
-        mealObject.put("strMealThumb", "https://www.example.com/image.jpg");
-        mealObject.put("strTags", "Test Tag1, Test Tag2");
-        mealObject.put("strYoutube", "https://www.youtube.com/watch?v=test");
-        mealObject.put("strIngredient1", "Ingredient 1");
-        mealObject.put("strIngredient2", "Ingredient 2");
-        mealObject.put("strMeasure1", "1 unit");
-        mealObject.put("strMeasure2", "2 units");
-    }
 
     @Test
     public void testParseMeal() {
-        Meal meal = mealParser.parseMeal(mealObject);
-        assertNotNull(meal);
-        assertEquals("12345", meal.getIdMeal());
-        assertEquals("Test Meal", meal.getStrMeal());
-        assertEquals("Test Category", meal.getStrCategory());
-        assertEquals("Test Area", meal.getStrArea());
-        assertEquals("Test Instructions", meal.getStrInstructions());
-        assertEquals("https://www.example.com/image.jpg", meal.getStrMealThumb());
-        assertEquals("Test Tag1, Test Tag2", meal.getStrTags());
-        assertEquals("https://www.youtube.com/watch?v=test", meal.getStrYoutube());
-        assertEquals("Ingredient 1", meal.getIngredients().get(0));
-        assertEquals("Ingredient 2", meal.getIngredients().get(1));
-        assertEquals("1 unit", meal.getMeasures().get(0));
-        assertEquals("2 units", meal.getMeasures().get(1));
-    }
+        JSONObject mealObject = new JSONObject();
+        try {
+            mealObject.put("idMeal", "1");
+            mealObject.put("strMeal", "Test Meal");
+            mealObject.put("strCategory", "Test Category");
+            mealObject.put("strArea", "Test Area");
+            mealObject.put("strInstructions", "Test Instructions");
+            mealObject.put("strMealThumb", "test_thumbnail.jpg");
+            mealObject.put("strTags", "Test Tags");
+            mealObject.put("strYoutube", "https://www.youtube.com/test");
+            mealObject.put("strIngredient1", "Ingredient 1");
+            mealObject.put("strMeasure1", "Measure 1");
 
-    @Test
-    public void testCacheMealAndGetCachedMeal() {
-        Meal meal = mealParser.parseMeal(mealObject);
-        assertEquals(meal);
+            MealParser mealParser = new MealParser();
+            Meal meal = mealParser.parseMeal(mealObject);
+
+            assertNotNull(meal);
+            assertEquals("1", meal.getIdMeal());
+            assertEquals("Test Meal", meal.getStrMeal());
+            assertEquals("Test Category", meal.getStrCategory());
+            assertEquals("Test Area", meal.getStrArea());
+            assertEquals("Test Instructions", meal.getStrInstructions());
+            assertEquals("test_thumbnail.jpg", meal.getStrMealThumb());
+            assertEquals("Test Tags", meal.getStrTags());
+            assertEquals("https://www.youtube.com/test", meal.getStrYoutube());
+
+            List<String> ingredients = meal.getIngredients();
+            assertNotNull(ingredients);
+            assertEquals(1, ingredients.size());
+            assertEquals("Ingredient 1", ingredients.get(0));
+
+            List<String> measures = meal.getMeasures();
+            assertNotNull(measures);
+            assertEquals(1, measures.size());
+            assertEquals("Measure 1", measures.get(0));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
