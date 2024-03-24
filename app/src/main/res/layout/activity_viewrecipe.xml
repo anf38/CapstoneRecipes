@@ -95,6 +95,28 @@
                 android:textColor="@color/white"
                 android:textSize="25sp" />
 
+            <EditText
+                android:id="@+id/add_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pale_yellow"
+                android:hint="Add a comment..."
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/black"
+                android:textSize="24dp" />
+
+            <TextView
+                android:id="@+id/post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:padding="10dp"
+                android:text="POST"
+                android:textColor="@color/black" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,30 +137,6 @@
 
         >
 
-        <EditText
-            android:id="@+id/add_comment"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:hint="Add a comment..."
-            android:textColor="@color/black"
-            android:background="@color/pale_yellow"
-            android:paddingHorizontal="10dp"
-            android:textSize="24dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/post"
-            android:text="POST"
-            android:textColor="@color/black"
-            android:padding="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="@color/white"/>
-
     </RelativeLayout>
     <!-- Bottom Navigation View -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -146,6 +144,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="25dp"
         android:background="@drawable/navbar_background"
         app:itemIconTint="@drawable/selector"
         app:itemTextColor="@drawable/selector"

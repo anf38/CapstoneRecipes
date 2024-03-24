@@ -1,4 +1,7 @@
+package com.example.pantrypal;
+
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -18,7 +21,58 @@ class Meal {
     private List<String> ingredients;
     private List<String> measures;
 
- 
+    // Constructor
+    public Meal() {
+        ingredients = new ArrayList<>();
+        measures = new ArrayList<>();
+    }
+
+    // Setter methods
+    public void setIdMeal(String idMeal) {
+        this.idMeal = idMeal;
+    }
+
+    public void setStrMeal(String strMeal) {
+        this.strMeal = strMeal;
+    }
+
+    public void setStrCategory(String strCategory) {
+        this.strCategory = strCategory;
+    }
+
+    public void setStrArea(String strArea) {
+        this.strArea = strArea;
+    }
+
+    public void setStrInstructions(String strInstructions) {
+        this.strInstructions = strInstructions;
+    }
+
+    public void setStrMealThumb(String strMealThumb) {
+        this.strMealThumb = strMealThumb;
+    }
+
+    public void setStrTags(String strTags) {
+        this.strTags = strTags;
+    }
+
+    public void setStrYoutube(String strYoutube) {
+        this.strYoutube = strYoutube;
+    }
+
+    public void setIngredients(List<String> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public void setMeasures(List<String> measures) {
+        this.measures = measures;
+    }
+    public List<String> getIngredients() {
+        return ingredients;
+    }
+    public List<String> getMeasures() {
+        return measures;
+    }
 
     @Override
     public String toString() {
@@ -44,7 +98,7 @@ class MealParser {
         mealCache = new HashMap<>();
     }
 
-    public Meal parseMeal(JSONObject mealObject) {
+    public Meal parseMeal(JSONObject mealObject) throws JSONException {
         Meal meal = new Meal();
         meal.setIdMeal(mealObject.getString("idMeal"));
         meal.setStrMeal(mealObject.getString("strMeal"));
