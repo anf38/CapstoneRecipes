@@ -67,34 +67,6 @@ class Meal {
     public void setMeasures(List<String> measures) {
         this.measures = measures;
     }
-    public String getStrYoutube() {
-        return strYoutube;
-    }
-
-    public String getStrTags() {
-        return strTags;
-    }
-
-    public String getStrMealThumb() {
-        return strMealThumb;
-    }
-
-    public String getStrInstructions() {
-        return strInstructions;
-    }
-    public String getStrArea() {
-        return strArea;
-    }
-    public String getStrCategory() {
-        return strCategory;
-    }
-    public String getStrMeal() {
-        return strMeal;
-    }
-
-    public String getIdMeal() {
-        return idMeal;
-    }
     public List<String> getIngredients() {
         return ingredients;
     }
@@ -126,34 +98,31 @@ class MealParser {
         mealCache = new HashMap<>();
     }
 
-    public Meal parseMeal(JSONObject mealObject) {
+    public Meal parseMeal(JSONObject mealObject) throws JSONException {
         Meal meal = new Meal();
-        try {
-            meal.setIdMeal(mealObject.getString("idMeal"));
-            meal.setStrMeal(mealObject.getString("strMeal"));
-            meal.setStrCategory(mealObject.getString("strCategory"));
-            meal.setStrArea(mealObject.getString("strArea"));
-            meal.setStrInstructions(mealObject.getString("strInstructions"));
-            meal.setStrMealThumb(mealObject.getString("strMealThumb"));
-            meal.setStrTags(mealObject.getString("strTags"));
-            meal.setStrYoutube(mealObject.getString("strYoutube"));
+        meal.setIdMeal(mealObject.getString("idMeal"));
+        meal.setStrMeal(mealObject.getString("strMeal"));
+        meal.setStrCategory(mealObject.getString("strCategory"));
+        meal.setStrArea(mealObject.getString("strArea"));
+        meal.setStrInstructions(mealObject.getString("strInstructions"));
+        meal.setStrMealThumb(mealObject.getString("strMealThumb"));
+        meal.setStrTags(mealObject.getString("strTags"));
+        meal.setStrYoutube(mealObject.getString("strYoutube"));
 
-            // Parse ingredients and measures
-            meal.setIngredients(new ArrayList<>());
-            meal.setMeasures(new ArrayList<>());
-            for (int i = 1; i <= 20; i++) {
-                String ingredient = mealObject.optString("strIngredient" + i);
-                String measure = mealObject.optString("strMeasure" + i);
-                if (!ingredient.isEmpty() && !measure.isEmpty()) {
-                    meal.getIngredients().add(ingredient);
-                    meal.getMeasures().add(measure);
-                }
+        // Parse ingredients and measures
+        meal.setIngredients(new ArrayList<>());
+        meal.setMeasures(new ArrayList<>());
+        for (int i = 1; i <= 20; i++) {
+            String ingredient = mealObject.optString("strIngredient" + i);
+            String measure = mealObject.optString("strMeasure" + i);
+            if (!ingredient.isEmpty() && !measure.isEmpty()) {
+                meal.getIngredients().add(ingredient);
+                meal.getMeasures().add(measure);
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
         return meal;
     }
+
 
 }
