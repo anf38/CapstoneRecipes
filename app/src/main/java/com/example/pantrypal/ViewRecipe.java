@@ -1,5 +1,6 @@
 package com.example.pantrypal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -25,22 +26,23 @@ public class ViewRecipe extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.homeIcon) {
                     Toast.makeText(ViewRecipe.this, "Home", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(ViewRecipe.this, Home.class));
                     return true;
                 } else if (item.getItemId() == R.id.searchIcon) {
                     Toast.makeText(ViewRecipe.this, "Search", Toast.LENGTH_LONG).show();
-                    // startActivity(new Intent(ViewRecipe.this, Search.class));
+                    startActivity(new Intent(ViewRecipe.this, Search.class));
                     return true;
                 } else if (item.getItemId() == R.id.favoriteIcon) {
                     Toast.makeText(ViewRecipe.this, "Favorite", Toast.LENGTH_LONG).show();
-                    // startActivity(new Intent(ViewRecipe.this, Favorites.class));
+                    startActivity(new Intent(ViewRecipe.this, Favorites.class));
                     return true;
                 } else if (item.getItemId() == R.id.submissionIcon) {
                     Toast.makeText(ViewRecipe.this, "Submission", Toast.LENGTH_LONG).show();
-                    // startActivity(new Intent(ViewRecipe.this, NewRecipe.class));
+                    startActivity(new Intent(ViewRecipe.this, NewRecipe.class));
                     return true;
                 } else if (item.getItemId() == R.id.ingredientsIcon) {
                     Toast.makeText(ViewRecipe.this, "Ingredients", Toast.LENGTH_LONG).show();
-                    // startActivity(new Intent(ViewRecipe.this, IngredientsSearch.class));
+                    startActivity(new Intent(ViewRecipe.this, IngredientsSearch.class));
                     return true;
                 }
                 return false;
