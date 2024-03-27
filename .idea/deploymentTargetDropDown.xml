@@ -2,6 +2,9 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="MealDBJSONParserTest">
+        <State />
+      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
@@ -17,6 +20,9 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-03-09T04:13:29.297508300Z" />
         </State>
+      </entry>
+      <entry key="testParseAreas()">
+        <State />
       </entry>
     </value>
   </component>
