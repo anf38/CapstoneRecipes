@@ -12,14 +12,30 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.example.pantrypal.apiTools.MealDBJSONParser;
+import com.example.pantrypal.apiTools.MealDBRecipe;
+import com.example.pantrypal.apiTools.RecipeRetriever;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     ImageButton logoutBtn;
     BottomNavigationView nav;
+
+    private final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
+    private final List<RecipeCard> newRecipeCards = new ArrayList<>();
+    private final List<RecipeCard> recRecipeCards = new ArrayList<>();
+    private final List<RecipeCard> trendRecipeCards = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,26 +46,46 @@ public class MainActivity extends AppCompatActivity {
         //logoutBtn = findViewById(R.id.logoutIcon);
 
 // Get references to all the CardViews (new)
-        CardView firstNewCard = findViewById(R.id.firstNewCard);
-        CardView secondNewCard = findViewById(R.id.secondNewCard);
-        CardView thirdNewCard = findViewById(R.id.thirdNewCard);
-        CardView fourthNewCard = findViewById(R.id.fourthNewCard);
-        CardView fifthNewCard = findViewById(R.id.fifthNewCard);
-        CardView sixthNewCard = findViewById(R.id.sixthNewCard);
-        // Get references to all the CardViews (recommended)
-        CardView firstRecCard = findViewById(R.id.firstRecCard);
-        CardView secondRecCard = findViewById(R.id.secondRecCard);
-        CardView thirdRecCard = findViewById(R.id.thirdRecCard);
-        CardView fourthRecCard = findViewById(R.id.fourthRecCard);
-        CardView fifthRecCard = findViewById(R.id.fifthRecCard);
-        CardView sixthRecCard = findViewById(R.id.sixthRecCard);
-        // Get references to all the CardViews (Trending)
-        CardView firstTrendCard = findViewById(R.id.firstTrendCard);
-        CardView secondTrendCard = findViewById(R.id.secondTrendCard);
-        CardView thirdTrendCard = findViewById(R.id.thirdTrendCard);
-        CardView fourthTrendCard = findViewById(R.id.fourthTrendCard);
-        CardView fifthTrendCard = findViewById(R.id.fifthTrendCard);
-        CardView sixthTrendCard = findViewById(R.id.sixthTrendCard);
+        newRecipeCards.add(new RecipeCard(findViewById(R.id.firstNewCard)));
+        newRecipeCards.add(new RecipeCard(findViewById(R.id.secondNewCard)));
+        newRecipeCards.add(new RecipeCard(findViewById(R.id.thirdNewCard)));
+        newRecipeCards.add(new RecipeCard(findViewById(R.id.fourthNewCard)));
+        newRecipeCards.add(new RecipeCard(findViewById(R.id.fifthNewCard)));
+        newRecipeCards.add(new RecipeCard(findViewById(R.id.sixthNewCard)));
+
+        recRecipeCards.add(new RecipeCard(findViewById(R.id.firstRecCard)));
+        recRecipeCards.add(new RecipeCard(findViewById(R.id.secondRecCard)));
+        recRecipeCards.add(new RecipeCard(findViewById(R.id.thirdRecCard)));
+        recRecipeCards.add(new RecipeCard(findViewById(R.id.fourthRecCard)));
+        recRecipeCards.add(new RecipeCard(findViewById(R.id.fifthRecCard)));
+        recRecipeCards.add(new RecipeCard(findViewById(R.id.sixthRecCard)));
+
+        trendRecipeCards.add(new RecipeCard(findViewById(R.id.firstTrendCard)));
+        trendRecipeCards.add(new RecipeCard(findViewById(R.id.secondTrendCard)));
+        trendRecipeCards.add(new RecipeCard(findViewById(R.id.thirdTrendCard)));
+        trendRecipeCards.add(new RecipeCard(findViewById(R.id.fourthTrendCard)));
+        trendRecipeCards.add(new RecipeCard(findViewById(R.id.fifthTrendCard)));
+        trendRecipeCards.add(new RecipeCard(findViewById(R.id.sixthTrendCard)));
+
+        new Thread(() -> {
+            JSONObject latestRecipesJSON = recipeRetriever.latestRecipes();
+            List<MealDBRecipe> latestRecipes = MealDBJSONParser.parseRecipes(latestRecipesJSON);
+            for (int i = 0; i < newRecipeCards.size() && i < latestRecipes.size(); ++i) {
+                newRecipeCards.get(i).setRecipe(latestRecipes.get(i));
+            }
+
+            JSONObject randomRecipesJSON = recipeRetriever.randomRecipe(true);
+            List<MealDBRecipe> randomRecipes = MealDBJSONParser.parseRecipes(randomRecipesJSON);
+            for (int i = 0; i < recRecipeCards.size() && i < randomRecipes.size(); ++i) {
+                recRecipeCards.get(i).setRecipe(randomRecipes.get(i));
+            }
+
+            JSONObject moreRandomRecipesJSON = recipeRetriever.randomRecipe(true);
+            List<MealDBRecipe> moreRandomRecipes = MealDBJSONParser.parseRecipes(moreRandomRecipesJSON);
+            for (int i = 0; i < recRecipeCards.size() && i < moreRandomRecipes.size(); ++i) {
+                trendRecipeCards.get(i).setRecipe(moreRandomRecipes.get(i));
+            }
+        }).start();
 
 // Create an OnClickListener for all CardViews
         View.OnClickListener cardClickListener = new View.OnClickListener() {
@@ -63,26 +99,17 @@ public class MainActivity extends AppCompatActivity {
         };
 
 // Set the same OnClickListener to all CardViews
-        firstNewCard.setOnClickListener(cardClickListener);
-        secondNewCard.setOnClickListener(cardClickListener);
-        thirdNewCard.setOnClickListener(cardClickListener);
-        fourthNewCard.setOnClickListener(cardClickListener);
-        fifthNewCard.setOnClickListener(cardClickListener);
-        sixthNewCard.setOnClickListener(cardClickListener);
+        for (RecipeCard card : newRecipeCards) {
+            card.setOnClickListener(cardClickListener);
+        }
 
-        firstRecCard.setOnClickListener(cardClickListener);
-        secondRecCard.setOnClickListener(cardClickListener);
-        thirdRecCard.setOnClickListener(cardClickListener);
-        fourthRecCard.setOnClickListener(cardClickListener);
-        fifthRecCard.setOnClickListener(cardClickListener);
-        sixthRecCard.setOnClickListener(cardClickListener);
+        for (RecipeCard card : recRecipeCards) {
+            card.setOnClickListener(cardClickListener);
+        }
 
-        firstTrendCard.setOnClickListener(cardClickListener);
-        secondTrendCard.setOnClickListener(cardClickListener);
-        thirdTrendCard.setOnClickListener(cardClickListener);
-        fourthTrendCard.setOnClickListener(cardClickListener);
-        fifthTrendCard.setOnClickListener(cardClickListener);
-        sixthTrendCard.setOnClickListener(cardClickListener);
+        for (RecipeCard card : trendRecipeCards) {
+            card.setOnClickListener(cardClickListener);
+        }
 // Set OnClickListener for other CardViews as needed
 
 
