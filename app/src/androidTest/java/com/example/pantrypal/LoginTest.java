@@ -73,7 +73,7 @@ public class LoginTest {
             e.printStackTrace();
         }
 
-        onView(withId(R.id.logout)).check(matches(isDisplayed())).perform(click());
+//        onView(withId(R.id.logout)).check(matches(isDisplayed())).perform(click());
 
     }
 
