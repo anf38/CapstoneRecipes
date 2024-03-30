@@ -44,6 +44,9 @@
         <activity
             android:name=".ViewRecipe"
             android:exported="false" />
+        <activity
+            android:name=".Home"
+            android:exported="false" />
 
     </application>
 
