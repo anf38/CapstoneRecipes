@@ -1,5 +1,6 @@
 package com.example.pantrypal;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,12 +15,11 @@ import androidx.cardview.widget.CardView;
 import com.example.pantrypal.apiTools.MealDBRecipe;
 import com.example.pantrypal.apiTools.RecipeRetriever;
 
-public class RecipeCard {
+public class RecipeCard extends Activity {
     private final CardView cardView;
     private final ImageView imageView;
     private final TextView textView;
     private MealDBRecipe recipe = null;
-    private final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
 
     public RecipeCard(CardView cardView) {
         this(cardView,
@@ -37,11 +37,13 @@ public class RecipeCard {
         this.recipe = recipe;
 
         new Thread(() -> {
-            Bitmap recipeImage = recipeRetriever.getRecipeImage(recipe.getId(), false);
+            RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
+            Bitmap recipeImage = recipeRetriever.getRecipeImage(recipe.getImageURL(), false);
             new Handler(Looper.getMainLooper()).post(() -> {
                 imageView.setImageBitmap(recipeImage);
                 textView.setText(recipe.getName());
             });
+            recipeRetriever.shutdown();
         }, "loadRecipeImage").start();
     }
 

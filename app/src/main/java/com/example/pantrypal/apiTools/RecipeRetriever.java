@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -164,8 +165,34 @@ public class RecipeRetriever {
         return retrieveImage("/mealimage?id=" + recipeID + smallRequest);
     }
 
+    public Bitmap getRecipeImage(String imageURL, boolean small) {
+        Bitmap image = null;
+
+        if (small)
+            imageURL += "/preview";
+
+        try {
+            URL url = new URL(imageURL);
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            InputStream imageStream = new BufferedInputStream(connection.getInputStream());
+
+            image = BitmapFactory.decodeStream(imageStream);
+        } catch (IOException e) {
+            if (small)
+                getRecipeImage(imageURL, false);
+
+            Log.e("Retrieve Image with URL", e.getMessage());
+        }
+
+        return image;
+    }
+
     public Future<Bitmap> getRecipeImageAsync(int recipeID, boolean small) {
         return asyncExecutor.submit(() -> getRecipeImage(recipeID, small));
+    }
+
+    public Future<Bitmap> getRecipeImageAsync(String imageURL, boolean small) {
+        return asyncExecutor.submit(() -> getRecipeImage(imageURL, small));
     }
 
     public Bitmap getIngredientImage(String ingredientName, boolean small) {
@@ -220,7 +247,6 @@ public class RecipeRetriever {
             image = BitmapFactory.decodeStream(imageStream);
         } catch (IOException e) {
             Log.e("Retrieve Image", e.getMessage());
-            e.printStackTrace();
         }
 
         return image;

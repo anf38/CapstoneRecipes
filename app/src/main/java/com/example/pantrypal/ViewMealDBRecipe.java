@@ -33,7 +33,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
 
         MealDBRecipe recipe = (MealDBRecipe) getIntent().getSerializableExtra("recipe");
         new Thread(() -> {
-            Bitmap recipeImage = recipeRetriever.getRecipeImage(recipe.getId(), false);
+            Bitmap recipeImage = recipeRetriever.getRecipeImage(recipe.getImageURL(), false);
             runOnUiThread(() -> recipeImageView.setImageBitmap(recipeImage));
         }).start();
 
@@ -82,6 +82,12 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         recipeNameTextView.setText(recipe.getName());
         ingredientsTextView.setText(formatIngredientsList(recipe.getIngredients()));
         instructionsTextView.setText(formatList(recipe.getInstructionLines()));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        recipeRetriever.shutdown();
     }
 
     private String formatList(List<String> list) {
