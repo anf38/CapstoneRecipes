@@ -179,7 +179,7 @@ public class RecipeRetriever {
             image = BitmapFactory.decodeStream(imageStream);
         } catch (IOException e) {
             if (small)
-                getRecipeImage(imageURL, false);
+                return getRecipeImage(imageURL, false);
 
             Log.e("Retrieve Image with URL", e.getMessage());
         }
