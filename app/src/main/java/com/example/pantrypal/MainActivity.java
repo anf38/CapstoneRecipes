@@ -68,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
         trendRecipeCards.add(new RecipeCard(findViewById(R.id.sixthTrendCard)));
 
         new Thread(() -> {
-            // TODO: Replace with recipe of the day
-            JSONObject recipeOfTheDayJSON = recipeRetriever.randomRecipe(false);
+            JSONObject recipeOfTheDayJSON = recipeRetriever.getRecipeOfTheDay();
             MealDBRecipe recipeOfTheDay = MealDBJSONParser.parseFirstRecipe(recipeOfTheDayJSON);
             recipeOfTheDayCard.setRecipe(recipeOfTheDay);
 

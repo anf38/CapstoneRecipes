@@ -46,6 +46,15 @@ public class RecipeRetriever {
         }
     }
 
+    public JSONObject getRecipeOfTheDay() {
+        return retrieveJSON("/recipeoftheday");
+    }
+
+    public Future<JSONObject> getRecipeOfTheDayAsync()
+    {
+        return asyncExecutor.submit(this::getRecipeOfTheDay);
+    }
+
     public JSONObject lookUp(int recipeID) {
         return retrieveJSON("/lookup?id=" + recipeID);
     }
