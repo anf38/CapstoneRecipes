@@ -43,6 +43,7 @@ out/
 .idea/caches/build_file_checksums.ser
 .idea/.name
 
+.idea/misc.xml
 .idea/caches
 .idea/navEditor.xml
 .idea/assetWizardSettings.xml
