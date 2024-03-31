@@ -1,16 +1,13 @@
 package com.example.pantrypal;
 
 import android.content.Intent;
-import android.content.om.FabricatedOverlay;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import com.example.pantrypal.apiTools.MealDBJSONParser;
 import com.example.pantrypal.apiTools.MealDBRecipe;
@@ -23,8 +20,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
@@ -45,7 +40,11 @@ public class MainActivity extends AppCompatActivity {
         nav.setSelectedItemId(R.id.homeIcon);
         //logoutBtn = findViewById(R.id.logoutIcon);
 
-// Get references to all the CardViews (new)
+        RecipeCard recipeOfTheDayCard = new RecipeCard(findViewById(R.id.recipeOfTheDay),
+                findViewById(R.id.recipeOfTheDayImage),
+                findViewById(R.id.recipeOfTheDayTitle));
+
+        // Get references to all the CardViews (new)
         newRecipeCards.add(new RecipeCard(findViewById(R.id.firstNewCard)));
         newRecipeCards.add(new RecipeCard(findViewById(R.id.secondNewCard)));
         newRecipeCards.add(new RecipeCard(findViewById(R.id.thirdNewCard)));
@@ -53,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         newRecipeCards.add(new RecipeCard(findViewById(R.id.fifthNewCard)));
         newRecipeCards.add(new RecipeCard(findViewById(R.id.sixthNewCard)));
 
+        // TODO: Use Firebase to recommend & get trending recipes
         recRecipeCards.add(new RecipeCard(findViewById(R.id.firstRecCard)));
         recRecipeCards.add(new RecipeCard(findViewById(R.id.secondRecCard)));
         recRecipeCards.add(new RecipeCard(findViewById(R.id.thirdRecCard)));
@@ -68,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
         trendRecipeCards.add(new RecipeCard(findViewById(R.id.sixthTrendCard)));
 
         new Thread(() -> {
+            // TODO: Replace with recipe of the day
+            JSONObject recipeOfTheDayJSON = recipeRetriever.randomRecipe(false);
+            MealDBRecipe recipeOfTheDay = MealDBJSONParser.parseFirstRecipe(recipeOfTheDayJSON);
+            recipeOfTheDayCard.setRecipe(recipeOfTheDay);
+
             JSONObject latestRecipesJSON = recipeRetriever.latestRecipes();
             List<MealDBRecipe> latestRecipes = MealDBJSONParser.parseRecipes(latestRecipesJSON);
             for (int i = 0; i < newRecipeCards.size() && i < latestRecipes.size(); ++i) {
@@ -85,31 +90,25 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < recRecipeCards.size() && i < moreRandomRecipes.size(); ++i) {
                 trendRecipeCards.get(i).setRecipe(moreRandomRecipes.get(i));
             }
+
+            runOnUiThread(() -> {
+                recipeOfTheDayCard.setOnClickListener(MainActivity.this);
+
+                for (RecipeCard newCard : newRecipeCards) {
+                    newCard.setOnClickListener(MainActivity.this);
+                }
+
+                for (RecipeCard recCard : recRecipeCards) {
+                    recCard.setOnClickListener(MainActivity.this);
+                }
+
+                for (RecipeCard trendCard : trendRecipeCards) {
+                    trendCard.setOnClickListener(MainActivity.this);
+                }
+            });
+
         }).start();
 
-// Create an OnClickListener for all CardViews
-        View.OnClickListener cardClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Perform action when any CardView is clicked, such as navigating to a new activity
-                Intent intent = new Intent(MainActivity.this, ViewRecipe.class);
-                startActivity(intent);
-                finish();
-            }
-        };
-
-// Set the same OnClickListener to all CardViews
-        for (RecipeCard card : newRecipeCards) {
-            card.setOnClickListener(cardClickListener);
-        }
-
-        for (RecipeCard card : recRecipeCards) {
-            card.setOnClickListener(cardClickListener);
-        }
-
-        for (RecipeCard card : trendRecipeCards) {
-            card.setOnClickListener(cardClickListener);
-        }
 // Set OnClickListener for other CardViews as needed
 
 

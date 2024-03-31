@@ -1,8 +1,10 @@
 package com.example.pantrypal;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.view.View;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,7 +14,7 @@ import androidx.cardview.widget.CardView;
 import com.example.pantrypal.apiTools.MealDBRecipe;
 import com.example.pantrypal.apiTools.RecipeRetriever;
 
-public class RecipeCard extends Activity {
+public class RecipeCard {
     private final CardView cardView;
     private final ImageView imageView;
     private final TextView textView;
@@ -20,29 +22,34 @@ public class RecipeCard extends Activity {
     private final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
 
     public RecipeCard(CardView cardView) {
+        this(cardView,
+                (ImageView) ((LinearLayout) cardView.getChildAt(0)).getChildAt(0),
+                (TextView) ((LinearLayout) cardView.getChildAt(0)).getChildAt(1));
+    }
+
+    public RecipeCard(CardView cardView, ImageView recipeImageView, TextView recipeNameView) {
         this.cardView = cardView;
-        imageView = (ImageView) ((LinearLayout) cardView.getChildAt(0)).getChildAt(0);
-        textView = (TextView) ((LinearLayout) cardView.getChildAt(0)).getChildAt(1);
+        this.imageView = recipeImageView;
+        this.textView = recipeNameView;
     }
 
     public void setRecipe(MealDBRecipe recipe) {
         this.recipe = recipe;
-        loadRecipe();
-    }
 
-    public void loadRecipe() {
-        if (recipe == null)
-            return;
         new Thread(() -> {
             Bitmap recipeImage = recipeRetriever.getRecipeImage(recipe.getId(), false);
-            runOnUiThread(() -> {
+            new Handler(Looper.getMainLooper()).post(() -> {
                 imageView.setImageBitmap(recipeImage);
                 textView.setText(recipe.getName());
             });
         }, "loadRecipeImage").start();
     }
 
-    public void setOnClickListener(View.OnClickListener onClickListener) {
-        cardView.setOnClickListener(onClickListener);
+    public void setOnClickListener(Context context) {
+        cardView.setOnClickListener(listener -> {
+            Intent intent = new Intent(context, ViewMealDBRecipe.class);
+            intent.putExtra("recipe", recipe);
+            context.startActivity(intent);
+        });
     }
 }

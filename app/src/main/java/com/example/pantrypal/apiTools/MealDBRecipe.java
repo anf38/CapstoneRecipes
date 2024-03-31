@@ -1,10 +1,10 @@
 package com.example.pantrypal.apiTools;
 
-import android.util.Pair;
-
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
-public class MealDBRecipe {
+public class MealDBRecipe implements Serializable {
     private final int id;
     private final String name;
     private final String drinkAlternate;
@@ -14,7 +14,7 @@ public class MealDBRecipe {
     private final String imageURL;
     private final List<String> tags;
     private final String youtubeLink;
-    private final List<Pair<String, String>> ingredients;
+    private final List<Map.Entry<String, String>> ingredients;
 
     public MealDBRecipe(int id,
                         String name,
@@ -25,8 +25,7 @@ public class MealDBRecipe {
                         String imageURL,
                         List<String> tags,
                         String youtubeLink,
-                        List<Pair<String, String>> ingredients)
-    {
+                        List<Map.Entry<String, String>> ingredients) {
         this.id = id;
         this.name = name;
         this.drinkAlternate = drinkAlternate;
@@ -75,7 +74,7 @@ public class MealDBRecipe {
         return youtubeLink;
     }
 
-    public List<Pair<String, String>> getIngredients() {
+    public List<Map.Entry<String, String>> getIngredients() {
         return ingredients;
     }
 }

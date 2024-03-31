@@ -6,9 +6,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class MealDBJSONParser {
     public static List<MealDBRecipe> parseRecipes(JSONObject mealDBJSONObject) {
@@ -112,14 +114,13 @@ public class MealDBJSONParser {
     }
 
     private static MealDBRecipe parseRecipe(JSONObject recipe) {
-        List<Pair<String, String>> ingredients = new ArrayList<>();
+        List<Map.Entry<String, String>> ingredients = new ArrayList<>();
         for (int i = 1; i <= 20; ++i) {
             String ingredient = recipe.optString("strIngredient" + i);
             String measurement = recipe.optString("strMeasure" + i);
             if (!ingredient.isEmpty() && !ingredient.equals("null")
                     && !measurement.isEmpty() && !measurement.equals("null")) {
-                System.out.println("Adding ingredient: " + ingredient);
-                ingredients.add(Pair.create(ingredient, measurement));
+                ingredients.add(new AbstractMap.SimpleEntry<>(ingredient, measurement));
             }
         }
 

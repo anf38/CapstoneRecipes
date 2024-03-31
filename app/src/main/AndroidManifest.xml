@@ -46,6 +46,7 @@
         <activity
             android:name=".ViewRecipe"
             android:exported="false" />
+        <activity android:name="com.example.pantrypal.ViewMealDBRecipe" />
 
     </application>
 
