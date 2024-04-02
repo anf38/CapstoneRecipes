@@ -10,9 +10,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/commentLayout"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="64dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,8 +20,9 @@
             android:padding="15dp">
 
             <TextView
+                android:id="@+id/recipeNameTextView"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/red"
                 android:padding="5dp"
                 android:text="Recipe Name"
@@ -37,12 +37,12 @@
                 android:layout_height="200dp"
                 android:layout_marginBottom="20dp"
                 android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 android:src="@drawable/placeholder_image" />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/light_red"
                 android:padding="5dp"
                 android:text="Ingredients"
@@ -51,11 +51,13 @@
                 android:textSize="25sp" />
 
             <TextView
+                android:id="@+id/ingredientsTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/pale_yellow"
                 android:padding="5dp"
                 android:text="Ingredients"
+                android:textColor="@color/black"
                 android:textSize="20sp" />
             <TextView
                 android:layout_width="match_parent"
@@ -63,7 +65,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/light_red"
                 android:padding="5dp"
                 android:text="Instructions"
@@ -72,6 +74,7 @@
                 android:textSize="25sp" />
 
             <TextView
+                android:id="@+id/instructionsTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/pale_yellow"
@@ -86,7 +89,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/light_red"
                 android:padding="5dp"
                 android:text="Comments"
@@ -122,35 +125,18 @@
                     android:text="POST"
                     android:textColor="@color/black" />
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/pale_yellow"
-                android:padding="5dp"
-                android:text="Comments"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
         </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout
-        android:id="@+id/commentLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-    </RelativeLayout>
     <!-- Bottom Navigation View -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="2dp"
         android:background="@drawable/navbar_background"
         app:itemIconTint="@drawable/selector"
         app:itemTextColor="@drawable/selector"
         app:menu="@menu/nav_menu" />
+
 </RelativeLayout>

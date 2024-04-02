@@ -1,31 +1,33 @@
 package com.example.pantrypal;
 
-import android.net.Uri;
-import android.widget.Button;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
-import androidx.annotation.NonNull;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class NewRecipe extends AppCompatActivity {
-    TextInputEditText recipeName, recipeIngredients, recipeInstructions;
-    Button cancelRecipeButton, createRecipeButton, addTagsButton;
-    FirebaseFirestore firestore;
-    DatabaseReference databaseReference;
-    CreateRecipe createRecipe;
-    ProgressBar progressBar;
+    private TextInputEditText recipeName, recipeIngredients, recipeInstructions;
+    private Button cancelRecipeButton, createRecipeButton, addTagsButton;
+    private FirebaseFirestore firestore;
+    private DatabaseReference databaseReference;
+    private CreateRecipe createRecipe;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class NewRecipe extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
                 finish();
             }
@@ -71,6 +74,12 @@ public class NewRecipe extends AppCompatActivity {
                 String name = createRecipe.getName();
                 String[] ingredients = createRecipe.getIngredients();
                 String[] instructions = createRecipe.getInstructions();
+
+                if (name.isEmpty() || ingredients[0].isEmpty() || instructions[0].isEmpty()) {
+                    Toast.makeText(NewRecipe.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    return;
+                }
 
                 Map<String, Object> recipe = new HashMap<>();
                 recipe.put("Name", name);

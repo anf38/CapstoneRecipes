@@ -1,6 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/yellow"
+    tools:context=".IngredientsSearch">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:id="@+id/etIngredientInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter ingredient"
+        android:layout_margin="16dp"/>
+
+    <Button
+        android:id="@+id/btnAddIngredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etIngredientInput"
+        android:layout_alignParentEnd="true"
+        android:text="Add Ingredient"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"/>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:background="@color/pale_yellow"
+        android:layout_marginHorizontal="5dp"
+        android:layout_below="@id/btnAddIngredient"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/black"
+        android:dividerHeight="8dp"
+        android:divider="@color/yellow"
+        />
+
+    <TextView
+        android:id="@+id/tv_emptyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="No Results"
+        android:textSize="20sp"
+        android:visibility="gone"
+        android:background="@color/white"/>
+
+</RelativeLayout>

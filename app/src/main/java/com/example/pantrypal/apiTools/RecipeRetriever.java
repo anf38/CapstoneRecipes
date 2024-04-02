@@ -45,6 +45,14 @@ public class RecipeRetriever {
         }
     }
 
+    public JSONObject getRecipeOfTheDay() {
+        return retrieveJSON("/recipeoftheday");
+    }
+
+    public Future<JSONObject> getRecipeOfTheDayAsync() {
+        return asyncExecutor.submit(this::getRecipeOfTheDay);
+    }
+
     public JSONObject lookUp(int recipeID) {
         return retrieveJSON("/lookup?id=" + recipeID);
     }
@@ -164,8 +172,36 @@ public class RecipeRetriever {
         return retrieveImage("/mealimage?id=" + recipeID + smallRequest);
     }
 
+    public Bitmap getRecipeImage(String imageURL, boolean small) {
+        Bitmap image = null;
+
+        if (small)
+            imageURL += "/preview";
+
+        try {
+            URL url = new URL(imageURL);
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            InputStream imageStream = new BufferedInputStream(connection.getInputStream());
+
+            image = BitmapFactory.decodeStream(imageStream);
+        } catch (IOException e) {
+            if (small) {
+                Log.w("Small Image", "Failed to find small image. Attempting to find large image");
+                return getRecipeImage(imageURL, false);
+            }
+
+            Log.e("Retrieve Image with URL", e.getMessage());
+        }
+
+        return image;
+    }
+
     public Future<Bitmap> getRecipeImageAsync(int recipeID, boolean small) {
         return asyncExecutor.submit(() -> getRecipeImage(recipeID, small));
+    }
+
+    public Future<Bitmap> getRecipeImageAsync(String imageURL, boolean small) {
+        return asyncExecutor.submit(() -> getRecipeImage(imageURL, small));
     }
 
     public Bitmap getIngredientImage(String ingredientName, boolean small) {
@@ -220,7 +256,6 @@ public class RecipeRetriever {
             image = BitmapFactory.decodeStream(imageStream);
         } catch (IOException e) {
             Log.e("Retrieve Image", e.getMessage());
-            e.printStackTrace();
         }
 
         return image;

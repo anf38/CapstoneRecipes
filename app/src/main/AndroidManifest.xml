@@ -34,16 +34,19 @@
             android:exported="false" />
         <activity
             android:name=".Search"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.PantryPal2"/>
         <activity
             android:name=".Favorites"
             android:exported="false" />
         <activity
             android:name=".IngredientsSearch"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.PantryPal2"/>
         <activity
             android:name=".ViewRecipe"
             android:exported="false" />
+        <activity android:name="com.example.pantrypal.ViewMealDBRecipe" />
         <activity
             android:name=".Home"
             android:exported="false" />
