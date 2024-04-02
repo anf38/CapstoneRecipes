@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,12 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Search extends AppCompatActivity {
-
-    FirebaseFirestore fStore;
-    ListView listView;
-    ArrayAdapter<String> arrayAdapter;
-    List<String> recipeNames = new ArrayList<>();
-    List<String> recipeIds = new ArrayList<>(); // To store recipe document IDs
+    private FirebaseFirestore fStore;
+    private ListView listView;
+    private ArrayAdapter<String> arrayAdapter;
+    private List<String> recipeNames = new ArrayList<>();
+    private List<String> recipeIds = new ArrayList<>(); // To store recipe document IDs
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

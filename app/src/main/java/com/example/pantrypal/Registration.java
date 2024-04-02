@@ -1,9 +1,5 @@
 package com.example.pantrypal;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,6 +14,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -31,13 +30,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Registration extends AppCompatActivity {
-    TextInputEditText editTextUsername, editTextEmail, editTextPassword, editTextConfirmPassword;
-    TextView usernameError, emailError, passwordError;
-    Button buttonReg;
-    FirebaseAuth mAuth;
-    ProgressBar progressBar;
-    TextView textView;
-    CheckBox mCheckBox;
+    private TextInputEditText editTextUsername, editTextEmail, editTextPassword, editTextConfirmPassword;
+    private TextView usernameError, emailError, passwordError;
+    private Button buttonReg;
+    private FirebaseAuth mAuth;
+    private ProgressBar progressBar;
+    private TextView textView;
+    private CheckBox mCheckBox;
 
     @Override
     public void onStart() { //if the user is already logged in, then it will bring them to the main page
@@ -49,7 +48,6 @@ public class Registration extends AppCompatActivity {
             finish();
         }
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +118,7 @@ public class Registration extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
-                String username,email, password, confirmPassword;
+                String username, email, password, confirmPassword;
                 username = String.valueOf(editTextUsername.getText());
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText()); //same as -> password = editTextPassword.getText().toString();

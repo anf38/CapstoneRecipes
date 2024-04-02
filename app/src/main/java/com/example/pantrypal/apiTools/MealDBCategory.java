@@ -9,8 +9,7 @@ public class MealDBCategory {
     public MealDBCategory(int id,
                           String name,
                           String imageURL,
-                          String description)
-    {
+                          String description) {
         this.id = id;
         this.name = name;
         this.imageURL = imageURL;

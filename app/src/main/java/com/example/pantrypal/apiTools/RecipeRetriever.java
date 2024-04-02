@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -50,8 +49,7 @@ public class RecipeRetriever {
         return retrieveJSON("/recipeoftheday");
     }
 
-    public Future<JSONObject> getRecipeOfTheDayAsync()
-    {
+    public Future<JSONObject> getRecipeOfTheDayAsync() {
         return asyncExecutor.submit(this::getRecipeOfTheDay);
     }
 

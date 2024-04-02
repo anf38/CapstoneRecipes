@@ -1,23 +1,25 @@
 package com.example.pantrypal;
 
 import android.net.Uri;
-public class CreateRecipe {
-    String name;
-    String[] ingredients;
-    String[] instructions;
-    Uri picture;
 
-    CreateRecipe(){
+public class CreateRecipe {
+    private String name;
+    private String[] ingredients;
+    private String[] instructions;
+    private Uri picture;
+
+    CreateRecipe() {
         name = "";
         ingredients = new String[]{};
         instructions = new String[]{};
     }
 
-    public CreateRecipe(String name, String[] ingredients, String[] instructions){
+    public CreateRecipe(String name, String[] ingredients, String[] instructions) {
         this.name = name;
         this.ingredients = ingredients;
         this.instructions = instructions;
     }
+
     public String getName() {
         return name;
     }

@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    FirebaseAuth auth;
-    ImageButton logoutBtn;
-    BottomNavigationView nav;
+    private FirebaseAuth auth;
+    private ImageButton logoutBtn;
+    private BottomNavigationView nav;
 
     private final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
     private final List<RecipeCard> newRecipeCards = new ArrayList<>();

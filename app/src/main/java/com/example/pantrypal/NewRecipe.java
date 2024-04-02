@@ -1,31 +1,33 @@
 package com.example.pantrypal;
 
-import android.net.Uri;
-import android.widget.Button;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
-import androidx.annotation.NonNull;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class NewRecipe extends AppCompatActivity {
-    TextInputEditText recipeName, recipeIngredients, recipeInstructions;
-    Button cancelRecipeButton, createRecipeButton, addTagsButton;
-    FirebaseFirestore firestore;
-    DatabaseReference databaseReference;
-    CreateRecipe createRecipe;
-    ProgressBar progressBar;
+    private TextInputEditText recipeName, recipeIngredients, recipeInstructions;
+    private Button cancelRecipeButton, createRecipeButton, addTagsButton;
+    private FirebaseFirestore firestore;
+    private DatabaseReference databaseReference;
+    private CreateRecipe createRecipe;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

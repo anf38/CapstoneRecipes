@@ -24,10 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientsSearch extends AppCompatActivity {
-    FirebaseFirestore fStore;
-    ListView listView;
-    ArrayAdapter<String> arrayAdapter;
-    List<String> recipeNames = new ArrayList<>();
+    private FirebaseFirestore fStore;
+    private ListView listView;
+    private ArrayAdapter<String> arrayAdapter;
+    private List<String> recipeNames = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,7 @@ public class IngredientsSearch extends AppCompatActivity {
 
         fetchRecipesFromFirestore();
     }
+
     private void fetchRecipesFromFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("recipes").get()
@@ -86,7 +87,6 @@ public class IngredientsSearch extends AppCompatActivity {
                     }
                 });
     }
-
 
 
     @Override

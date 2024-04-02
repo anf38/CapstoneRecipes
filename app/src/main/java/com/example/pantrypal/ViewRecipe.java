@@ -3,8 +3,8 @@ package com.example.pantrypal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,16 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 public class ViewRecipe extends AppCompatActivity {
-
     private FirebaseFirestore db;
     private TextView recipeNameTextView;
     private TextView ingredientsTextView;
@@ -42,7 +40,8 @@ public class ViewRecipe extends AppCompatActivity {
                 if (itemId == R.id.homeIcon) {
                     Intent intent = new Intent(ViewRecipe.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(intent);                    finish();
+                    startActivity(intent);
+                    finish();
                     return true;
                 } else if (itemId == R.id.searchIcon) {
                     startActivity(new Intent(ViewRecipe.this, Search.class));
