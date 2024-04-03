@@ -50,6 +50,9 @@
         <activity
             android:name=".Home"
             android:exported="false" />
+        <activity
+            android:name=".addTagsPage"
+            android:exported="false" />
 
     </application>
 

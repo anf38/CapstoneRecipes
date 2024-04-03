@@ -2,8 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#F6C28A"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F6C28A">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,13 +15,13 @@
         <TextView
             android:id="@+id/newTrip"
             android:layout_width="match_parent"
-            android:textAlignment="center"
             android:layout_height="wrap_content"
-            android:text="Recipe Submission"
+            android:background="@color/red"
             android:padding="5dp"
-            android:textSize="25sp"
+            android:text="Recipe Submission"
+            android:textAlignment="center"
             android:textColor="@color/white"
-            android:background="@color/red" />
+            android:textSize="25sp" />
 
 
         <!-- ImageView to display the selected image -->
@@ -42,19 +42,20 @@
             android:id="@+id/selectImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select Image"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:text="Select Image" />
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="60dp">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/recipeName"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:hint="recipe Name"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:hint="Ingredients"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,14 +82,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:hint="Instructions"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,14 +102,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:text="Add Tags" />
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="50dp" >
-                <!--tags would get put here when the user selects them
-                the button should take them to the tags page where it gets
-                put here after getting selected-->
 
-            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/tagsBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingLeft="3dp"
+                android:paddingTop="10dp"
+                android:text="Tags here"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -140,9 +146,6 @@
                 android:text="Create" />
 
         </LinearLayout>
-
-
-
 
     </LinearLayout>
 

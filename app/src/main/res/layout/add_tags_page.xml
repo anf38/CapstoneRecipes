@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/yellow">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -18,36 +19,44 @@
             <TextView
                 android:id="@+id/RecipeTags"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:background="@color/purple_500"
+                android:paddingVertical="10dp"
+                android:background="@color/red"
                 android:padding="5dp"
                 android:text="Recipe Tags"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                android:textStyle="bold"/>
 
             <!-- Beginning of tags -->
 
             <TextView
                 android:id="@+id/tagDifficulty"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:gravity="center"
-                android:hint="Difficulty"
-                android:orientation="vertical"
-                android:textSize="25sp" />
+                android:layout_height="wrap_content"
+                android:background="@color/red"
+                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Difficulty"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/white">
 
                 <CheckBox
                     android:id="@+id/beginnerTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Beginner" />
 
@@ -55,6 +64,7 @@
                     android:id="@+id/easyTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Easy" />
 
@@ -62,6 +72,7 @@
                     android:id="@+id/moderateTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Moderate" />
 
@@ -71,12 +82,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:layout_marginBottom="20dp">
 
                 <CheckBox
                     android:id="@+id/AdvancedTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Advanced" />
 
@@ -84,6 +98,7 @@
                     android:id="@+id/hardTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Hard" />
 
@@ -91,6 +106,7 @@
                     android:id="@+id/expertTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Expert" />
             </LinearLayout>
@@ -98,29 +114,36 @@
             <TextView
                 android:id="@+id/tagFlavor"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:gravity="center"
-                android:hint="Flavor"
-                android:orientation="vertical"
-                android:textSize="25sp" />
+                android:layout_height="wrap_content"
+                android:background="@color/red"
+                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Flavor"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/white">
 
                 <CheckBox
-                    android:id="@+id/sweetFlavor"
+                    android:id="@+id/sweetTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Sweet" />
 
                 <CheckBox
-                    android:id="@+id/sourFlavor"
+                    android:id="@+id/sourTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Sour" />
 
@@ -128,6 +151,7 @@
                     android:id="@+id/savoryTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Savory" />
 
@@ -137,12 +161,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:layout_marginBottom="20dp">
 
                 <CheckBox
                     android:id="@+id/saltyTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Salty" />
 
@@ -150,6 +177,7 @@
                     android:id="@+id/bitterTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Bitter" />
 
@@ -157,6 +185,7 @@
                     android:id="@+id/umamiTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Umami" />
             </LinearLayout>
@@ -164,22 +193,28 @@
             <TextView
                 android:id="@+id/tagType"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:gravity="center"
-                android:hint="Type"
-                android:orientation="vertical"
-                android:textSize="25sp" />
+                android:layout_height="wrap_content"
+                android:background="@color/red"
+                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Type"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/white">
 
                 <CheckBox
                     android:id="@+id/drinkTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Drink" />
 
@@ -187,6 +222,7 @@
                     android:id="@+id/snackTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Snack" />
 
@@ -194,6 +230,7 @@
                     android:id="@+id/breakfastTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Breakfast" />
 
@@ -203,12 +240,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:layout_marginBottom="20dp">
 
-                <CheckBox
+
+            <CheckBox
                     android:id="@+id/lunchTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Lunch" />
 
@@ -216,6 +257,7 @@
                     android:id="@+id/dinnerTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Dinner" />
 
@@ -223,6 +265,7 @@
                     android:id="@+id/dessertTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Dessert" />
             </LinearLayout>
@@ -230,22 +273,28 @@
             <TextView
                 android:id="@+id/tagMeat"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:gravity="center"
-                android:hint="Meat"
-                android:orientation="vertical"
-                android:textSize="25sp" />
+                android:layout_height="wrap_content"
+                android:background="@color/red"
+                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Meat"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/white">
 
                 <CheckBox
                     android:id="@+id/beefTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Beef" />
 
@@ -253,6 +302,7 @@
                     android:id="@+id/porkTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Pork" />
 
@@ -260,6 +310,7 @@
                     android:id="@+id/chickenTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Chicken" />
 
@@ -269,12 +320,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/white">
 
                 <CheckBox
                     android:id="@+id/turkeyTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Turkey" />
 
@@ -282,6 +335,7 @@
                     android:id="@+id/duckTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Duck" />
 
@@ -289,6 +343,7 @@
                     android:id="@+id/poultryTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Poultry" />
             </LinearLayout>
@@ -297,12 +352,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/white">
 
                 <CheckBox
                     android:id="@+id/fishTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Fish" />
 
@@ -310,6 +367,7 @@
                     android:id="@+id/lambTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Lamb" />
 
@@ -317,6 +375,7 @@
                     android:id="@+id/rabbitTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Rabbit" />
             </LinearLayout>
@@ -325,12 +384,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/white">
 
                 <CheckBox
                     android:id="@+id/shellfishTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Shellfish" />
 
@@ -338,6 +399,7 @@
                     android:id="@+id/vegetarianTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Vegetarian" />
 
@@ -345,40 +407,43 @@
                     android:id="@+id/veganTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:text="Vegan" />
             </LinearLayout>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="109dp"
+                android:layout_height="wrap_content"
                 android:gravity="bottom"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
 
                 <Button
                     android:id="@+id/cancelRecipeButton"
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxWidth="40dp"
                     android:text="Cancel" />
 
-                <TextView
-                    android:layout_width="175dp"
-                    android:layout_height="40dp"
-                    android:background="@color/white"
-                    android:padding="5dp"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="25sp" />
+                <ProgressBar
+                    android:id="@+id/progressBarSub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:visibility="invisible" />
 
                 <Button
                     android:id="@+id/createRecipeButton"
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    android:maxWidth="40dp"
                     android:text="Add" />
 
             </LinearLayout>
+
 
         </LinearLayout>
 
