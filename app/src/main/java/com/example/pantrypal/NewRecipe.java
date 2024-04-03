@@ -36,9 +36,9 @@ public class NewRecipe extends AppCompatActivity {
     private TextView tagsBox;
     private String author;
 
-    String name = "";
-    String[] ingredients = {};
-    String[] instructions = {};
+    private String name = "";
+    private String[] ingredients = {};
+    private String[] instructions = {};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +100,7 @@ public class NewRecipe extends AppCompatActivity {
         addTagsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), addTagsPage.class);
+                Intent intent = new Intent(getApplicationContext(), AddTags.class);
                 // Assuming recipeName, recipeIngredients, and recipeInstructions are EditText views
                 name = recipeName.getText().toString();
                 String ingredientsText = recipeIngredients.getText().toString();

@@ -51,7 +51,7 @@
             android:name=".Home"
             android:exported="false" />
         <activity
-            android:name=".addTagsPage"
+            android:name=".AddTags"
             android:exported="false" />
 
     </application>

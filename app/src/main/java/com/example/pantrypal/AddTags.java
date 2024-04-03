@@ -11,12 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class addTagsPage extends AppCompatActivity {
+public class AddTags extends AppCompatActivity {
 
     private ArrayList<CheckBox> checkBoxes = new ArrayList<>();
     private ArrayList<String> checkedTags = new ArrayList<>();
 
-    String name = "", ingredients = "", instructions = "";
+    private String name = "", ingredients = "", instructions = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +106,7 @@ public class addTagsPage extends AppCompatActivity {
                 }
 
 
-                Intent intent = new Intent(addTagsPage.this, NewRecipe.class);
+                Intent intent = new Intent(AddTags.this, NewRecipe.class);
                 intent.putExtra("name", name);
                 intent.putExtra("instructions", getIntent().getStringArrayExtra("instructions"));
                 intent.putExtra("ingredients", getIntent().getStringArrayExtra("ingredients"));

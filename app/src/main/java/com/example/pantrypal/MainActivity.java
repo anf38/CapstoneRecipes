@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 } else if (itemId == R.id.favoriteIcon) {
                     Toast.makeText(MainActivity.this, "Favorite", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(MainActivity.this, Login.class));
+                    startActivity(new Intent(MainActivity.this, Favorites.class));
                     return true;
                 } else if (itemId == R.id.submissionIcon) {
                     startActivity(new Intent(MainActivity.this, NewRecipe.class));

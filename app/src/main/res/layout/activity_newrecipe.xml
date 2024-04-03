@@ -110,7 +110,7 @@
                 android:layout_gravity="center_horizontal"
                 android:paddingLeft="3dp"
                 android:paddingTop="10dp"
-                android:text="Tags here"
+                android:text=" "
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
