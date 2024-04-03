@@ -1,6 +1,7 @@
 package com.example.pantrypal;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
     private TextView ingredientsTextView;
     private TextView instructionsTextView;
     private Button backButton;
+    private ToggleButton favoriteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,8 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         ingredientsTextView = findViewById(R.id.ingredientsTextView);
         instructionsTextView = findViewById(R.id.instructionsTextView);
         backButton = findViewById(R.id.backButton);
+        favoriteButton = findViewById(R.id.favoriteButton);
+
         
         recipeNameTextView.setText(recipe.getName());
         ingredientsTextView.setText(formatIngredientsList(recipe.getIngredients()));

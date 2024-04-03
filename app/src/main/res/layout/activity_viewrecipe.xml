@@ -142,5 +142,18 @@
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
+    <ToggleButton
+        android:id="@+id/favoriteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="240dp"
+        android:layout_marginBottom="13dp"
+        android:background="@color/red"
+        android:textColor="@android:color/black"
+        android:textOff="Add to Favorite"
+        android:textOn="Remove Favorite"
+        android:textSize="18sp" />
+
 
 </RelativeLayout>

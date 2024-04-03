@@ -37,8 +37,9 @@ public class ViewRecipe extends AppCompatActivity {
         instructionsTextView = findViewById(R.id.instructionsTextView);
         backButton = findViewById(R.id.backButton);
 
-        // Set onClickListener for backButton to finish current activity and go back to previous
 
+
+        // Set onClickListener for backButton to finish current activity and go back to previous
 
            backButton.setOnClickListener(new View.OnClickListener()
 
