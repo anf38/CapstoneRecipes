@@ -179,46 +179,43 @@ public class Registration extends AppCompatActivity {
                     return;
                 }
 
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressBar.setVisibility(View.GONE);
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            String uid = user.getUid();
+                            String username = editTextUsername.getText().toString();
+
+                            // Get reference to Firestore instance
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                            // Reference to the "Users" collection in Firestore
+                            DocumentReference userRef = db.collection("Users").document(uid);
+
+                            // Create a map to hold the user data
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("username", username);
+                            Toast.makeText(Registration.this, "Authentication created.", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(Registration.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+
+                            emailError.setVisibility(View.GONE);
+                            passwordError.setText(null);
+                            if (!task.isSuccessful()) {
+                                emailError.setVisibility(View.VISIBLE);
+                                emailError.setText("Invalid email/email is already taken");
                                 progressBar.setVisibility(View.GONE);
-                                if (task.isSuccessful()) {
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    String uid = user.getUid();
-                                    String username = editTextUsername.getText().toString();
 
-                                    // Get reference to Firestore instance
-                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-                                    // Reference to the "Users" collection in Firestore
-                                    DocumentReference userRef = db.collection("Users").document(uid);
-
-                                    // Create a map to hold the user data
-                                    Map<String, Object> userData = new HashMap<>();
-                                    userData.put("username", username);
-                                    Toast.makeText(Registration.this, "Authentication created.",
-                                            Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(Registration.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-
-                                    emailError.setVisibility(View.GONE);
-                                    passwordError.setText(null);
-                                    if (!task.isSuccessful()) {
-                                        emailError.setVisibility(View.VISIBLE);
-                                        emailError.setText("Invalid email/email is already taken");
-                                        progressBar.setVisibility(View.GONE);
-
-                                    }
-                                }
                             }
-                        });
+                        }
+                    }
+                });
             }
         });
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { //shows the password if checkboxed

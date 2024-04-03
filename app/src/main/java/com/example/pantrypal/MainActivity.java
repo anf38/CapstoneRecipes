@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, NewRecipe.class));
                     return true;
                 } else if (itemId == R.id.ingredientsIcon) {
-                    Toast.makeText(MainActivity.this, "Ingredients", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(MainActivity.this, IngredientsSearch.class));
                     return true;
                 }
