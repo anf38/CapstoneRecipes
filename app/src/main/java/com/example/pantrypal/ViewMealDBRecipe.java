@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +27,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
     private TextView recipeNameTextView;
     private TextView ingredientsTextView;
     private TextView instructionsTextView;
+    private Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,51 +40,26 @@ public class ViewMealDBRecipe extends AppCompatActivity {
             runOnUiThread(() -> recipeImageView.setImageBitmap(recipeImage));
         }).start();
 
-        // Initialize and set up the bottom navigation view
-        BottomNavigationView bottomNavView = findViewById(R.id.nav);
-        bottomNavView.setSelectedItemId(R.id.homeIcon); // Set the default selected item
-        bottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.homeIcon) {
-                    Intent intent = new Intent(ViewMealDBRecipe.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(intent);
-                    finish();
-                    return true;
-                } else if (itemId == R.id.searchIcon) {
-                    startActivity(new Intent(ViewMealDBRecipe.this, Search.class));
-                    finish();
-                    return true;
-                } else if (itemId == R.id.favoriteIcon) {
-                    Toast.makeText(ViewMealDBRecipe.this, "Favorite", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(ViewMealDBRecipe.this, Favorites.class));
-                    finish();
-                    return true;
-                } else if (itemId == R.id.submissionIcon) {
-                    startActivity(new Intent(ViewMealDBRecipe.this, NewRecipe.class));
-                    finish();
-                    return true;
-                } else if (itemId == R.id.ingredientsIcon) {
-                    Toast.makeText(ViewMealDBRecipe.this, "Ingredients", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(ViewMealDBRecipe.this, IngredientsSearch.class));
-                    finish();
-                    return true;
-                }
-                return false;
-            }
-        });
-
         // Initialize UI components
         recipeImageView = findViewById(R.id.imageView);
         recipeNameTextView = findViewById(R.id.recipeNameTextView);
         ingredientsTextView = findViewById(R.id.ingredientsTextView);
         instructionsTextView = findViewById(R.id.instructionsTextView);
-
+        backButton = findViewById(R.id.backButton);
+        
         recipeNameTextView.setText(recipe.getName());
         ingredientsTextView.setText(formatIngredientsList(recipe.getIngredients()));
         instructionsTextView.setText(formatList(recipe.getInstructionLines()));
+
+
+        // Set onClickListener for backButton to finish current activity and go back to previous
+
+            backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish(); // Close the current activity and return to the previous one
+                }
+            });
     }
 
     @Override
