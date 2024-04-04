@@ -133,26 +133,29 @@
     <Button
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="11dp"
-        android:background="#F6C28A"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:layout_gravity="center"
+        android:textColor="@android:color/white"
         android:text="Back"
-        android:textColor="@android:color/black"
+        android:paddingHorizontal="10dp"
         android:textSize="18sp" />
 
     <ToggleButton
         android:id="@+id/favoriteButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="240dp"
-        android:layout_marginBottom="13dp"
-        android:background="@color/red"
-        android:textColor="@android:color/black"
-        android:textOff="Add to Favorite"
-        android:textOn="Remove Favorite"
+        android:layout_alignParentRight="true"
+        android:paddingHorizontal="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@android:color/white"
+        android:textOff="Favorite"
+        android:textOn="UnFavorite"
+        android:background="@drawable/rounded"
         android:textSize="18sp" />
 
 

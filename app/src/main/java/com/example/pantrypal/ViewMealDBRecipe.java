@@ -51,10 +51,11 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         favoriteButton = findViewById(R.id.favoriteButton);
 
-        
+
         recipeNameTextView.setText(recipe.getName());
         ingredientsTextView.setText(formatIngredientsList(recipe.getIngredients()));
         instructionsTextView.setText(formatList(recipe.getInstructionLines()));
+
 
 
         // Set onClickListener for backButton to finish current activity and go back to previous
