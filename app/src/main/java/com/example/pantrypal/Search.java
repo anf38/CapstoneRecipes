@@ -36,7 +36,7 @@ public class Search extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
 
         listView = findViewById(R.id.listView);
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, recipeNames);
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item_recipe, R.id.textViewRecipeName, recipeNames);
         listView.setAdapter(arrayAdapter);
 
         fetchRecipesFromFirestore();

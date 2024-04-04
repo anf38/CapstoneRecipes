@@ -41,8 +41,7 @@
             android:exported="false" />
         <activity
             android:name=".IngredientsSearch"
-            android:exported="false"
-            android:theme="@style/Theme.PantryPal2"/>
+            android:exported="false"/>
         <activity
             android:name=".ViewRecipe"
             android:exported="false" />
