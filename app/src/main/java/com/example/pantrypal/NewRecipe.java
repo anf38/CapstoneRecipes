@@ -1,6 +1,8 @@
 package com.example.pantrypal;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.widget.ImageView;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,8 +11,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,23 +33,28 @@ import java.util.Map;
 
 public class NewRecipe extends AppCompatActivity {
     private TextInputEditText recipeName, recipeIngredients, recipeInstructions;
-    private Button cancelRecipeButton, createRecipeButton, addTagsButton;
+    private Button cancelRecipeButton, createRecipeButton, addTagsButton, selectImageButton;
     private FirebaseFirestore firestore;
     private DatabaseReference databaseReference;
     private CreateRecipe createRecipe;
     private ProgressBar progressBar;
     private TextView tagsBox;
     private String author;
+    private ImageView imageView;
+    private Uri imageUri;
 
     private String name = "";
     private String[] ingredients = {};
     private String[] instructions = {};
+
+    private ActivityResultLauncher<String> imagePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newrecipe);
         firestore = FirebaseFirestore.getInstance();
+        databaseReference = databaseReference.getRef();
         recipeName = findViewById(R.id.recipeName);
         recipeIngredients = findViewById(R.id.recipeIngredients);
         recipeInstructions = findViewById(R.id.recipeInstructions);
@@ -53,6 +63,8 @@ public class NewRecipe extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBarSub);
         addTagsButton = findViewById(R.id.addTagsButton);
         tagsBox = findViewById(R.id.tagsBox);
+        imageView = findViewById(R.id.imageView);
+        selectImageButton = findViewById(R.id.selectImageButton);
 
         createRecipe = new CreateRecipe();
 
@@ -162,5 +174,25 @@ public class NewRecipe extends AppCompatActivity {
             }
         });
 
+        selectImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagePickerLauncher.launch("image/*");
+            }
+        });
+
+        imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri result) {
+                        if (result != null) {
+                            imageUri = result;
+                            imageView.setImageURI(imageUri);
+                        }
+                    }
+                });
+
     }
+
+
 }
