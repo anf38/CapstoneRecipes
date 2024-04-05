@@ -12,10 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,6 +25,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +35,10 @@ import java.util.Map;
 
 public class NewRecipe extends AppCompatActivity {
     private TextInputEditText recipeName, recipeIngredients, recipeInstructions;
-    private Button cancelRecipeButton, createRecipeButton, addTagsButton, selectImageButton;
+    private Button cancelRecipeButton;
+    private Button createRecipeButton;
+    private Button addTagsButton;
+    private Button selectImageButton;
     private FirebaseFirestore firestore;
     private DatabaseReference databaseReference;
     private CreateRecipe createRecipe;
@@ -42,10 +47,10 @@ public class NewRecipe extends AppCompatActivity {
     private String author;
     private ImageView imageView;
     private Uri imageUri;
-
     private String name = "";
     private String[] ingredients = {};
     private String[] instructions = {};
+    private StorageReference storageReference;
 
     private ActivityResultLauncher<String> imagePickerLauncher;
 
@@ -54,7 +59,7 @@ public class NewRecipe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newrecipe);
         firestore = FirebaseFirestore.getInstance();
-        databaseReference = databaseReference.getRef();
+        storageReference = FirebaseStorage.getInstance().getReference("recipe_image");
         recipeName = findViewById(R.id.recipeName);
         recipeIngredients = findViewById(R.id.recipeIngredients);
         recipeInstructions = findViewById(R.id.recipeInstructions);
@@ -128,6 +133,23 @@ public class NewRecipe extends AppCompatActivity {
             }
         });
 
+        selectImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagePickerLauncher.launch("image/*");
+            }
+        });
+
+        imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+            @Override
+            public void onActivityResult(Uri result) {
+                if (result != null) {
+                    imageUri = result;
+                    imageView.setImageURI(imageUri);
+                }
+            }
+        });
+
         createRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,52 +169,59 @@ public class NewRecipe extends AppCompatActivity {
                     return;
                 }
 
-                Map<String, Object> recipe = new HashMap<>();
-                recipe.put("Name", name);
-                recipe.put("Ingredients", Arrays.asList(ingredients));
-                recipe.put("Instructions", Arrays.asList(instructions));
-                recipe.put("Tags", tagsText);
-                recipe.put("Author", author);
-
-
-                firestore.collection("recipes").add(recipe).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(NewRecipe.this, "Recipe added successfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                        progressBar.setVisibility(View.INVISIBLE);
-                        finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(NewRecipe.this, "Failed to add recipe: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                // Continue with recipe creation including image upload if imageUri is not null
+                if (imageUri != null) {
+                    // Upload image to Firebase Storage and then create recipe in Firestore
+                    uploadImageAndCreateRecipe(name, ingredients, instructions, tagsText);
+                } else {
+                    // Create recipe in Firestore without image
+                    createRecipeInFirestore(name, ingredients, instructions, tagsText, null);
+                }
             }
         });
-
-        selectImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imagePickerLauncher.launch("image/*");
-            }
-        });
-
-        imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
-                    @Override
-                    public void onActivityResult(Uri result) {
-                        if (result != null) {
-                            imageUri = result;
-                            imageView.setImageURI(imageUri);
-                        }
-                    }
-                });
-
     }
 
+    private void uploadImageAndCreateRecipe(String name, String[] ingredients, String[] instructions, String tagsText) {
+        // Storage reference path where the image will be uploaded
+        String storagePath = "recipe_images/" + System.currentTimeMillis() + ".jpg";
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference(storagePath);
 
+        // Upload image to Firebase Storage
+        storageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
+            // Image upload successful, get the download URL
+            storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                String imageUrl = uri.toString();
+                // Create recipe in Firestore with image URL
+                createRecipeInFirestore(name, ingredients, instructions, tagsText, imageUrl);
+            }).addOnFailureListener(e -> {
+                progressBar.setVisibility(View.INVISIBLE);
+                Toast.makeText(NewRecipe.this, "Failed to get image URL: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+        }).addOnFailureListener(e -> {
+            progressBar.setVisibility(View.INVISIBLE);
+            Toast.makeText(NewRecipe.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void createRecipeInFirestore(String name, String[] ingredients, String[] instructions, String tagsText, String imageUrl) {
+        Map<String, Object> recipe = new HashMap<>();
+        recipe.put("Name", name);
+        recipe.put("Ingredients", Arrays.asList(ingredients));
+        recipe.put("Instructions", Arrays.asList(instructions));
+        recipe.put("Tags", tagsText);
+        recipe.put("Author", author);
+        if (imageUrl != null) {
+            recipe.put("ImageUrl", imageUrl);
+        }
+
+        firestore.collection("recipes").add(recipe).addOnSuccessListener(documentReference -> {
+            Toast.makeText(NewRecipe.this, "Recipe added successfully", Toast.LENGTH_SHORT).show();
+            // Navigate to main activity or do something else
+            progressBar.setVisibility(View.INVISIBLE);
+            finish(); // Finish current activity if needed
+        }).addOnFailureListener(e -> {
+            progressBar.setVisibility(View.INVISIBLE);
+            Toast.makeText(NewRecipe.this, "Failed to add recipe: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
 }
