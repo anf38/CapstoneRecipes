@@ -50,7 +50,6 @@ public class NewRecipe extends AppCompatActivity {
     private String name = "";
     private String[] ingredients = {};
     private String[] instructions = {};
-    private StorageReference storageReference;
 
     private ActivityResultLauncher<String> imagePickerLauncher;
 
@@ -59,7 +58,6 @@ public class NewRecipe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newrecipe);
         firestore = FirebaseFirestore.getInstance();
-        storageReference = FirebaseStorage.getInstance().getReference("recipe_image");
         recipeName = findViewById(R.id.recipeName);
         recipeIngredients = findViewById(R.id.recipeIngredients);
         recipeInstructions = findViewById(R.id.recipeInstructions);
