@@ -1,10 +1,7 @@
 package com.example.pantrypal;
 
-import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,13 +9,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pantrypal.apiTools.MealDBRecipe;
 import com.example.pantrypal.apiTools.RecipeRetriever;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Transaction;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,10 @@ public class ViewMealDBRecipe extends AppCompatActivity {
     private TextView recipeNameTextView;
     private TextView ingredientsTextView;
     private TextView instructionsTextView;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private Button backButton;
+    private MealDBRecipe recipe;
     private ToggleButton favoriteButton;
 
     @Override
@@ -37,7 +39,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewrecipe);
 
-        MealDBRecipe recipe = (MealDBRecipe) getIntent().getSerializableExtra("recipe");
+        recipe = (MealDBRecipe) getIntent().getSerializableExtra("recipe");
         new Thread(() -> {
             Bitmap recipeImage = recipeRetriever.getRecipeImage(recipe.getImageURL(), false);
             runOnUiThread(() -> recipeImageView.setImageBitmap(recipeImage));
@@ -56,17 +58,58 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         ingredientsTextView.setText(formatIngredientsList(recipe.getIngredients()));
         instructionsTextView.setText(formatList(recipe.getInstructionLines()));
 
-
+        favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFavoriteStatus(recipe);
+            }
+        });
 
         // Set onClickListener for backButton to finish current activity and go back to previous
 
-            backButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish(); // Close the current activity and return to the previous one
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Close the current activity and return to the previous one
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Recheck the favorite status and update the UI
+        if (recipe != null) {
+            checkIfRecipeIsFavorite(recipe);
+        }
+    }
+
+    private void checkIfRecipeIsFavorite(MealDBRecipe recipe) {
+        if (currentUser != null) {
+            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipe.getName());
+
+            favoritesRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    boolean isFavorite = task.getResult().exists();
+                    if (isFavorite) {
+                        // If already in favorites, remove it
+                        removeRecipeFromFavorites(recipe);
+                        Toast.makeText(ViewMealDBRecipe.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // If not in favorites, add it
+                        addRecipeToFavorites(recipe);
+                        Toast.makeText(ViewMealDBRecipe.this, "Added to favorites", Toast.LENGTH_SHORT).show();
+                    }
+                    // Update UI based on whether recipe is favorite or not
+                    updateFavoriteButtonUI(isFavorite);
+                } else {
+                    // Handle errors
+                    Toast.makeText(ViewMealDBRecipe.this, "Error checking favorite status: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+        }
     }
+
 
     @Override
     protected void onDestroy() {
@@ -90,5 +133,70 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         }
 
         return ingredientQuantityList.toString();
+    }
+
+    private void toggleFavoriteStatus(MealDBRecipe recipe) {
+        // Check if the recipe is already in favorites
+        if (currentUser != null) {
+            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipe.getName());
+
+            favoritesRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    boolean isFavorite = task.getResult().exists();
+                    if (isFavorite) {
+                        // If already in favorites, remove it
+                        removeRecipeFromFavorites(recipe);
+                        Toast.makeText(ViewMealDBRecipe.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // If not in favorites, add it
+                        addRecipeToFavorites(recipe);
+                        Toast.makeText(ViewMealDBRecipe.this, "Added to favorites", Toast.LENGTH_SHORT).show();
+                    }
+                    // Update UI based on whether recipe is favorite or not
+                    updateFavoriteButtonUI(!isFavorite); // Invert favorite status
+                } else {
+                    // Handle errors
+                    Toast.makeText(ViewMealDBRecipe.this, "Error checking favorite status: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    // Method to update UI of favoriteButton based on favorite status
+    private void updateFavoriteButtonUI(boolean isFavorite) {
+        favoriteButton.setChecked(isFavorite);
+    }
+
+
+    private void addRecipeToFavorites(MealDBRecipe recipe) {
+        if (currentUser != null) {
+            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipe.getName());
+
+            db.runTransaction((Transaction.Function<Void>) transaction -> {
+                transaction.set(favoritesRef, recipe);
+                return null;
+            }).addOnSuccessListener(aVoid -> {
+                // Recipe added successfully
+                Toast.makeText(ViewMealDBRecipe.this, "Added to favorites", Toast.LENGTH_SHORT).show();
+            }).addOnFailureListener(e -> {
+                // Handle errors
+                Toast.makeText(ViewMealDBRecipe.this, "Error adding to favorites: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+        }
+    }
+
+
+    private void removeRecipeFromFavorites(MealDBRecipe recipe) {
+        if (currentUser != null) {
+            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipe.getName());
+
+            favoritesRef.delete().addOnSuccessListener(aVoid -> {
+                // Recipe removed successfully
+                Toast.makeText(ViewMealDBRecipe.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+            }).addOnFailureListener(e -> {
+                // Handle errors
+                Toast.makeText(ViewMealDBRecipe.this, "Error removing from favorites", Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 }
