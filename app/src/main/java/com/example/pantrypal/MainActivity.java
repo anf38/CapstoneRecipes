@@ -3,7 +3,9 @@ package com.example.pantrypal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,7 +25,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
-    private ImageButton logoutBtn;
+    private ImageView logoutBtn;
     private BottomNavigationView nav;
 
     private final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         nav = findViewById(R.id.nav);
         nav.setSelectedItemId(R.id.homeIcon);
-        //logoutBtn = findViewById(R.id.logoutIcon);
+        logoutBtn = findViewById(R.id.logoutBtn);
 
         RecipeCard recipeOfTheDayCard = new RecipeCard(findViewById(R.id.recipeOfTheDay),
                 findViewById(R.id.recipeOfTheDayImage),
@@ -111,15 +113,15 @@ public class MainActivity extends AppCompatActivity {
 // Set OnClickListener for other CardViews as needed
 
 
-//        logoutBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FirebaseAuth.getInstance().signOut();
-//                Intent intent = new Intent(getApplicationContext(), Login.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

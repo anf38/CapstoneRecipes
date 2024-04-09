@@ -3,15 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/yellow"
-    tools:context=".IngredientsSearch">
+    android:background="@color/yellow">
 
     <EditText
         android:id="@+id/etIngredientInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/red"
         android:hint="Enter ingredient"
-        android:layout_margin="16dp"/>
+        android:padding="20dp" />
+
+    <ImageButton
+        android:layout_marginTop="5dp"
+        android:id="@+id/expandButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etIngredientInput"
+        android:backgroundTint="@color/pale_red"
+        android:src="@drawable/expand_less" />
 
     <Button
         android:id="@+id/btnAddIngredient"
@@ -19,32 +28,32 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/etIngredientInput"
         android:layout_alignParentEnd="true"
-        android:text="Add Ingredient"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"/>
+        android:text="Add Ingredient"
+        android:textColor="@color/white" />
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/ingredientsListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:background="@color/pale_yellow"
-        android:layout_marginHorizontal="5dp"
         android:layout_below="@id/btnAddIngredient"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/black"
-        android:dividerHeight="8dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="8dp"
         android:divider="@color/yellow"
-        />
+        android:dividerHeight="8dp"
+        android:textColor="@color/black"
+        android:visibility="visible"/>
 
-    <TextView
-        android:id="@+id/tv_emptyTextView"
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/resultsListView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="No Results"
-        android:textSize="20sp"
-        android:visibility="gone"
-        android:background="@color/white"/>
+        android:layout_below="@id/ingredientsListView"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/pale_yellow"
+        android:divider="@color/yellow"
+        android:dividerHeight="8dp"
+        android:textColor="@color/black" />
 
 </RelativeLayout>
