@@ -91,15 +91,6 @@ public class ViewMealDBRecipe extends AppCompatActivity {
             favoritesRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     boolean isFavorite = task.getResult().exists();
-                    if (isFavorite) {
-                        // If already in favorites, remove it
-                        removeRecipeFromFavorites(recipe);
-                        Toast.makeText(ViewMealDBRecipe.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // If not in favorites, add it
-                        addRecipeToFavorites(recipe);
-                        Toast.makeText(ViewMealDBRecipe.this, "Added to favorites", Toast.LENGTH_SHORT).show();
-                    }
                     // Update UI based on whether recipe is favorite or not
                     updateFavoriteButtonUI(isFavorite);
                 } else {
@@ -109,6 +100,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
             });
         }
     }
+
 
 
     @Override
