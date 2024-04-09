@@ -2,7 +2,6 @@ package com.example.pantrypal;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,9 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Reviews extends AppCompatActivity {
@@ -108,8 +105,10 @@ public class Reviews extends AppCompatActivity {
                                             updateData.put("Rating", rating);
                                             String title = reviewTitle.getText().toString();
                                             String message = reviewMessage.getText().toString();
-                                            updateData.put("ReviewTitle", title);
-                                            updateData.put("ReviewMessage", message);
+                                            if (!title.isEmpty())
+                                                updateData.put("ReviewTitle", title);
+                                            if (!message.isEmpty())
+                                                updateData.put("ReviewMessage", message);
 
                                             db.collection("recipes").document(recipeId)
                                                     .collection("ratings").document(ratingId)
@@ -133,12 +132,15 @@ public class Reviews extends AppCompatActivity {
                                         } else {
                                             // Add new rating
                                             Map<String, Object> ratingData = new HashMap<>();
-                                            ratingData.put("Rater", currentUser.getUid()); // Use currentUser.getUid() instead of currentUser
+                                            ratingData.put("Rater", currentUser.getUid());
                                             ratingData.put("Rating", rating);
                                             String title = reviewTitle.getText().toString();
                                             String message = reviewMessage.getText().toString();
-                                            ratingData.put("ReviewTitle", title);
-                                            ratingData.put("ReviewMessage", message);
+                                            if (!title.isEmpty())
+                                                ratingData.put("ReviewTitle", title);
+                                            else
+                                            if (!message.isEmpty())
+                                                ratingData.put("ReviewMessage", message);
 
                                             db.collection("recipes").document(recipeId)
                                                     .collection("ratings")
