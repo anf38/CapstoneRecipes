@@ -52,6 +52,9 @@
         <activity
             android:name=".AddTags"
             android:exported="false" />
+        <activity
+            android:name=".Reviews"
+            android:exported="false" />
 
     </application>
 

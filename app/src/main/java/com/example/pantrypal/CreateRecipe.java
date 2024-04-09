@@ -7,17 +7,20 @@ public class CreateRecipe {
     private String[] ingredients;
     private String[] instructions;
     private Uri picture;
+    private String id;
 
     CreateRecipe() {
         name = "";
         ingredients = new String[]{};
         instructions = new String[]{};
+        id = "";
     }
 
-    public CreateRecipe(String name, String[] ingredients, String[] instructions) {
+    public CreateRecipe(String name, String[] ingredients, String[] instructions, String id) {
         this.name = name;
         this.ingredients = ingredients;
         this.instructions = instructions;
+        this.id = id;
     }
 
     public String getName() {
@@ -50,5 +53,13 @@ public class CreateRecipe {
 
     public void setPictureUri(Uri picture) {
         this.picture = picture;
+    }
+
+    public String id() {
+        return id;
+    }
+
+    public void setPictureUri(String id) {
+        this.id = id;
     }
 }
