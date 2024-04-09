@@ -103,7 +103,6 @@ public class ViewRecipe extends AppCompatActivity {
                     finish();
                     return true;
                 } else if (itemId == R.id.favoriteIcon) {
-                    Toast.makeText(ViewRecipe.this, "Favorite", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(ViewRecipe.this, Favorites.class));
                     finish();
                     return true;
@@ -112,7 +111,6 @@ public class ViewRecipe extends AppCompatActivity {
                     finish();
                     return true;
                 } else if (itemId == R.id.ingredientsIcon) {
-                    Toast.makeText(ViewRecipe.this, "Ingredients", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(ViewRecipe.this, IngredientsSearch.class));
                     finish();
                     return true;
@@ -157,7 +155,6 @@ public class ViewRecipe extends AppCompatActivity {
     }
 
     private void getRatings() {
-        Toast.makeText(this, "GetRatings called", Toast.LENGTH_SHORT).show();
         db.collection("recipes").document(recipeId)
                 .collection("ratings")
                 .get()
@@ -186,7 +183,6 @@ public class ViewRecipe extends AppCompatActivity {
                                 double averageRating = totalRating / numberOfRatings;
                                 String numberOfRatingsString = String.valueOf(numberOfRatings);
                                 String averageRatingString = String.valueOf(averageRating);
-                                Toast.makeText(ViewRecipe.this, "rating: " + averageRatingString, Toast.LENGTH_SHORT).show();
                                 commentCount.setText(numberOfRatingsString);
                                 ratingCount.setText(averageRatingString);
                                 if(averageRating > 4.4){

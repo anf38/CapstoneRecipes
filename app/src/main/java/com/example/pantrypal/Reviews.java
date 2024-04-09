@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Arrays;
@@ -39,15 +40,19 @@ public class Reviews extends AppCompatActivity {
     private Button cancelReviewButton, submitReviewButton;
     private String recipeId, user;
     private int rating = 0;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reviews);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        Toast.makeText(this, "c: " + currentUser.getUid(), Toast.LENGTH_SHORT).show();
         db = FirebaseFirestore.getInstance();
+
         reviewImageHeader = findViewById(R.id.reviewImageHeader);
         reviewHeader = findViewById(R.id.reviewHeader);
         star1 = findViewById(R.id.star1);
@@ -62,7 +67,6 @@ public class Reviews extends AppCompatActivity {
         submitReviewButton = findViewById(R.id.submitReviewButton);
         recipeId = getIntent().getStringExtra("recipeId");
         fetchAndDisplayRecipeDetails(recipeId);
-        //right now, leaving a review only works on recipes that are in the firebase database
 
         cancelReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,17 +85,25 @@ public class Reviews extends AppCompatActivity {
                     // Check if the user has already rated the recipe
                     db.collection("recipes").document(recipeId)
                             .collection("ratings")
-                            .whereEqualTo("Rater", user)
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
-                                        // If the user has already rated the recipe, update the rating
-                                        if (!task.getResult().isEmpty()) {
-                                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
-                                            String ratingId = documentSnapshot.getId();
-                                            //if (currentUser != null && currentUser.getUid().equals(user)) {
+                                        boolean alreadyRated = false;
+                                        String ratingId = null;
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            String rater = document.getString("Rater");
+                                            if (rater != null && rater.equals(currentUser.getUid())) {
+                                                Toast.makeText(Reviews.this, "this was triggerd true", Toast.LENGTH_SHORT).show();
+                                                alreadyRated = true;
+                                                ratingId = document.getId();
+                                                break;
+                                            }
+                                        }
+
+                                        if (alreadyRated) {
+                                            // Update existing rating
                                             Map<String, Object> updateData = new HashMap<>();
                                             updateData.put("Rating", rating);
                                             String title = reviewTitle.getText().toString();
@@ -105,6 +117,7 @@ public class Reviews extends AppCompatActivity {
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
+                                                            Toast.makeText(Reviews.this, "Rating updated successfully", Toast.LENGTH_SHORT).show();
                                                             Intent intent = new Intent(getApplicationContext(), ViewRecipe.class);
                                                             intent.putExtra("recipeId", recipeId);
                                                             startActivity(intent);
@@ -118,9 +131,9 @@ public class Reviews extends AppCompatActivity {
                                                         }
                                                     });
                                         } else {
-                                            // If the user hasn't rated the recipe yet, add the rating
+                                            // Add new rating
                                             Map<String, Object> ratingData = new HashMap<>();
-                                            ratingData.put("Rater", user);
+                                            ratingData.put("Rater", currentUser.getUid()); // Use currentUser.getUid() instead of currentUser
                                             ratingData.put("Rating", rating);
                                             String title = reviewTitle.getText().toString();
                                             String message = reviewMessage.getText().toString();
@@ -146,6 +159,7 @@ public class Reviews extends AppCompatActivity {
                                                             Toast.makeText(Reviews.this, "Failed to add rating", Toast.LENGTH_SHORT).show();
                                                         }
                                                     });
+
                                         }
                                     } else {
                                         Toast.makeText(Reviews.this, "Failed to check user rating", Toast.LENGTH_SHORT).show();
@@ -157,7 +171,6 @@ public class Reviews extends AppCompatActivity {
                 }
             }
         });
-
 
 
         star1.setOnClickListener(new View.OnClickListener() {
@@ -182,7 +195,6 @@ public class Reviews extends AppCompatActivity {
                 rating = 2;
             }
         });
-
         star3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,7 +206,6 @@ public class Reviews extends AppCompatActivity {
                 rating = 3;
             }
         });
-
         star4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,7 +217,6 @@ public class Reviews extends AppCompatActivity {
                 rating = 4;
             }
         });
-
         star5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -218,7 +228,6 @@ public class Reviews extends AppCompatActivity {
                 rating = 5;
             }
         });
-
     }
 
     private void fetchAndDisplayRecipeDetails(String recipeId) {
@@ -231,22 +240,13 @@ public class Reviews extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 String recipeName = document.getString("Name");
+                                //get recipe image from here
                                 user = document.getString("Author");
-                            } else {
+                            } else
                                 Toast.makeText(Reviews.this, "Couldn't find recipe", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        } else {
-
+                        } else
                             Toast.makeText(Reviews.this, "Couldn't retrieve data", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
                     }
                 });
     }
-
 }
