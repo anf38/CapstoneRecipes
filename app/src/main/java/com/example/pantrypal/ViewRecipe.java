@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.pantrypal.apiTools.RecipeRetriever;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,34 +48,6 @@ public class ViewRecipe extends AppCompatActivity {
         // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Initialize UI components
-        recipeNameTextView = findViewById(R.id.recipeNameTextView);
-        ingredientsTextView = findViewById(R.id.ingredientsTextView);
-        instructionsTextView = findViewById(R.id.instructionsTextView);
-        backButton = findViewById(R.id.backButton);
-
-
-
-        // Set onClickListener for backButton to finish current activity and go back to previous
-
-           backButton.setOnClickListener(new View.OnClickListener()
-
-            {
-                @Override
-                public void onClick (View v){
-                finish(); // Close the current activity and return to the previous one
-            }
-            });
-
-        // Get recipe ID passed from previous activity
-        String recipeId = getIntent().getStringExtra("recipeId");
-
-
-
-
-        // Initialize Firebase Firestore
-        db = FirebaseFirestore.getInstance();
-
         recipeNameTextView = findViewById(R.id.recipeNameTextView);
         ingredientsTextView = findViewById(R.id.ingredientsTextView);
         instructionsTextView = findViewById(R.id.instructionsTextView);
@@ -89,6 +62,7 @@ public class ViewRecipe extends AppCompatActivity {
         commentCount = findViewById(R.id.commentCount);
         commentsList = findViewById(R.id.commentsList);
         commentsAL = new ArrayList<>();
+        backButton = findViewById(R.id.backButton);
 
         adapter = new CommentsListAdapter(this, R.layout.comments_listview_layout, commentsAL);
         commentsList.setAdapter(adapter);
@@ -110,6 +84,19 @@ public class ViewRecipe extends AppCompatActivity {
             }
         });
 
+        // Set onClickListener for backButton to finish current activity and go back to previous
+
+        backButton.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick (View v){
+                finish(); // Close the current activity and return to the previous one
+            }
+        });
+
+        // Get recipe ID passed from previous activity
+        String recipeId = getIntent().getStringExtra("recipeId");
 
 
         fetchAndDisplayRecipeDetails(recipeId);
