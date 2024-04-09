@@ -21,5 +21,14 @@
         android:textColor="@android:color/black"
         android:textSize="18dp"
         android:textStyle="bold" />
+    <TextView
+        android:id="@+id/hiddenId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/textViewRecipeName"
+        android:visibility="invisible"
+        android:text="hidden text"
+        android:textSize="10dp"/>
 
 </RelativeLayout>

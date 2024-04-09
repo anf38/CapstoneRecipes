@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -20,14 +19,14 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Search extends AppCompatActivity {
+    private static final String TAG = "SEARCH";
     private FirebaseFirestore fStore;
     private ListView listView;
-    private ArrayAdapter<String> arrayAdapter;
-    private List<String> recipeNames = new ArrayList<>();
-    private List<String> recipeIds = new ArrayList<>(); // To store recipe document IDs
+    private SearchListAdapter searchListAdapter;
+    private ArrayList<ResultsRecipe> originalRecipeList = new ArrayList<>();
+    private ArrayList<ResultsRecipe> recipeNames = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,24 +35,22 @@ public class Search extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
 
         listView = findViewById(R.id.listView);
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item_recipe, R.id.textViewRecipeName, recipeNames);
-        listView.setAdapter(arrayAdapter);
+        searchListAdapter = new SearchListAdapter(this, R.layout.list_item_recipe, recipeNames);
+        listView.setAdapter(searchListAdapter);
 
         fetchRecipesFromFirestore();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String recipeName = (String) parent.getItemAtPosition(position); // Get the clicked recipe name
-                int index = recipeNames.indexOf(recipeName); // Find the index of the clicked recipe name
-                if (index != -1) { // Check if the recipe name exists in the list
-                    String recipeId = recipeIds.get(index); // Get the corresponding recipe ID
-                    Intent intent = new Intent(Search.this, ViewRecipe.class);
-                    intent.putExtra("recipeId", recipeId);
-                    startActivity(intent);
-                }
+                ResultsRecipe clickedRecipe = (ResultsRecipe) parent.getItemAtPosition(position); // Get the clicked recipe
+                String recipeId = clickedRecipe.getId(); // Get the ID of the clicked recipe
+                Intent intent = new Intent(Search.this, ViewRecipe.class);
+                intent.putExtra("recipeId", recipeId);
+                startActivity(intent);
             }
         });
+
     }
 
     private void fetchRecipesFromFirestore() {
@@ -66,10 +63,12 @@ public class Search extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String recipeName = document.getString("Name");
                                 String recipeId = document.getId(); // Get recipe document ID
-                                recipeNames.add(recipeName);
-                                recipeIds.add(recipeId); // Add recipe document ID to list
+                                ResultsRecipe resultsRecipe = new ResultsRecipe(recipeName, recipeId);
+                                recipeNames.add(resultsRecipe);
+                                // Populate the original list as well
+                                originalRecipeList.add(resultsRecipe);
                             }
-                            arrayAdapter.notifyDataSetChanged();
+                            searchListAdapter.notifyDataSetChanged();
                         }
                     }
                 });
@@ -91,9 +90,26 @@ public class Search extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                arrayAdapter.getFilter().filter(newText);
+                if (newText.isEmpty()) {
+                    // If search query is empty, restore the original list
+                    searchListAdapter.clear();
+                    searchListAdapter.addAll(originalRecipeList);
+                    searchListAdapter.notifyDataSetChanged();
+                } else {
+                    // Filter the recipes based on the search query
+                    ArrayList<ResultsRecipe> filteredRecipes = new ArrayList<>();
+                    for (ResultsRecipe rec : originalRecipeList) {
+                        if (rec.getTitle().toLowerCase().contains(newText.toLowerCase())) {
+                            filteredRecipes.add(rec);
+                        }
+                    }
+                    searchListAdapter.clear();
+                    searchListAdapter.addAll(filteredRecipes);
+                    searchListAdapter.notifyDataSetChanged();
+                }
                 return false;
             }
+
         });
         return super.onCreateOptionsMenu(menu);
     }

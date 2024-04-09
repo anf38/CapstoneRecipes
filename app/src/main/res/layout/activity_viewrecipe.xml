@@ -30,16 +30,119 @@
                 android:textColor="@color/white"
                 android:textSize="25sp" />
 
-            <!-- ImageView to display the selected image -->
+            <!-- Maybe make a listview when displaying all of the comments -->
+
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/placeholder_image" />
 
+
+
+            <TextView
+                android:id="@id/tagsBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tags: "
+                android:textAlignment="center"
+                android:paddingBottom="3dp"
+                android:textColor="@color/black"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:id="@+id/starsAndReview"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/ratingCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:text="0.0"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="5dp"
+                        android:textSize="15dp"
+                        android:gravity="bottom"/>
+
+                    <ImageView
+                        android:id="@+id/star1"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:contentDescription="Star Icon"
+                        android:layout_marginTop="7dp"
+                        android:src="@drawable/empty_star" />
+
+                    <ImageView
+                        android:id="@+id/star2"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:contentDescription="Star Icon"
+                        android:layout_marginTop="7dp"
+                        android:src="@drawable/empty_star" />
+
+                    <ImageView
+                        android:id="@+id/star3"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:contentDescription="Star Icon"
+                        android:layout_marginTop="7dp"
+                        android:src="@drawable/empty_star" />
+
+                    <ImageView
+                        android:id="@+id/star4"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:contentDescription="Star Icon"
+                        android:layout_marginTop="7dp"
+                        android:src="@drawable/empty_star" />
+
+                    <ImageView
+                        android:id="@+id/star5"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:contentDescription="Star Icon"
+                        android:layout_marginTop="7dp"
+                        android:src="@drawable/empty_star" />
+
+                    <TextView
+                        android:id="@+id/commentCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:text="0"
+                        android:paddingRight="10dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="bottom"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical">
+
+                    <Button
+                        android:id="@+id/reviewButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="Rate"
+                        android:textSize="10dp"
+                        android:textColor="@color/white"/>
+
+                </LinearLayout>
+            </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -109,21 +212,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/pale_yellow"
-                    android:hint="Add a comment..."
+                    android:hint="Comments"
                     android:paddingHorizontal="10dp"
                     android:textColor="@color/black"
                     android:textSize="24dp" />
 
-                <TextView
-                    android:id="@+id/post"
-                    android:layout_width="wrap_content"
+                <ListView
+                    android:id="@+id/commentsList"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@color/white"
-                    android:padding="10dp"
-                    android:text="POST"
-                    android:textColor="@color/black" />
+                    android:background="@color/pale_yellow"
+                    />
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
