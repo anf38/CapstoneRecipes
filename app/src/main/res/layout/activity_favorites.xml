@@ -20,7 +20,6 @@
         android:textColor="@color/white"
         android:textSize="25sp" />
 
-
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"

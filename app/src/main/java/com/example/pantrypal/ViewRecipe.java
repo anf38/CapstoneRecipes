@@ -219,6 +219,7 @@ public class ViewRecipe extends AppCompatActivity {
     }
 
 
+
     private void removeRecipeFromFavorites(String recipeName) {
         if (currentUser != null) {
             DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipeName);

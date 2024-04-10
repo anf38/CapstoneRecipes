@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pantrypal.apiTools.MealDBRecipe;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class Favorites extends AppCompatActivity {
+public class MealDBFavorites extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -54,24 +55,19 @@ public class Favorites extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String recipeNameAndImageURL = favoritesList.get(position); // Get the clicked item as string
-                String[] parts = recipeNameAndImageURL.split("\\|");
-                String recipeName = parts[0];
-
-                getRecipeIdFromName(recipeName).thenAccept(recipeId -> {
-                    if (recipeId != null) {
-                        // Use the recipeId here
-                        Intent intent = new Intent(Favorites.this, ViewRecipe.class);
-                        intent.putExtra("recipeId", recipeId);
-                        startActivity(intent);
-                    } else {
-                        // Handle the case where no matching recipe is found
-                        Toast.makeText(Favorites.this, "Recipe not found", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                String recipeIdAndImageURL = favoritesList.get(position); // Get the clicked item as string
+                String[] parts = recipeIdAndImageURL.split("\\|");
+                String recipeId = parts[0]; // Extract recipe ID
+                Intent intent = new Intent(MealDBFavorites.this, ViewMealDBRecipe.class);
+                intent.putExtra("recipeId", recipeId); // Pass the recipe ID to ViewMealDBRecipe activity
+                startActivity(intent);
             }
+
         });
+
     }
+
+
 
     private void loadFavorites() {
         db.collection("users").document(currentUser.getUid()).collection("favorites")
@@ -80,20 +76,24 @@ public class Favorites extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         favoritesList.clear();
                         for (DocumentSnapshot document : task.getResult()) {
-                            String recipeName = document.getString("name"); // Assuming "name" is the field storing recipe names
+                            String recipeId = document.getString("recipeId");
                             String imageURL = document.getString("imageURL");
-                            if (imageURL != null) {
-                                favoritesList.add(recipeName + "|" + imageURL);
+                            Log.d("MealDBFavorites", "Recipe ID: " + recipeId + ", Image URL: " + imageURL);
+                            if (recipeId != null && imageURL != null) {
+                                favoritesList.add(recipeId + "|" + imageURL);
                             } else {
-                                favoritesList.add(recipeName + "|");
+                                // Handle the case where either recipeId or imageURL is null
+                                Log.e("MealDBFavorites", "Missing recipeId or imageURL for favorite recipe");
                             }
                         }
                         adapter.notifyDataSetChanged(); // Notify adapter that data set has changed
                     } else {
-                        Toast.makeText(Favorites.this, "Failed to load favorites: " + task.getException(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MealDBFavorites.this, "Failed to load favorites: " + task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+
 
     private CompletableFuture<String> getRecipeIdFromName(String recipeName) {
         CompletableFuture<String> future = new CompletableFuture<>();
