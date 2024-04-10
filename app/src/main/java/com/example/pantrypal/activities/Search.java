@@ -23,21 +23,22 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.checkerframework.checker.units.qual.A;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Search extends AppCompatActivity {
     private static final String TAG = "SEARCH";
     private FirebaseFirestore fStore;
+    private final RecipeRetriever apiRecipeRetriever = new RecipeRetriever();
+
     private ListView listView;
     private SearchListAdapter searchListAdapter;
-    private final ArrayList<ResultsRecipe> originalRecipeList = new ArrayList<>();
-    private final ArrayList<ResultsRecipe> filteredRecipeList = new ArrayList<>();
-
-    private final RecipeRetriever apiRecipeRetriever = new RecipeRetriever();
+    private final ArrayList<ResultsRecipe> communityRecipes = new ArrayList<>();
     private final ArrayList<MealDBRecipe> apiRecipes = new ArrayList<>();
+
+    private List<ResultsRecipe> resultRecipes = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +78,8 @@ public class Search extends AppCompatActivity {
                                 List<String> recipeIngredients = (List<String>) document.get("Ingredients");
                                 ResultsRecipe resultsRecipe = new ResultsRecipe(recipeName, recipeId, recipeIngredients);
                                 // Populate the original list as well
-                                originalRecipeList.add(resultsRecipe);
-                                filteredRecipeList.add(resultsRecipe);
+                                communityRecipes.add(resultsRecipe);
+                                resultRecipes.add(resultsRecipe);
                             }
                             updateList();
                         }
@@ -97,6 +98,8 @@ public class Search extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
+
                 return false;
             }
 
@@ -104,17 +107,12 @@ public class Search extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 if (newText.isEmpty()) {
                     // If search query is empty, restore the original list
-                    filteredRecipeList.clear();
-                    filteredRecipeList.addAll(originalRecipeList);
+                    resultRecipes.clear();
+                    resultRecipes.addAll(communityRecipes);
                     updateList();
                 } else {
                     // Filter the recipes based on the search query
-                    filteredRecipeList.clear();
-                    for (ResultsRecipe rec : originalRecipeList) {
-                        if (rec.getTitle().toLowerCase().contains(newText.toLowerCase())) {
-                            filteredRecipeList.add(rec);
-                        }
-                    }
+                    filterRecipes(newText);
                     updateList();
                 }
                 return false;
@@ -125,11 +123,22 @@ public class Search extends AppCompatActivity {
     }
 
     private void filterRecipes(String filterText) {
+        List<ResultsRecipe> combinedList = (List<ResultsRecipe>) communityRecipes.clone();
+        combinedList.addAll(apiRecipes);
 
+        resultRecipes = combinedList.parallelStream().filter(recipe -> {
+            String[] words = filterText.split(" ");
+
+            for (String word : words)
+                if (recipe.getTitle().toLowerCase().contains(word.toLowerCase()))
+                    return true;
+
+            return false;
+        }).collect(Collectors.toList());
     }
 
     private void updateList() {
         searchListAdapter.clear();
-        searchListAdapter.addAll(filteredRecipeList);
+        searchListAdapter.addAll(resultRecipes);
     }
 }
