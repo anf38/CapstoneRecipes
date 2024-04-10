@@ -60,10 +60,18 @@ public class Favorites extends AppCompatActivity {
 
                 getRecipeIdFromName(recipeName).thenAccept(recipeId -> {
                     if (recipeId != null) {
-                        // Use the recipeId here
-                        Intent intent = new Intent(Favorites.this, ViewRecipe.class);
-                        intent.putExtra("recipeId", recipeId);
-                        startActivity(intent);
+                        // Check if recipeId is an integer or a string
+                        if (isNumeric(recipeId)) {
+                            // It's an integer, start ViewMealDBRecipe activity
+                            Intent intent = new Intent(Favorites.this, ViewMealDBRecipe.class);
+                            intent.putExtra("recipeId", Integer.parseInt(recipeId)); // Parse to integer if needed in the next activity
+                            startActivity(intent);
+                        } else {
+                            // It's a string, start ViewRecipe activity
+                            Intent intent = new Intent(Favorites.this, ViewRecipe.class);
+                            intent.putExtra("recipeId", recipeId);
+                            startActivity(intent);
+                        }
                     } else {
                         // Handle the case where no matching recipe is found
                         Toast.makeText(Favorites.this, "Recipe not found", Toast.LENGTH_SHORT).show();
@@ -98,29 +106,43 @@ public class Favorites extends AppCompatActivity {
     private CompletableFuture<String> getRecipeIdFromName(String recipeName) {
         CompletableFuture<String> future = new CompletableFuture<>();
 
-        // Reference to the Firestore collection containing recipes
-        db.collection("recipes")
-                .whereEqualTo("Name", recipeName)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // Loop through the query results
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            // Get the recipe ID from the document
-                            String recipeId = document.getId();
-                            future.complete(recipeId); // Complete the CompletableFuture with the recipe ID
-                            return;
+        // Check if the recipeName is a number (indicating a mealdb recipe ID)
+        if (isNumeric(recipeName)) {
+            future.complete(recipeName); // Complete with the recipe ID directly
+        } else {
+            // For user-made recipes (string ID), query by name
+            db.collection("recipes")
+                    .whereEqualTo("Name", recipeName)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String recipeId = document.getId();
+                                future.complete(recipeId);
+                                return; // Break after finding the first matching recipe
+                            }
+                        } else {
+                            Log.e("Favorites", "Error getting documents: ", task.getException());
                         }
-                        // If no matching recipe is found
-                        future.complete(null);
-                    } else {
-                        // Handle errors
-                        Log.e("Favorites", "Error getting documents: ", task.getException());
-                        // Complete the CompletableFuture with null to indicate failure
-                        future.complete(null);
-                    }
-                });
+                        future.complete(null); // Complete with null if no matching recipe found or in case of failure
+                    });
+        }
 
         return future;
+    }
+
+    /**
+     * Helper method to check if a string is numeric
+     *
+     * @param strNum String to check
+     * @return boolean indicating if strNum is numeric
+     */
+    private boolean isNumeric(String strNum) {
+        try {
+            Integer.parseInt(strNum);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

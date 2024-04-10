@@ -2,6 +2,7 @@ package com.example.pantrypal;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -9,14 +10,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pantrypal.apiTools.MealDBRecipe;
 import com.example.pantrypal.apiTools.RecipeRetriever;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 
 import java.util.List;
@@ -27,6 +33,8 @@ public class ViewMealDBRecipe extends AppCompatActivity {
     private ImageView recipeImageView;
     private TextView recipeNameTextView;
     private TextView ingredientsTextView;
+    private String recipeId;
+    private String recipeName;
     private TextView instructionsTextView;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -53,6 +61,8 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         favoriteButton = findViewById(R.id.favoriteButton);
 
+        recipeId = getIntent().getStringExtra("id");
+        fetchAndDisplayRecipeDetails(Integer.parseInt(recipeId));
 
         recipeNameTextView.setText(recipe.getName());
         ingredientsTextView.setText(formatIngredientsList(recipe.getIngredients()));
@@ -73,6 +83,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                 finish(); // Close the current activity and return to the previous one
             }
         });
+
     }
 
     @Override
@@ -101,7 +112,33 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         }
     }
 
+    private void fetchAndDisplayRecipeDetails(int recipeId) {
+        // Get reference to the recipe document
+        db.collection("recipes").whereEqualTo("id", recipeId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                recipeName = document.getString("Name");
+                                List<String> ingredients = (List<String>) document.get("Ingredients");
+                                List<String> instructions = (List<String>) document.get("Instructions");
+                                String tags = document.getString("Tags");
 
+
+                                // Set the TextViews with the retrieved data
+                                recipeNameTextView.setText(recipeName);
+                                ingredientsTextView.setText(formatList(ingredients));
+                                instructionsTextView.setText(formatList(instructions));
+
+                            }
+                        } else {
+                            Log.d("ViewMealDBRecipe", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
 
     @Override
     protected void onDestroy() {
