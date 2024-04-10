@@ -9,7 +9,7 @@ public class CreateRecipe {
     private Uri picture;
     private String id;
 
-    CreateRecipe() {
+    public CreateRecipe() {
         name = "";
         ingredients = new String[]{};
         instructions = new String[]{};

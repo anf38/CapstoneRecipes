@@ -1,16 +1,18 @@
-package com.example.pantrypal;
+package com.example.pantrypal.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pantrypal.Favorites;
+import com.example.pantrypal.NewRecipe;
+import com.example.pantrypal.R;
 import com.example.pantrypal.apiTools.MealDBJSONParser;
 import com.example.pantrypal.apiTools.MealDBRecipe;
 import com.example.pantrypal.apiTools.RecipeRetriever;
