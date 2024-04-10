@@ -102,7 +102,6 @@ public class ViewMealDBRecipe extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -162,33 +161,57 @@ public class ViewMealDBRecipe extends AppCompatActivity {
 
     private void addRecipeToFavorites(MealDBRecipe recipe) {
         if (currentUser != null) {
-            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipe.getName());
+            // Get the recipe ID from the MealDBRecipe
+            int recipeId = recipe.getId();
 
-            db.runTransaction((Transaction.Function<Void>) transaction -> {
-                transaction.set(favoritesRef, recipe);
-                return null;
-            }).addOnSuccessListener(aVoid -> {
-                // Recipe added successfully
-                Toast.makeText(ViewMealDBRecipe.this, "Added to favorites", Toast.LENGTH_SHORT).show();
-            }).addOnFailureListener(e -> {
-                // Handle errors
-                Toast.makeText(ViewMealDBRecipe.this, "Error adding to favorites: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            });
+            // Convert the recipeId to a string
+            String recipeIdString = String.valueOf(recipeId);
+
+            // Construct the document reference using the recipe ID
+            DocumentReference favoritesRef = db.collection("users")
+                    .document(currentUser.getUid())
+                    .collection("favorites")
+                    .document(recipeIdString);
+
+            // Set the document with the recipe data
+            favoritesRef.set(recipe)
+                    .addOnSuccessListener(aVoid -> {
+                        // Recipe added successfully
+                        Toast.makeText(ViewMealDBRecipe.this, "Added to favorites", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle errors
+                        Toast.makeText(ViewMealDBRecipe.this, "Error adding to favorites: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
         }
     }
-
 
     private void removeRecipeFromFavorites(MealDBRecipe recipe) {
         if (currentUser != null) {
-            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipe.getName());
+            // Get the recipe ID from the MealDBRecipe
+            int recipeId = recipe.getId();
 
-            favoritesRef.delete().addOnSuccessListener(aVoid -> {
-                // Recipe removed successfully
-                Toast.makeText(ViewMealDBRecipe.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
-            }).addOnFailureListener(e -> {
-                // Handle errors
-                Toast.makeText(ViewMealDBRecipe.this, "Error removing from favorites", Toast.LENGTH_SHORT).show();
-            });
+            // Convert the recipeId to a string
+            String recipeIdString = String.valueOf(recipeId);
+
+            // Construct the document reference using the recipe ID
+            DocumentReference favoritesRef = db.collection("users")
+                    .document(currentUser.getUid())
+                    .collection("favorites")
+                    .document(recipeIdString);
+
+            // Delete the document corresponding to the recipe ID
+            favoritesRef.delete()
+                    .addOnSuccessListener(aVoid -> {
+                        // Recipe removed successfully
+                        Toast.makeText(ViewMealDBRecipe.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle errors
+                        Toast.makeText(ViewMealDBRecipe.this, "Error removing from favorites", Toast.LENGTH_SHORT).show();
+                    });
         }
     }
+
 }
+
