@@ -33,6 +33,7 @@ public class ViewRecipe extends AppCompatActivity {
     private FirebaseFirestore db= FirebaseFirestore.getInstance();
     private TextView recipeNameTextView;
     private TextView ingredientsTextView;
+    private String recipeName;
 
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private TextView instructionsTextView;
@@ -40,6 +41,8 @@ public class ViewRecipe extends AppCompatActivity {
     private TextView tagsBox;
     private TextView ratingCount, commentCount;
     private Button reviewButton;
+    private boolean isFavorite = false;
+
     private String recipeId;
     private ListView commentsList;
     private ArrayList<Comment> commentsAL;
@@ -81,7 +84,7 @@ public class ViewRecipe extends AppCompatActivity {
         favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFavoriteStatus();
+                toggleFavoriteStatus(recipeId);
             }
         });
 
@@ -118,116 +121,119 @@ public class ViewRecipe extends AppCompatActivity {
         fetchAndDisplayRecipeDetails(recipeId);
     }
     // Method to toggle favorite status of the recipe
-    private void toggleFavoriteStatus() {
-        // Check if the recipe is already in favorites
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Recheck the favorite status and update the UI
+        if (recipeId != null) {
+            checkIfRecipeIsFavorite(recipeId);
+        }
+    }
+
+    private void checkIfRecipeIsFavorite(String recipeId) {
         if (currentUser != null) {
-            DocumentReference favoritesRef = db.collection("users")
-                    .document(currentUser.getUid())
-                    .collection("favorites")
-                    .document(recipeId);
+            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipeId);
 
             favoritesRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    boolean isFavorite = task.getResult().exists();
-                    if (isFavorite) {
-                        // If already in favorites, remove it
-                        removeRecipeFromFavorites();
-                        Toast.makeText(ViewRecipe.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // If not in favorites, add it
-                        addRecipeToFavorites();
-                        Toast.makeText(ViewRecipe.this, "Added to favorites", Toast.LENGTH_SHORT).show();
-                    }
+                    isFavorite = task.getResult().exists();
                     // Update UI based on whether recipe is favorite or not
-                    updateFavoriteButtonUI(!isFavorite); // Invert favorite status
+                    updateFavoriteButtonUI(isFavorite);
                 } else {
                     // Handle errors
-                    Toast.makeText(ViewRecipe.this, "Error checking favorite status: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("ViewRecipe", "Error checking favorite status: ", task.getException());
                 }
             });
         }
     }
 
+    private void toggleFavoriteStatus(String recipeName) {
+        // Check if the recipe is already in favorites
+        if (currentUser != null) {
+            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipeName);
+
+            favoritesRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    boolean isCurrentlyFavorite = task.getResult().exists();
+                    if (isCurrentlyFavorite) {
+                        // If already in favorites, remove it
+                        removeRecipeFromFavorites(recipeName);
+                        Toast.makeText(ViewRecipe.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // If not in favorites, add it
+                        addRecipeToFavorites(recipeName);
+                        Toast.makeText(ViewRecipe.this, "Added to favorites", Toast.LENGTH_SHORT).show();
+                    }
+                    // Update UI based on whether recipe is favorite or not
+                    isFavorite = !isCurrentlyFavorite; // Invert favorite status
+                    updateFavoriteButtonUI(isFavorite);
+                } else {
+                    // Handle errors
+                    Log.e("ViewRecipe", "Error checking favorite status: ", task.getException());
+                }
+            });
+        }
+    }
 
     // Method to update UI of favoriteButton based on favorite status
     private void updateFavoriteButtonUI(boolean isFavorite) {
         favoriteButton.setChecked(isFavorite);
     }
 
-    // Add Recipe to Favorites
-    private void addRecipeToFavorites() {
-        if (currentUser != null && recipeId != null) {
-            // Get reference to the recipe document
+    private void addRecipeToFavorites(String recipeId) {
+        if (currentUser != null) {
             DocumentReference recipeRef = db.collection("recipes").document(recipeId);
 
-            // Get reference to the user's favorites collection
-            DocumentReference favoritesRef = db.collection("users")
-                    .document(currentUser.getUid())
-                    .collection("favorites")
-                    .document(recipeId);
+            recipeRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot recipeDoc = task.getResult();
+                    if (recipeDoc.exists()) {
+                        String recipeName = recipeDoc.getString("Name");
 
-            // Fetch the recipe name and store it in favorites
-            recipeRef.get().addOnSuccessListener(documentSnapshot -> {
-                if (documentSnapshot.exists()) {
-                    String recipeName = documentSnapshot.getString("Name");
-                    if (recipeName != null && !recipeName.isEmpty()) {
-                        // Create a Map to store the data in favorites
-                        Map<String, Object> favoritesData = new HashMap<>();
-                        favoritesData.put("name", recipeName);
+                        DocumentReference favoritesRef = db.collection("users")
+                                .document(currentUser.getUid())
+                                .collection("favorites")
+                                .document(recipeId);
 
-                        // Set the data in favorites
-                        favoritesRef.set(favoritesData)
+                        // Save the recipe ID as the name field in the favorites collection
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("name", recipeName);
+
+                        favoritesRef.set(data)
                                 .addOnSuccessListener(aVoid -> {
                                     // Recipe added successfully
                                     Log.d("ViewRecipe", "Recipe added to favorites");
-                                    Toast.makeText(ViewRecipe.this, "Recipe added to favorites", Toast.LENGTH_SHORT).show();
                                 })
                                 .addOnFailureListener(e -> {
                                     // Handle errors
                                     Log.e("ViewRecipe", "Error adding recipe to favorites", e);
-                                    Toast.makeText(ViewRecipe.this, "Error adding recipe to favorites", Toast.LENGTH_SHORT).show();
                                 });
                     } else {
-                        Log.d("ViewRecipe", "Recipe name is null or empty");
+                        Log.d("ViewRecipe", "Recipe document does not exist");
                     }
                 } else {
-                    Log.d("ViewRecipe", "Recipe document does not exist");
+                    Log.e("ViewRecipe", "Error getting recipe document", task.getException());
                 }
-            }).addOnFailureListener(e -> {
-                // Handle errors
-                Log.e("ViewRecipe", "Error fetching recipe document", e);
-                Toast.makeText(ViewRecipe.this, "Error fetching recipe document", Toast.LENGTH_SHORT).show();
             });
         }
     }
 
-    // Remove Recipe from Favorites
-    private void removeRecipeFromFavorites() {
-        if (currentUser != null) {
-            // Get reference to the user's favorites collection
-            DocumentReference favoritesRef = db.collection("users")
-                    .document(currentUser.getUid())
-                    .collection("favorites")
-                    .document(recipeId);
 
-            // Remove the recipe from favorites
+    private void removeRecipeFromFavorites(String recipeName) {
+        if (currentUser != null) {
+            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipeName);
+
             favoritesRef.delete()
                     .addOnSuccessListener(aVoid -> {
                         // Recipe removed successfully
                         Log.d("ViewRecipe", "Recipe removed from favorites");
-                        Toast.makeText(ViewRecipe.this, "Recipe removed from favorites", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e -> {
                         // Handle errors
                         Log.e("ViewRecipe", "Error removing recipe from favorites", e);
-                        Toast.makeText(ViewRecipe.this, "Error removing recipe from favorites", Toast.LENGTH_SHORT).show();
                     });
         }
     }
-
-
-
-
 
 
     private void fetchAndDisplayRecipeDetails(String recipeId) {
@@ -241,7 +247,7 @@ public class ViewRecipe extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 // Extract recipe details from the document
-                                String recipeName = document.getString("Name");
+                                recipeName = document.getString("Name");
                                 List<String> ingredients = (List<String>) document.get("Ingredients");
                                 List<String> instructions = (List<String>) document.get("Instructions");
                                 String tags = document.getString("Tags");

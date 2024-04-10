@@ -39,7 +39,8 @@ public class Favorites extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         listView = findViewById(R.id.listView);
         favoritesList = new ArrayList<>();
-        adapter = new CustomAdapter(this, R.layout.favorite_list_item, favoritesList);        listView.setAdapter(adapter);
+        adapter = new CustomAdapter(this, R.layout.favorite_list_item, favoritesList);
+        listView.setAdapter(adapter);
 
         if (currentUser != null) {
             loadFavorites();
@@ -50,10 +51,11 @@ public class Favorites extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedRecipe = favoritesList.get(position);
-                // You can pass selectedRecipe to the recipe page using intents
-                Intent intent = new Intent(Favorites.this, ViewMealDBRecipe.class);
-                intent.putExtra("recipeName", selectedRecipe);
+                ResultsRecipe clickedRecipe = (ResultsRecipe) parent.getItemAtPosition(position); // Get the clicked recipe
+                String recipeId = clickedRecipe.getId(); // Get the ID of the clicked recipe
+
+                Intent intent = new Intent(Favorites.this, ViewRecipe.class);
+                intent.putExtra("recipeId", recipeId);
                 startActivity(intent);
             }
         });
@@ -65,7 +67,7 @@ public class Favorites extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         favoritesList.clear();
                         for (DocumentSnapshot document : task.getResult()) {
-                            String recipeName = document.getId();
+                            String recipeName = document.getString("name"); // Assuming "name" is the field storing recipe names
                             String imageURL = document.getString("imageURL");
                             if (imageURL != null) {
                                 favoritesList.add(recipeName + "|" + imageURL);
@@ -79,7 +81,6 @@ public class Favorites extends AppCompatActivity {
                     }
                 });
     }
-
 
 }
 
