@@ -8,15 +8,17 @@
         android:id="@+id/recipeImageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/placeholder_image"
+        android:background="@drawable/empty_background"
         android:contentDescription="Recipe Image"/>
 
     <TextView
         android:id="@+id/recipeNameTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/pale_yellow"
         android:padding="16dp"
+        android:textSize="18dp"
         android:text="Recipe Name"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black" />
 
 </LinearLayout>

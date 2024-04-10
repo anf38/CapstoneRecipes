@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/favorites"
-        android:background="@color/pale_yellow"
+        android:background="@color/yellow"
         android:layout_marginHorizontal="5dp"
         android:layout_marginTop="5dp"
         android:textColor="@color/black"
