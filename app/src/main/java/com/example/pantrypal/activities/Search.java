@@ -22,6 +22,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Search extends AppCompatActivity {
     private static final String TAG = "SEARCH";
@@ -66,7 +67,8 @@ public class Search extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String recipeName = document.getString("Name");
                                 String recipeId = document.getId(); // Get recipe document ID
-                                ResultsRecipe resultsRecipe = new ResultsRecipe(recipeName, recipeId);
+                                List<String> recipeIngredients = (List<String>) document.get("Ingredients");
+                                ResultsRecipe resultsRecipe = new ResultsRecipe(recipeName, recipeId, recipeIngredients);
                                 recipeNames.add(resultsRecipe);
                                 // Populate the original list as well
                                 originalRecipeList.add(resultsRecipe);

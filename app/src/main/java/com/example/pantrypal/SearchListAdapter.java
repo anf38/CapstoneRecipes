@@ -30,7 +30,6 @@ public class SearchListAdapter extends ArrayAdapter<ResultsRecipe> implements Fi
         String title = getItem(position).getTitle();
         String id = getItem(position).getId();
 
-        ResultsRecipe results = new ResultsRecipe(title, id);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResultsRecipe {
-    private String title;
-    private String id;
-    private List<String> ingredients;
+    protected String title;
+    protected String id;
+    protected List<String> ingredients;
 
     public ResultsRecipe() {
         this.title = "Title";
