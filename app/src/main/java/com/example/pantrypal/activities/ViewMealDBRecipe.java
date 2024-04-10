@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ViewMealDBRecipe extends AppCompatActivity {
-    private final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
+    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
     private ImageView recipeImageView;
     private TextView recipeNameTextView;
     private TextView ingredientsTextView;
@@ -82,7 +82,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         ingredientsTextView = findViewById(R.id.ingredientsTextView);
         instructionsTextView = findViewById(R.id.instructionsTextView);
 
-        recipeNameTextView.setText(recipe.getName());
+        recipeNameTextView.setText(recipe.getTitle());
         ingredientsTextView.setText(formatIngredientsList(recipe.getIngredients()));
         instructionsTextView.setText(formatList(recipe.getInstructionLines()));
     }
@@ -101,11 +101,10 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         return stringBuilder.toString();
     }
 
-    private String formatIngredientsList(List<Map.Entry<String, String>> ingredients) {
+    private String formatIngredientsList(List<String> ingredients) {
         StringBuilder ingredientQuantityList = new StringBuilder();
-        for (Map.Entry<String, String> ingredientQuantityPair : ingredients) {
-            ingredientQuantityList.append(
-                    String.format("- %s (%s)\n", ingredientQuantityPair.getKey(), ingredientQuantityPair.getValue()));
+        for (String ingredient : ingredients) {
+            ingredientQuantityList.append("- ").append(ingredient).append("\n");
         }
 
         return ingredientQuantityList.toString();

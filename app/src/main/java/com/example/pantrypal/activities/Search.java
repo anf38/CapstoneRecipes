@@ -15,11 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.pantrypal.R;
 import com.example.pantrypal.ResultsRecipe;
 import com.example.pantrypal.SearchListAdapter;
+import com.example.pantrypal.apiTools.MealDBRecipe;
+import com.example.pantrypal.apiTools.RecipeRetriever;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +33,11 @@ public class Search extends AppCompatActivity {
     private FirebaseFirestore fStore;
     private ListView listView;
     private SearchListAdapter searchListAdapter;
-    private ArrayList<ResultsRecipe> originalRecipeList = new ArrayList<>();
-    private ArrayList<ResultsRecipe> recipeNames = new ArrayList<>();
+    private final ArrayList<ResultsRecipe> originalRecipeList = new ArrayList<>();
+    private final ArrayList<ResultsRecipe> filteredRecipeList = new ArrayList<>();
+
+    private final RecipeRetriever apiRecipeRetriever = new RecipeRetriever();
+    private final ArrayList<MealDBRecipe> apiRecipes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +46,7 @@ public class Search extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
 
         listView = findViewById(R.id.listView);
-        searchListAdapter = new SearchListAdapter(this, R.layout.list_item_recipe, recipeNames);
+        searchListAdapter = new SearchListAdapter(this, R.layout.list_item_recipe, new ArrayList<>());
         listView.setAdapter(searchListAdapter);
 
         fetchRecipesFromFirestore();
@@ -69,11 +76,11 @@ public class Search extends AppCompatActivity {
                                 String recipeId = document.getId(); // Get recipe document ID
                                 List<String> recipeIngredients = (List<String>) document.get("Ingredients");
                                 ResultsRecipe resultsRecipe = new ResultsRecipe(recipeName, recipeId, recipeIngredients);
-                                recipeNames.add(resultsRecipe);
                                 // Populate the original list as well
                                 originalRecipeList.add(resultsRecipe);
+                                filteredRecipeList.add(resultsRecipe);
                             }
-                            searchListAdapter.notifyDataSetChanged();
+                            updateList();
                         }
                     }
                 });
@@ -97,25 +104,32 @@ public class Search extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 if (newText.isEmpty()) {
                     // If search query is empty, restore the original list
-                    searchListAdapter.clear();
-                    searchListAdapter.addAll(originalRecipeList);
-                    searchListAdapter.notifyDataSetChanged();
+                    filteredRecipeList.clear();
+                    filteredRecipeList.addAll(originalRecipeList);
+                    updateList();
                 } else {
                     // Filter the recipes based on the search query
-                    ArrayList<ResultsRecipe> filteredRecipes = new ArrayList<>();
+                    filteredRecipeList.clear();
                     for (ResultsRecipe rec : originalRecipeList) {
                         if (rec.getTitle().toLowerCase().contains(newText.toLowerCase())) {
-                            filteredRecipes.add(rec);
+                            filteredRecipeList.add(rec);
                         }
                     }
-                    searchListAdapter.clear();
-                    searchListAdapter.addAll(filteredRecipes);
-                    searchListAdapter.notifyDataSetChanged();
+                    updateList();
                 }
                 return false;
             }
 
         });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void filterRecipes(String filterText) {
+
+    }
+
+    private void updateList() {
+        searchListAdapter.clear();
+        searchListAdapter.addAll(filteredRecipeList);
     }
 }

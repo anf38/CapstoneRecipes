@@ -1,23 +1,13 @@
 package com.example.pantrypal;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResultsRecipe {
+public class ResultsRecipe implements Serializable {
     protected String title;
     protected String id;
     protected List<String> ingredients;
-
-    public ResultsRecipe() {
-        this.title = "Title";
-        this.id = "id String";
-        this.ingredients = new ArrayList<>();
-    }
-
-    public ResultsRecipe(String title, String id) {
-        this.title = title;
-        this.id = id;
-    }
 
     public ResultsRecipe(String title, String id, List<String> ingredients) {
         this.title = title;

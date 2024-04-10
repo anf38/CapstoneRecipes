@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView logoutBtn;
     private BottomNavigationView nav;
 
-    private final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
+    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
     private final List<RecipeCard> newRecipeCards = new ArrayList<>();
     private final List<RecipeCard> recRecipeCards = new ArrayList<>();
     private final List<RecipeCard> trendRecipeCards = new ArrayList<>();

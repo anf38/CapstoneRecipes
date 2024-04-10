@@ -36,9 +36,8 @@ public class MealDBJSONParserTest {
     @Test
     public void testSingleRecipe() {
         MealDBRecipe recipe = MealDBJSONParser.parseFirstRecipe(TERIYAKI_CHICKEN_JSON);
-        assertEquals(52772, recipe.getId());
-        assertEquals("soy sauce", recipe.getIngredients().get(0).getKey());
-        assertEquals("3/4 cup", recipe.getIngredients().get(0).getValue());
+        assertEquals(52772, recipe.getIDInt());
+        assertEquals("3/4 cup - soy sauce", recipe.getIngredients().get(0));
         assertEquals(9, recipe.getIngredients().size());
     }
 
@@ -46,7 +45,7 @@ public class MealDBJSONParserTest {
     public void testMultipleRecipes() {
         List<MealDBRecipe> recipes = MealDBJSONParser.parseRecipes(RECIPES_START_WITH_A);
         assertEquals(4, recipes.size());
-        assertEquals(53050, recipes.get(3).getId());
+        assertEquals(53050, recipes.get(3).getIDInt());
         assertEquals("Malaysian", recipes.get(3).getArea());
         assertEquals(7, recipes.get(3).getInstructionLines().size());
         assertEquals("In a blender, add the ingredients for the spice paste and blend until smooth.",
