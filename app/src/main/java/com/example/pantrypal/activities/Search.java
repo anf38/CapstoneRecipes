@@ -111,7 +111,6 @@ public class Search extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 searchView.clearFocus();
 
-                makeText(Search.this, "Searching...", Toast.LENGTH_SHORT).show();
                 new Thread(() -> {
                     // find recipes by name
                     List<MealDBRecipe> foundRecipes;
