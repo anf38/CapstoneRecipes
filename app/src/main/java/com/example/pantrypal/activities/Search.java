@@ -1,5 +1,7 @@
 package com.example.pantrypal.activities;
 
+import static android.widget.Toast.makeText;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.pantrypal.R;
 import com.example.pantrypal.ResultsRecipe;
 import com.example.pantrypal.SearchListAdapter;
+import com.example.pantrypal.apiTools.MealDBJSONParser;
 import com.example.pantrypal.apiTools.MealDBRecipe;
 import com.example.pantrypal.apiTools.RecipeRetriever;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,11 +59,18 @@ public class Search extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ResultsRecipe clickedRecipe = (ResultsRecipe) parent.getItemAtPosition(position); // Get the clicked recipe
-                String recipeId = clickedRecipe.getId(); // Get the ID of the clicked recipe
-                Intent intent = new Intent(Search.this, ViewRecipe.class);
-                intent.putExtra("recipeId", recipeId);
-                startActivity(intent);
+                if (parent.getItemAtPosition(position) instanceof MealDBRecipe) {
+                    MealDBRecipe apiRecipe = (MealDBRecipe) parent.getItemAtPosition(position);
+                    Intent intent = new Intent(Search.this, ViewMealDBRecipe.class);
+                    intent.putExtra("recipe", apiRecipe);
+                    startActivity(intent);
+                } else {
+                    ResultsRecipe clickedRecipe = (ResultsRecipe) parent.getItemAtPosition(position); // Get the clicked recipe
+                    String recipeId = clickedRecipe.getId(); // Get the ID of the clicked recipe
+                    Intent intent = new Intent(Search.this, ViewRecipe.class);
+                    intent.putExtra("recipeId", recipeId);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -98,7 +109,21 @@ public class Search extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
 
+                makeText(Search.this, "Searching...", Toast.LENGTH_SHORT).show();
+                new Thread(() -> {
+                    // find recipes by name
+                    List<MealDBRecipe> foundRecipes;
+                    foundRecipes = MealDBJSONParser.parseRecipes(apiRecipeRetriever.searchByName(query));
+                    if (foundRecipes != null)
+                        apiRecipes.addAll(foundRecipes);
+
+                    runOnUiThread(() -> {
+                        filterRecipes(query);
+                        updateList();
+                    });
+                }, "APIRecipeSearch").start();
 
                 return false;
             }
@@ -127,7 +152,7 @@ public class Search extends AppCompatActivity {
         combinedList.addAll(apiRecipes);
 
         resultRecipes = combinedList.parallelStream().filter(recipe -> {
-            String[] words = filterText.split(" ");
+            String[] words = filterText.split("\\W+");
 
             for (String word : words)
                 if (recipe.getTitle().toLowerCase().contains(word.toLowerCase()))
