@@ -5,46 +5,46 @@ public class Comment {
     private String title;
     private String message;
 
-    Comment() {
+   public Comment() {
         this.id = "";
         this.title = "Title";
         this.message = "Message";
     }
 
-    Comment(String title, String message) {
+    public Comment(String title, String message) {
         this.id = "";
         this.title = title;
         this.message = message;
     }
 
-    Comment(String id, String title, String message) {
+    public Comment(String id, String title, String message) {
         this.id = id;
         this.title = title;
         this.message = message;
     }
 
-    void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    void setMessage(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    String getMessage() {
+    public String getMessage() {
         return message;
     }
 
 
-    void setId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    String getId() {
+    public String getId() {
         return id;
     }
 
