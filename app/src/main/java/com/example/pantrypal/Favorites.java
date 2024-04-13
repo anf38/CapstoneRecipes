@@ -24,6 +24,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class Favorites extends AppCompatActivity {
 
@@ -64,14 +66,21 @@ public class Favorites extends AppCompatActivity {
                 String mealdb = recipe.getMealDB();
                 if (mealdb.contentEquals("1")){
                     String recipeId = recipe.getId();
-                    JSONObject j = recipeRetriever.lookUp(Integer.parseInt(recipeId));
-                    MealDBRecipe recipe = MealDBJSONParser.parseFirstRecipe(j);
-                    if (recipe != null) {
-                        Intent intent = new Intent(Favorites.this, ViewMealDBRecipe.class);
-                        intent.putExtra("recipe", recipe);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(Favorites.this, "Recipe details not found", Toast.LENGTH_SHORT).show();
+                    Future<JSONObject> future = recipeRetriever.lookUpAsync(Integer.parseInt(recipeId));
+                    try {
+                        JSONObject j = future.get(); // This will block until the result is available
+                        // Now you can proceed with using the JSONObject j
+                        MealDBRecipe recipe = MealDBJSONParser.parseFirstRecipe(j);
+                        if (recipe != null) {
+                            Intent intent = new Intent(Favorites.this, ViewMealDBRecipe.class);
+                            intent.putExtra("recipe", recipe);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(Favorites.this, "Recipe details not found", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (InterruptedException | ExecutionException e) {
+                        // Handle any exceptions
+                        e.printStackTrace();
                     }
                 } else{
                     String recipeId = recipe.getId();
