@@ -36,8 +36,8 @@ public class Favorites extends AppCompatActivity {
     private FavoritesAdapter adapter;
     private final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
 
-    private List<FavoriteRecipes> favoritesList;
-    FavoriteRecipes recipe;
+    private List<FavoriteRecipe> favoritesList;
+    FavoriteRecipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class Favorites extends AppCompatActivity {
             public void onItemClick(int position) {
                 recipe = favoritesList.get(position);
                 String mealdb = recipe.getMealDB();
-                if (mealdb.contentEquals("1")){
+                if (mealdb.contentEquals("1")) {
                     String recipeId = recipe.getId();
                     Future<JSONObject> future = recipeRetriever.lookUpAsync(Integer.parseInt(recipeId));
                     try {
@@ -82,7 +82,7 @@ public class Favorites extends AppCompatActivity {
                         // Handle any exceptions
                         e.printStackTrace();
                     }
-                } else{
+                } else {
                     String recipeId = recipe.getId();
                     Intent intent = new Intent(Favorites.this, ViewRecipe.class);
                     intent.putExtra("recipeId", recipeId);
@@ -92,6 +92,7 @@ public class Favorites extends AppCompatActivity {
         });
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -112,13 +113,13 @@ public class Favorites extends AppCompatActivity {
                                 String imageURL = document.getString("imageURL");
                                 String recipeId = document.getString("id");
                                 String mealDB = document.getString("mealDB");
-                                FavoriteRecipes recipe;
+                                FavoriteRecipe recipe;
                                 if (imageURL != null) {
-                                    recipe = new FavoriteRecipes(recipeName,imageURL,recipeId,mealDB);
+                                    recipe = new FavoriteRecipe(recipeName, imageURL, recipeId, mealDB);
                                     favoritesList.add(recipe);
                                 } else {
-                                    imageURL =" ";
-                                    recipe = new FavoriteRecipes(recipeName,imageURL,recipeId,mealDB);
+                                    imageURL = " ";
+                                    recipe = new FavoriteRecipe(recipeName, imageURL, recipeId, mealDB);
                                     favoritesList.add(recipe);
                                 }
                             }
