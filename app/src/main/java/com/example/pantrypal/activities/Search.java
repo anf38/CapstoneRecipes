@@ -131,6 +131,7 @@ public class Search extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 if (newText.isEmpty()) {
                     // If search query is empty, restore the original list
+                    apiRecipes.clear();
                     resultRecipes.clear();
                     resultRecipes.addAll(communityRecipes);
                     updateList();
