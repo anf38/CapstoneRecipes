@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,43 +14,48 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pantrypal.Comment;
 import com.example.pantrypal.CommentsListAdapter;
-import com.example.pantrypal.Favorites;
 import com.example.pantrypal.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ViewRecipe extends AppCompatActivity {
-    private FirebaseFirestore db;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextView recipeNameTextView;
     private TextView ingredientsTextView;
+
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private TextView instructionsTextView;
     private ImageView star1, star2, star3, star4, star5;
     private TextView tagsBox;
     private TextView ratingCount, commentCount;
     private Button reviewButton;
+    private boolean isFavorite = false;
+
     private String recipeId;
     private ListView commentsList;
     private ArrayList<Comment> commentsAL;
     private CommentsListAdapter adapter;
+    private ToggleButton favoriteButton;
+    private Button backButton;
 
     private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +69,8 @@ public class ViewRecipe extends AppCompatActivity {
         // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Initialize and set up the bottom navigation view
-        BottomNavigationView bottomNavView = findViewById(R.id.nav);
-        bottomNavView.setSelectedItemId(R.id.homeIcon);
-
         recipeNameTextView = findViewById(R.id.recipeNameTextView);
+        favoriteButton = findViewById(R.id.favoriteButton);
         ingredientsTextView = findViewById(R.id.ingredientsTextView);
         instructionsTextView = findViewById(R.id.instructionsTextView);
         tagsBox = findViewById(R.id.tagsBox);
@@ -83,12 +84,20 @@ public class ViewRecipe extends AppCompatActivity {
         commentCount = findViewById(R.id.commentCount);
         commentsList = findViewById(R.id.commentsList);
         commentsAL = new ArrayList<>();
+        backButton = findViewById(R.id.backButton);
 
         adapter = new CommentsListAdapter(this, R.layout.comments_listview_layout, commentsAL);
         commentsList.setAdapter(adapter);
 
         // Get recipe ID passed from previous activity
         recipeId = getIntent().getStringExtra("recipeId");
+
+        favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFavoriteStatus(recipeId);
+            }
+        });
 
         reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,36 +112,16 @@ public class ViewRecipe extends AppCompatActivity {
             }
         });
 
-        bottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+        // Set onClickListener for backButton to finish current activity and go back to previous
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.homeIcon) {
-                    Intent intent = new Intent(ViewRecipe.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(intent);
-                    finish();
-                    return true;
-                } else if (itemId == R.id.searchIcon) {
-                    startActivity(new Intent(ViewRecipe.this, Search.class));
-                    finish();
-                    return true;
-                } else if (itemId == R.id.favoriteIcon) {
-                    startActivity(new Intent(ViewRecipe.this, Favorites.class));
-                    finish();
-                    return true;
-                } else if (itemId == R.id.submissionIcon) {
-                    startActivity(new Intent(ViewRecipe.this, NewRecipe.class));
-                    finish();
-                    return true;
-                } else if (itemId == R.id.ingredientsIcon) {
-                    startActivity(new Intent(ViewRecipe.this, IngredientsSearch.class));
-                    finish();
-                    return true;
-                }
-                return false;
+            public void onClick(View v) {
+                finish(); // Close the current activity and return to the previous one
             }
         });
+
+        // Get recipe ID passed from previous activity
+        String recipeId = getIntent().getStringExtra("recipeId");
 
         commentsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -148,6 +137,125 @@ public class ViewRecipe extends AppCompatActivity {
 
         fetchAndDisplayRecipeDetails(recipeId);
     }
+
+    // Method to toggle favorite status of the recipe
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Recheck the favorite status and update the UI
+        if (recipeId != null) {
+            checkIfRecipeIsFavorite(recipeId);
+        }
+    }
+
+    private void checkIfRecipeIsFavorite(String recipeId) {
+        if (currentUser != null) {
+            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipeId);
+
+            favoritesRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    isFavorite = task.getResult().exists();
+                    // Update UI based on whether recipe is favorite or not
+                    updateFavoriteButtonUI(isFavorite);
+                } else {
+                    // Handle errors
+                    Log.e("ViewRecipe", "Error checking favorite status: ", task.getException());
+                }
+            });
+        }
+    }
+
+    private void toggleFavoriteStatus(String recipeName) {
+        // Check if the recipe is already in favorites
+        if (currentUser != null) {
+            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipeName);
+
+            favoritesRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    boolean isCurrentlyFavorite = task.getResult().exists();
+                    if (isCurrentlyFavorite) {
+                        // If already in favorites, remove it
+                        removeRecipeFromFavorites(recipeName);
+                        Toast.makeText(ViewRecipe.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // If not in favorites, add it
+                        addRecipeToFavorites(recipeName);
+                        Toast.makeText(ViewRecipe.this, "Added to favorites", Toast.LENGTH_SHORT).show();
+                    }
+                    // Update UI based on whether recipe is favorite or not
+                    isFavorite = !isCurrentlyFavorite; // Invert favorite status
+                    updateFavoriteButtonUI(isFavorite);
+                } else {
+                    // Handle errors
+                    Log.e("ViewRecipe", "Error checking favorite status: ", task.getException());
+                }
+            });
+        }
+    }
+
+    // Method to update UI of favoriteButton based on favorite status
+    private void updateFavoriteButtonUI(boolean isFavorite) {
+        favoriteButton.setChecked(isFavorite);
+    }
+
+    private void addRecipeToFavorites(String recipeId) {
+        if (currentUser != null) {
+            DocumentReference recipeRef = db.collection("recipes").document(recipeId);
+
+            recipeRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot recipeDoc = task.getResult();
+                    if (recipeDoc.exists()) {
+                        String recipeName = recipeDoc.getString("Name");
+
+
+                        DocumentReference favoritesRef = db.collection("users")
+                                .document(currentUser.getUid())
+                                .collection("favorites")
+                                .document(recipeId);
+
+                        // Save the recipe ID as the name field in the favorites collection
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("name", recipeName);
+                        data.put("id", recipeId);
+                        data.put("mealDB", "0");
+
+                        favoritesRef.set(data)
+                                .addOnSuccessListener(aVoid -> {
+                                    // Recipe added successfully
+                                    Log.d("ViewRecipe", "Recipe added to favorites");
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Handle errors
+                                    Log.e("ViewRecipe", "Error adding recipe to favorites", e);
+                                });
+                    } else {
+                        Log.d("ViewRecipe", "Recipe document does not exist");
+                    }
+                } else {
+                    Log.e("ViewRecipe", "Error getting recipe document", task.getException());
+                }
+            });
+        }
+    }
+
+
+    private void removeRecipeFromFavorites(String recipeName) {
+        if (currentUser != null) {
+            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipeName);
+
+            favoritesRef.delete()
+                    .addOnSuccessListener(aVoid -> {
+                        // Recipe removed successfully
+                        Log.d("ViewRecipe", "Recipe removed from favorites");
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle errors
+                        Log.e("ViewRecipe", "Error removing recipe from favorites", e);
+                    });
+        }
+    }
+
 
     private void fetchAndDisplayRecipeDetails(String recipeId) {
         // Get reference to the recipe document
@@ -202,7 +310,10 @@ public class ViewRecipe extends AppCompatActivity {
                         if (numberOfRatings > 0) {
                             double averageRating = totalRating / numberOfRatings;
                             String numberOfRatingsString = String.valueOf(numberOfRatings);
-                            String averageRatingString = String.valueOf(averageRating);
+                            commentCount.setText(numberOfRatingsString);
+                            String averageRatingString = String.format(Locale.US, "$%.1f", averageRating);
+                            ratingCount.setText(averageRatingString);
+                            setStarRating(averageRating);
                             commentCount.setText(numberOfRatingsString);
                             ratingCount.setText(averageRatingString);
                             setStarRating(averageRating);

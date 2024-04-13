@@ -115,6 +115,13 @@ public class IngredientsSearch extends AppCompatActivity {
         fetchRecipesFromFirestore();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        recipeRetriever.shutdown();
+    }
+
     private void fetchRecipesFromFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("recipes").get()

@@ -147,6 +147,13 @@ public class Search extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        apiRecipeRetriever.shutdown();
+    }
+
     private void filterRecipes(String filterText) {
         List<ResultsRecipe> combinedList = (List<ResultsRecipe>) communityRecipes.clone();
         combinedList.addAll(apiRecipes);
