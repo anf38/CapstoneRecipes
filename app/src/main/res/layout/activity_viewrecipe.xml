@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -41,107 +40,107 @@
                 android:src="@drawable/placeholder_image" />
 
 
+
             <TextView
                 android:id="@id/tagsBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="3dp"
                 android:text="Tags: "
                 android:textAlignment="center"
-                android:textColor="@color/black" />
+                android:paddingBottom="3dp"
+                android:textColor="@color/black"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
 
                 <LinearLayout
                     android:id="@+id/starsAndReview"
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical">
 
                     <TextView
                         android:id="@+id/ratingCount"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="bottom"
                         android:text="0.0"
                         android:textColor="@color/black"
-                        android:textSize="15dp" />
+                        android:layout_marginTop="5dp"
+                        android:textSize="15dp"
+                        android:gravity="bottom"/>
 
                     <ImageView
                         android:id="@+id/star1"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginTop="7dp"
                         android:contentDescription="Star Icon"
+                        android:layout_marginTop="7dp"
                         android:src="@drawable/empty_star" />
 
                     <ImageView
                         android:id="@+id/star2"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginTop="7dp"
                         android:contentDescription="Star Icon"
+                        android:layout_marginTop="7dp"
                         android:src="@drawable/empty_star" />
 
                     <ImageView
                         android:id="@+id/star3"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginTop="7dp"
                         android:contentDescription="Star Icon"
+                        android:layout_marginTop="7dp"
                         android:src="@drawable/empty_star" />
 
                     <ImageView
                         android:id="@+id/star4"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginTop="7dp"
                         android:contentDescription="Star Icon"
+                        android:layout_marginTop="7dp"
                         android:src="@drawable/empty_star" />
 
                     <ImageView
                         android:id="@+id/star5"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginTop="7dp"
                         android:contentDescription="Star Icon"
+                        android:layout_marginTop="7dp"
                         android:src="@drawable/empty_star" />
 
                     <TextView
                         android:id="@+id/commentCount"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="bottom"
+                        android:text="0"
                         android:paddingRight="10dp"
-                        android:text="0" />
+                        android:layout_marginTop="5dp"
+                        android:gravity="bottom"/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:layout_gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical">
 
                     <Button
                         android:id="@+id/reviewButton"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:text="Rate"
-                        android:textColor="@color/white"
-                        android:textSize="10dp" />
+                        android:textSize="10dp"
+                        android:textColor="@color/white"/>
 
                 </LinearLayout>
             </LinearLayout>
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -161,10 +160,9 @@
                 android:text="Ingredients"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
-
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -188,7 +186,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -200,12 +198,11 @@
                 android:textColor="@color/white"
                 android:textSize="25sp" />
 
-            <ListView
-                android:id="@+id/commentsList"
+            <!-- Modified layout for comment input and post button -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="225dp"
-                android:nestedScrollingEnabled="true"/>
-
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/add_comment"
@@ -237,7 +234,6 @@
                 android:layout_height="wrap_content"
                 android:background="@color/pale_yellow"
                 />
-
         </LinearLayout>
 
     </ScrollView>

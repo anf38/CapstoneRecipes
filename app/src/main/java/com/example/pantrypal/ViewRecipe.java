@@ -61,7 +61,7 @@ public class ViewRecipe extends AppCompatActivity {
     private Button backButton;
 
     private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +76,6 @@ public class ViewRecipe extends AppCompatActivity {
       // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Initialize and set up the bottom navigation view
-        BottomNavigationView bottomNavView = findViewById(R.id.nav);
-        bottomNavView.setSelectedItemId(R.id.homeIcon);
 
         recipeNameTextView = findViewById(R.id.recipeNameTextView);
         favoriteButton = findViewById(R.id.favoriteButton);
