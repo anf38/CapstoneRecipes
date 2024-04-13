@@ -65,7 +65,6 @@ public class Search extends AppCompatActivity {
                                 String recipeId = document.getId(); // Get recipe document ID
                                 ResultsRecipe resultsRecipe = new ResultsRecipe(recipeName, recipeId);
                                 recipeNames.add(resultsRecipe);
-                                // Populate the original list as well
                                 originalRecipeList.add(resultsRecipe);
                             }
                             searchListAdapter.notifyDataSetChanged();

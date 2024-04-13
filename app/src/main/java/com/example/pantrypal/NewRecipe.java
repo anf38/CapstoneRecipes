@@ -101,7 +101,6 @@ public class NewRecipe extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), AddTags.class);
-                // Assuming recipeName, recipeIngredients, and recipeInstructions are EditText views
                 name = recipeName.getText().toString();
                 String ingredientsText = recipeIngredients.getText().toString();
                 String instructionsText = recipeInstructions.getText().toString();
