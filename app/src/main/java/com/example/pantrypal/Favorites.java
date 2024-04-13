@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pantrypal.activities.ViewMealDBRecipe;
+import com.example.pantrypal.activities.ViewRecipe;
 import com.example.pantrypal.apiTools.MealDBJSONParser;
 import com.example.pantrypal.apiTools.MealDBRecipe;
 import com.example.pantrypal.apiTools.RecipeRetriever;
@@ -34,7 +36,7 @@ public class Favorites extends AppCompatActivity {
     private FirebaseUser currentUser;
     private RecyclerView recyclerView;
     private FavoritesAdapter adapter;
-    private final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
+    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
 
     private List<FavoriteRecipe> favoritesList;
     FavoriteRecipe recipe;
@@ -129,5 +131,12 @@ public class Favorites extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        recipeRetriever.shutdown();
     }
 }

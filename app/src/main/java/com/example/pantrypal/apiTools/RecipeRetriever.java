@@ -21,12 +21,12 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.HttpsURLConnection;
 
 public class RecipeRetriever {
-    private final String serverAddress;
+    private static final String SERVER_ADDRESS = "capstone-recipes-server-a64f8333ac1b.herokuapp.com";
 
     private final ExecutorService asyncExecutor = Executors.newCachedThreadPool();
 
-    public RecipeRetriever(String serverAddress) {
-        this.serverAddress = serverAddress;
+    public RecipeRetriever() {
+
     }
 
     public void shutdown() {
@@ -217,7 +217,7 @@ public class RecipeRetriever {
         JSONObject recipeJSON = null;
 
         try {
-            URL url = new URL("https", serverAddress, request);
+            URL url = new URL("https", SERVER_ADDRESS, request);
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             InputStream response = new BufferedInputStream(connection.getInputStream());
 
@@ -249,7 +249,7 @@ public class RecipeRetriever {
         Bitmap image = null;
 
         try {
-            URL url = new URL("https", serverAddress, imageRequest);
+            URL url = new URL("https", SERVER_ADDRESS, imageRequest);
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             InputStream imageStream = new BufferedInputStream(connection.getInputStream());
 

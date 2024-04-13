@@ -1,4 +1,4 @@
-package com.example.pantrypal;
+package com.example.pantrypal.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pantrypal.R;
+import com.example.pantrypal.ResultsRecipe;
+import com.example.pantrypal.SearchListAdapter;
+import com.example.pantrypal.apiTools.MealDBJSONParser;
+import com.example.pantrypal.apiTools.MealDBRecipe;
+import com.example.pantrypal.apiTools.RecipeRetriever;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,15 +32,19 @@ import java.util.List;
 
 public class IngredientsSearch extends AppCompatActivity {
     private FirebaseFirestore fStore;
+    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
+
     private ListView ingredientsListView, resultsListView;
     private ArrayAdapter<String> ingredientsArrayAdapter;
-    private List<String> ingredients = new ArrayList<>();
-    private ArrayList<ResultsRecipe> recipeNames = new ArrayList<>();
+    private final List<String> ingredients = new ArrayList<>();
     private SearchListAdapter searchListAdapter;
-    private ArrayList<ResultsRecipe> filteredNames = new ArrayList<>();
+
     private EditText etIngredientInput;
     private Button btnAddIngredient;
     private ImageButton expandButton;
+
+    private final ArrayList<ResultsRecipe> communityRecipes = new ArrayList<>();
+    private final ArrayList<ResultsRecipe> filteredRecipes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +58,7 @@ public class IngredientsSearch extends AppCompatActivity {
         ingredientsListView = findViewById(R.id.ingredientsListView);
         resultsListView = findViewById(R.id.resultsListView);
         ingredientsArrayAdapter = new ArrayAdapter<>(this, R.layout.ingredient_list_row, R.id.textViewIngredient, ingredients);
-        searchListAdapter = new SearchListAdapter(this, R.layout.list_item_recipe, filteredNames);
+        searchListAdapter = new SearchListAdapter(this, R.layout.list_item_recipe, filteredRecipes);
         ingredientsListView.setAdapter(ingredientsArrayAdapter);
         resultsListView.setAdapter(searchListAdapter);
 
@@ -86,16 +96,30 @@ public class IngredientsSearch extends AppCompatActivity {
         resultsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ResultsRecipe clickedRecipe = (ResultsRecipe) parent.getItemAtPosition(position); // Get the clicked recipe
-                String recipeId = clickedRecipe.getId(); // Get the ID of the clicked recipe
+                if (parent.getItemAtPosition(position) instanceof MealDBRecipe) {
+                    MealDBRecipe apiRecipe = (MealDBRecipe) parent.getItemAtPosition(position);
+                    Intent intent = new Intent(IngredientsSearch.this, ViewMealDBRecipe.class);
+                    intent.putExtra("recipe", apiRecipe);
+                    startActivity(intent);
+                } else {
+                    ResultsRecipe clickedRecipe = (ResultsRecipe) parent.getItemAtPosition(position); // Get the clicked recipe
+                    String recipeId = clickedRecipe.getId(); // Get the ID of the clicked recipe
 
-                Intent intent = new Intent(IngredientsSearch.this, ViewRecipe.class);
-                intent.putExtra("recipeId", recipeId);
-                startActivity(intent);
+                    Intent intent = new Intent(IngredientsSearch.this, ViewRecipe.class);
+                    intent.putExtra("recipeId", recipeId);
+                    startActivity(intent);
+                }
             }
         });
 
         fetchRecipesFromFirestore();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        recipeRetriever.shutdown();
     }
 
     private void fetchRecipesFromFirestore() {
@@ -111,8 +135,8 @@ public class IngredientsSearch extends AppCompatActivity {
                                 List<String> recipeIngredients = (List<String>) document.get("Ingredients");
                                 ResultsRecipe resultsRecipe = new ResultsRecipe(recipeName, recipeId, recipeIngredients);
 
-                                recipeNames.add(resultsRecipe);
-                                filteredNames.add(resultsRecipe);
+                                communityRecipes.add(resultsRecipe);
+                                filteredRecipes.add(resultsRecipe);
                             }
                             searchListAdapter.notifyDataSetChanged();
                         }
@@ -132,26 +156,43 @@ public class IngredientsSearch extends AppCompatActivity {
     }
 
     private void filterRecipes() {
-        filteredNames.clear();
-        for (ResultsRecipe recipe : recipeNames) {
+        filteredRecipes.clear();
+
+        // Get API recipes
+        if (!ingredients.isEmpty()) {
+            new Thread(() -> {
+                List<MealDBRecipe> recipeIds =
+                        MealDBJSONParser.parseRecipes(recipeRetriever.filterByIngredients(ingredients));
+
+                if (recipeIds != null) {
+                    recipeIds.parallelStream().forEach(id ->
+                            filteredRecipes.add(MealDBJSONParser.parseFirstRecipe(recipeRetriever.lookUp(id.getIDInt()))));
+
+                    runOnUiThread(() -> searchListAdapter.notifyDataSetChanged());
+                }
+            }, "SearchByIngredients").start();
+        }
+
+        // Filter community recipes
+        for (ResultsRecipe recipe : communityRecipes) {
             boolean containsAllIngredients = true;
-            if (!ingredients.isEmpty()) {
-                for (String ingredient : ingredients) {
-                    boolean containsIngredient = false;
-                    for (String recipeIngredient : recipe.getIngredients()) {
-                        if (recipeIngredient.toLowerCase().contains(ingredient.toLowerCase())) {
-                            containsIngredient = true;
-                            break; // No need to check other ingredients if one match is found
-                        }
-                    }
-                    if (!containsIngredient) {
-                        containsAllIngredients = false;
-                        break; // No need to check other ingredients if one is missing
+
+            for (String ingredient : ingredients) {
+                boolean containsIngredient = false;
+                for (String recipeIngredient : recipe.getIngredients()) {
+                    if (recipeIngredient.toLowerCase().contains(ingredient.toLowerCase())) {
+                        containsIngredient = true;
+                        break; // No need to check other ingredients if one match is found
                     }
                 }
+                if (!containsIngredient) {
+                    containsAllIngredients = false;
+                    break; // No need to check other ingredients if one is missing
+                }
             }
+
             if (containsAllIngredients) {
-                filteredNames.add(recipe);
+                filteredRecipes.add(recipe);
             }
         }
         searchListAdapter.notifyDataSetChanged();

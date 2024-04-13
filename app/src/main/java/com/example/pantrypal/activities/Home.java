@@ -1,8 +1,10 @@
-package com.example.pantrypal;
+package com.example.pantrypal.activities;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.pantrypal.R;
 
 public class Home extends AppCompatActivity {
 

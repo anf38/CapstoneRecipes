@@ -1,4 +1,4 @@
-package com.example.pantrypal;
+package com.example.pantrypal.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +19,9 @@ import android.widget.ToggleButton;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pantrypal.Comment;
+import com.example.pantrypal.CommentsListAdapter;
+import com.example.pantrypal.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -36,7 +39,6 @@ public class ViewRecipe extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextView recipeNameTextView;
     private TextView ingredientsTextView;
-    private String recipeName;
 
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private TextView instructionsTextView;
@@ -60,14 +62,12 @@ public class ViewRecipe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewrecipe);
 
-
         //Initialize firebase user
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
         // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance();
-
 
         recipeNameTextView = findViewById(R.id.recipeNameTextView);
         favoriteButton = findViewById(R.id.favoriteButton);
@@ -99,7 +99,6 @@ public class ViewRecipe extends AppCompatActivity {
             }
         });
 
-
         reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +113,6 @@ public class ViewRecipe extends AppCompatActivity {
         });
 
         // Set onClickListener for backButton to finish current activity and go back to previous
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,7 +122,6 @@ public class ViewRecipe extends AppCompatActivity {
 
         // Get recipe ID passed from previous activity
         String recipeId = getIntent().getStringExtra("recipeId");
-
 
         commentsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -137,7 +134,6 @@ public class ViewRecipe extends AppCompatActivity {
                 showReportDialog(commentId, commentTitle, commentMessage);
             }
         });
-
 
         fetchAndDisplayRecipeDetails(recipeId);
     }
@@ -315,7 +311,6 @@ public class ViewRecipe extends AppCompatActivity {
                             double averageRating = totalRating / numberOfRatings;
                             String numberOfRatingsString = String.valueOf(numberOfRatings);
                             commentCount.setText(numberOfRatingsString);
-                            //String averageRatingString = String.valueOf(averageRating);
                             String averageRatingString = String.format(Locale.US, "$%.1f", averageRating);
                             ratingCount.setText(averageRatingString);
                             setStarRating(averageRating);

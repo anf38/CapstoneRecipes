@@ -16,7 +16,7 @@ import org.junit.Test;
  * Address: capstone-recipes-server-a64f8333ac1b.herokuapp.com
  */
 public class RecipeRetrieverTest {
-    private static final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
+    private static final RecipeRetriever recipeRetriever = new RecipeRetriever();
 
     @AfterClass
     public static void shutdown() {

@@ -1,12 +1,11 @@
 package com.example.pantrypal.apiTools;
 
+import com.example.pantrypal.ResultsRecipe;
+
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
-public class MealDBRecipe implements Serializable {
-    private final int id;
-    private final String name;
+public class MealDBRecipe extends ResultsRecipe implements Serializable {
     private final String drinkAlternate;
     private final String category;
     private final String area;
@@ -14,7 +13,7 @@ public class MealDBRecipe implements Serializable {
     private final String imageURL;
     private final List<String> tags;
     private final String youtubeLink;
-    private final List<Map.Entry<String, String>> ingredients;
+    private final List<String> ingredients;
 
     public MealDBRecipe(int id,
                         String name,
@@ -25,9 +24,9 @@ public class MealDBRecipe implements Serializable {
                         String imageURL,
                         List<String> tags,
                         String youtubeLink,
-                        List<Map.Entry<String, String>> ingredients) {
-        this.id = id;
-        this.name = name;
+                        List<String> ingredients) {
+        super(name, String.valueOf(id), ingredients);
+
         this.drinkAlternate = drinkAlternate;
         this.category = category;
         this.area = area;
@@ -38,12 +37,8 @@ public class MealDBRecipe implements Serializable {
         this.ingredients = ingredients;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
+    public int getIDInt() {
+        return Integer.parseInt(super.getId());
     }
 
     public String getDrinkAlternate() {
@@ -74,7 +69,7 @@ public class MealDBRecipe implements Serializable {
         return youtubeLink;
     }
 
-    public List<Map.Entry<String, String>> getIngredients() {
+    public List<String> getIngredients() {
         return ingredients;
     }
 }

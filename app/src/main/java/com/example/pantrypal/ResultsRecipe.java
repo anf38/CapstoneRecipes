@@ -1,43 +1,33 @@
 package com.example.pantrypal;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResultsRecipe {
-    private String title;
-    private String id;
-    private List<String> ingredients;
+public class ResultsRecipe implements Serializable {
+    protected String title;
+    protected String id;
+    protected List<String> ingredients;
 
-    ResultsRecipe() {
-        this.title = "Title";
-        this.id = "id String";
-        this.ingredients = new ArrayList<>();
-    }
-
-    ResultsRecipe(String title, String id) {
-        this.title = title;
-        this.id = id;
-    }
-
-    ResultsRecipe(String title, String id, List<String> ingredients) {
+    public ResultsRecipe(String title, String id, List<String> ingredients) {
         this.title = title;
         this.id = id;
         this.ingredients = new ArrayList<>(ingredients);
     }
 
-    void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    void setId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    String getId() {
+    public String getId() {
         return id;
     }
 

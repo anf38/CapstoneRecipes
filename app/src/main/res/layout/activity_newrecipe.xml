@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="15dp"
-        tools:context=".NewRecipe">
+        tools:context=".activities.NewRecipe">
 
         <TextView
             android:id="@+id/newTrip"

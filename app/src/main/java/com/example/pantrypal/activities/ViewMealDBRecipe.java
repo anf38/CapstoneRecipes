@@ -1,4 +1,4 @@
-package com.example.pantrypal;
+package com.example.pantrypal.activities;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pantrypal.R;
 import com.example.pantrypal.apiTools.MealDBRecipe;
 import com.example.pantrypal.apiTools.RecipeRetriever;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ViewMealDBRecipe extends AppCompatActivity {
-    private final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
+    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
     private ImageView recipeImageView;
     private TextView recipeNameTextView;
     private TextView ingredientsTextView;
@@ -54,7 +55,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         favoriteButton = findViewById(R.id.favoriteButton);
 
 
-        recipeNameTextView.setText(recipe.getName());
+        recipeNameTextView.setText(recipe.getTitle());
         ingredientsTextView.setText(formatIngredientsList(recipe.getIngredients()));
         instructionsTextView.setText(formatList(recipe.getInstructionLines()));
 
@@ -117,18 +118,17 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         return stringBuilder.toString();
     }
 
-    private String formatIngredientsList(List<Map.Entry<String, String>> ingredients) {
+    private String formatIngredientsList(List<String> ingredients) {
         StringBuilder ingredientQuantityList = new StringBuilder();
-        for (Map.Entry<String, String> ingredientQuantityPair : ingredients) {
-            ingredientQuantityList.append(
-                    String.format("- %s (%s)\n", ingredientQuantityPair.getKey(), ingredientQuantityPair.getValue()));
+        for (String ingredient : ingredients) {
+            ingredientQuantityList.append("- ").append(ingredient).append("\n");
         }
 
         return ingredientQuantityList.toString();
     }
 
     private void toggleFavoriteStatus(MealDBRecipe recipe) {
-        int recipeId = recipe.getId();
+        int recipeId = recipe.getIDInt();
 
         // Convert the recipeId to a string
         String recipeIdString = String.valueOf(recipeId);
@@ -169,7 +169,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
     private void addRecipeToFavorites(MealDBRecipe recipe) {
         if (currentUser != null) {
             // Get the recipe ID from the MealDBRecipe
-            int recipeId = recipe.getId();
+            int recipeId = recipe.getIDInt();
 
             // Convert the recipeId to a string
             String recipeIdString = String.valueOf(recipeId);
@@ -180,7 +180,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                     .collection("favorites")
                     .document(recipeIdString);
 
-            String recipeName = recipe.getName();
+            String recipeName = recipe.getTitle();
             String image = recipe.getImageURL();
 
             Map<String, Object> data = new HashMap<>();
@@ -205,7 +205,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
     private void removeRecipeFromFavorites(MealDBRecipe recipe) {
         if (currentUser != null) {
             // Get the recipe ID from the MealDBRecipe
-            int recipeId = recipe.getId();
+            int recipeId = recipe.getIDInt();
 
             // Convert the recipeId to a string
             String recipeIdString = String.valueOf(recipeId);

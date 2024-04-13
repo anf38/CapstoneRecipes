@@ -1,4 +1,4 @@
-package com.example.pantrypal;
+package com.example.pantrypal.activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -37,11 +37,11 @@ public class RecipeCard extends Activity {
         this.recipe = recipe;
 
         new Thread(() -> {
-            RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
+            RecipeRetriever recipeRetriever = new RecipeRetriever();
             Bitmap recipeImage = recipeRetriever.getRecipeImage(recipe.getImageURL(), false);
             new Handler(Looper.getMainLooper()).post(() -> {
                 imageView.setImageBitmap(recipeImage);
-                textView.setText(recipe.getName());
+                textView.setText(recipe.getTitle());
             });
             recipeRetriever.shutdown();
         }, "loadRecipeImage").start();
