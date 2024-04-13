@@ -1,4 +1,4 @@
-package com.example.pantrypal;
+package com.example.pantrypal.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pantrypal.activities.ViewMealDBRecipe;
-import com.example.pantrypal.activities.ViewRecipe;
+import com.example.pantrypal.FavoriteRecipe;
+import com.example.pantrypal.FavoritesAdapter;
+import com.example.pantrypal.R;
 import com.example.pantrypal.apiTools.MealDBJSONParser;
 import com.example.pantrypal.apiTools.MealDBRecipe;
 import com.example.pantrypal.apiTools.RecipeRetriever;
