@@ -2,8 +2,6 @@ package com.example.pantrypal;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,10 +31,11 @@ public class Favorites extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
     private RecyclerView recyclerView;
-    private FavoritesAdapter adapter; // Changed from CustomAdapter to FavoritesAdapter
+    private FavoritesAdapter adapter;
     private final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
 
-    private List<String> favoritesList;
+    private List<FavoriteRecipes> favoritesList;
+    FavoriteRecipes recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,7 @@ public class Favorites extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         recyclerView = findViewById(R.id.recyclerView);
         favoritesList = new ArrayList<>();
-        adapter = new FavoritesAdapter(this, favoritesList); // Changed from CustomAdapter to FavoritesAdapter
+        adapter = new FavoritesAdapter(this, favoritesList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -61,11 +60,10 @@ public class Favorites extends AppCompatActivity {
         adapter.setOnItemClickListener(new FavoritesAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                String item = favoritesList.get(position);
-                String[] recipeData = item.split("\\|");
-                String mealdb = recipeData[2]; // Assuming mealDBrecipe is at index 2
-                if ("1".equals(mealdb)){
-                    String recipeId = recipeData[1]; // Assuming recipeId is at index 1
+                recipe = favoritesList.get(position);
+                String mealdb = recipe.getMealDB();
+                if (mealdb.contentEquals("1")){
+                    String recipeId = recipe.getId();
                     JSONObject j = recipeRetriever.lookUp(Integer.parseInt(recipeId));
                     MealDBRecipe recipe = MealDBJSONParser.parseFirstRecipe(j);
                     if (recipe != null) {
@@ -75,8 +73,8 @@ public class Favorites extends AppCompatActivity {
                     } else {
                         Toast.makeText(Favorites.this, "Recipe details not found", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    String recipeId = recipeData[0]; // Assuming recipe name is at index 0
+                } else{
+                    String recipeId = recipe.getId();
                     Intent intent = new Intent(Favorites.this, ViewRecipe.class);
                     intent.putExtra("recipeId", recipeId);
                     startActivity(intent);
@@ -97,10 +95,16 @@ public class Favorites extends AppCompatActivity {
                             for (DocumentSnapshot document : task.getResult()) {
                                 String recipeName = document.getString("name");
                                 String imageURL = document.getString("imageURL");
+                                String recipeId = document.getString("id");
+                                String mealDB = document.getString("mealDB");
+                                FavoriteRecipes recipe;
                                 if (imageURL != null) {
-                                    favoritesList.add(recipeName + "|" + imageURL);
+                                    recipe = new FavoriteRecipes(recipeName,imageURL,recipeId,mealDB);
+                                    favoritesList.add(recipe);
                                 } else {
-                                    favoritesList.add(recipeName + "|");
+                                    imageURL =" ";
+                                    recipe = new FavoriteRecipes(recipeName,imageURL,recipeId,mealDB);
+                                    favoritesList.add(recipe);
                                 }
                             }
                             adapter.notifyDataSetChanged();

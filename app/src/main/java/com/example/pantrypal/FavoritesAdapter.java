@@ -16,11 +16,11 @@ import java.util.List;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
-    private List<String> recipes;
+    private List<FavoriteRecipes> recipes;
     private Context context;
     private OnItemClickListener listener;
 
-    public FavoritesAdapter(Context context, List<String> recipes) {
+    public FavoritesAdapter(Context context, List<FavoriteRecipes> recipes) {
         this.context = context;
         this.recipes = recipes;
     }
@@ -42,13 +42,13 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String[] recipeData = recipes.get(position).split("\\|");
-        String recipeName = recipeData[0];
-        String imageURL = recipeData.length > 1 ? recipeData[1] : "";
+        FavoriteRecipes recipeData = recipes.get(position);
+        String recipeName = recipeData.getName();
+        String imageURL = recipeData.getimageURL();
 
         holder.recipeNameTextView.setText(recipeName);
 
-        if (!imageURL.isEmpty()) {
+        if (!imageURL.contentEquals(" ")) {
             Picasso.get().load(imageURL).placeholder(R.drawable.placeholder_image).into(holder.recipeImageView);
         } else {
             holder.recipeImageView.setImageResource(R.drawable.placeholder_image);

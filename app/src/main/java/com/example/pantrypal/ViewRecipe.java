@@ -190,6 +190,7 @@ public class ViewRecipe extends AppCompatActivity {
                     if (recipeDoc.exists()) {
                         String recipeName = recipeDoc.getString("Name");
 
+
                         DocumentReference favoritesRef = db.collection("users")
                                 .document(currentUser.getUid())
                                 .collection("favorites")
@@ -198,6 +199,8 @@ public class ViewRecipe extends AppCompatActivity {
                         // Save the recipe ID as the name field in the favorites collection
                         Map<String, Object> data = new HashMap<>();
                         data.put("name", recipeName);
+                        data.put("id", recipeId);
+                        data.put("mealDB", "0");
 
                         favoritesRef.set(data)
                                 .addOnSuccessListener(aVoid -> {

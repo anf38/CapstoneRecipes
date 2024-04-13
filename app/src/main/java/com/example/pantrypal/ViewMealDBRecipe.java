@@ -19,6 +19,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Transaction;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -173,8 +174,17 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                     .collection("favorites")
                     .document(recipeIdString);
 
+            String recipeName = recipe.getName();
+            String image = recipe.getImageURL();
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("name", recipeName);
+            data.put("imageURL", image);
+            data.put("id", recipeIdString);
+            data.put("mealDB", "1");
+
             // Set the document with the recipe data
-            favoritesRef.set(recipe)
+            favoritesRef.set(data)
                     .addOnSuccessListener(aVoid -> {
                         // Recipe added successfully
                         Toast.makeText(ViewMealDBRecipe.this, "Added to favorites", Toast.LENGTH_SHORT).show();
