@@ -16,11 +16,11 @@ import java.util.List;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
-    private List<FavoriteRecipes> recipes;
+    private List<FavoriteRecipe> recipes;
     private Context context;
     private OnItemClickListener listener;
 
-    public FavoritesAdapter(Context context, List<FavoriteRecipes> recipes) {
+    public FavoritesAdapter(Context context, List<FavoriteRecipe> recipes) {
         this.context = context;
         this.recipes = recipes;
     }
@@ -42,7 +42,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        FavoriteRecipes recipeData = recipes.get(position);
+        FavoriteRecipe recipeData = recipes.get(position);
         String recipeName = recipeData.getName();
         String imageURL = recipeData.getimageURL();
 

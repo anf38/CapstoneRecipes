@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Transaction;
 
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +86,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
 
     private void checkIfRecipeIsFavorite(MealDBRecipe recipe) {
         if (currentUser != null) {
-            String recipeID =  String.valueOf(recipe.getId());
+            String recipeID = String.valueOf(recipe.getId());
             DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipeID);
 
             favoritesRef.get().addOnCompleteListener(task -> {
