@@ -29,6 +29,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ViewRecipe extends AppCompatActivity {
@@ -313,7 +314,11 @@ public class ViewRecipe extends AppCompatActivity {
                         if (numberOfRatings > 0) {
                             double averageRating = totalRating / numberOfRatings;
                             String numberOfRatingsString = String.valueOf(numberOfRatings);
-                            String averageRatingString = String.valueOf(averageRating);
+                            commentCount.setText(numberOfRatingsString);
+                            //String averageRatingString = String.valueOf(averageRating);
+                            String averageRatingString = String.format(Locale.US, "$%.1f", averageRating);
+                            ratingCount.setText(averageRatingString);
+                            setStarRating(averageRating);
                             commentCount.setText(numberOfRatingsString);
                             ratingCount.setText(averageRatingString);
                             setStarRating(averageRating);
