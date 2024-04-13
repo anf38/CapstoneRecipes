@@ -92,6 +92,12 @@ public class Favorites extends AppCompatActivity {
         });
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        loadFavorites();
+    }
 
     private void loadFavorites() {
         db.collection("users").document(currentUser.getUid()).collection("favorites")

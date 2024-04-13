@@ -87,7 +87,8 @@ public class ViewMealDBRecipe extends AppCompatActivity {
 
     private void checkIfRecipeIsFavorite(MealDBRecipe recipe) {
         if (currentUser != null) {
-            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipe.getName());
+            String recipeID =  String.valueOf(recipe.getId());
+            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipeID);
 
             favoritesRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -128,15 +129,21 @@ public class ViewMealDBRecipe extends AppCompatActivity {
     }
 
     private void toggleFavoriteStatus(MealDBRecipe recipe) {
+        int recipeId = recipe.getId();
+
+        // Convert the recipeId to a string
+        String recipeIdString = String.valueOf(recipeId);
+
         // Check if the recipe is already in favorites
         if (currentUser != null) {
-            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipe.getName());
+            DocumentReference favoritesRef = db.collection("users").document(currentUser.getUid()).collection("favorites").document(recipeIdString);
 
             favoritesRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     boolean isFavorite = task.getResult().exists();
                     if (isFavorite) {
                         // If already in favorites, remove it
+
                         removeRecipeFromFavorites(recipe);
                         Toast.makeText(ViewMealDBRecipe.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
                     } else {
