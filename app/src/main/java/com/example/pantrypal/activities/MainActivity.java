@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pantrypal.Favorites;
-import com.example.pantrypal.NewRecipe;
 import com.example.pantrypal.R;
 import com.example.pantrypal.apiTools.MealDBJSONParser;
 import com.example.pantrypal.apiTools.MealDBRecipe;

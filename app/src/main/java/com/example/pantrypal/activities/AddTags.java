@@ -8,7 +8,6 @@ import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.pantrypal.NewRecipe;
 import com.example.pantrypal.R;
 
 import java.util.ArrayList;

@@ -30,7 +30,7 @@
             android:name=".activities.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".NewRecipe"
+            android:name=".activities.NewRecipe"
             android:exported="false" />
         <activity
             android:name=".activities.Search"

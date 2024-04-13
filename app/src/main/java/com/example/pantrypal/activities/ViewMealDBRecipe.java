@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pantrypal.Favorites;
-import com.example.pantrypal.NewRecipe;
 import com.example.pantrypal.R;
 import com.example.pantrypal.apiTools.MealDBRecipe;
 import com.example.pantrypal.apiTools.RecipeRetriever;
@@ -20,7 +19,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.List;
-import java.util.Map;
 
 public class ViewMealDBRecipe extends AppCompatActivity {
     private final RecipeRetriever recipeRetriever = new RecipeRetriever();

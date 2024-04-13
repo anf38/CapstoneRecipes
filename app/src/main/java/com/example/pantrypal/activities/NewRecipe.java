@@ -1,4 +1,4 @@
-package com.example.pantrypal;
+package com.example.pantrypal.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.pantrypal.activities.AddTags;
-import com.example.pantrypal.activities.MainActivity;
+import com.example.pantrypal.CreateRecipe;
+import com.example.pantrypal.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
