@@ -48,14 +48,24 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
         holder.recipeNameTextView.setText(recipeName);
 
-        if (!imageURL.contentEquals(" ")) {
-            Picasso.get().load(imageURL)
-                    .placeholder(R.drawable.placeholder_image)
-                    .fit() // Fit the image into ImageView
-                    .into(holder.recipeImageView);
-        } else {
-            holder.recipeImageView.setImageResource(R.drawable.placeholder_image);
-        }
+        // Set the dimensions of the ImageView
+        holder.recipeImageView.post(new Runnable() {
+            @Override
+            public void run() {
+                int targetWidth = holder.recipeImageView.getWidth();
+                int targetHeight = holder.recipeImageView.getHeight();
+
+                if (!imageURL.contentEquals(" ")) {
+                    Picasso.get().load(imageURL)
+                            .placeholder(R.drawable.placeholder_image)
+                            .resize(targetWidth, targetHeight) // Resize the image to match ImageView dimensions
+                            .centerCrop() // Fit the image into ImageView with cropping
+                            .into(holder.recipeImageView);
+                } else {
+                    holder.recipeImageView.setImageResource(R.drawable.placeholder_image);
+                }
+            }
+        });
     }
 
 

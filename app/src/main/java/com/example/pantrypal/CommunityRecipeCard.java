@@ -51,7 +51,19 @@ public class CommunityRecipeCard extends Activity {
                             textView.setText(recipeName);
                             if (imageUrl != null) {
                                 // Load image asynchronously
-                                Picasso.get().load(imageUrl).fit().into(imageView);
+                                imageView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        int targetWidth = imageView.getWidth();
+                                        int targetHeight = imageView.getHeight();
+
+                                        Picasso.get().load(imageUrl)
+                                                .placeholder(R.drawable.placeholder_image)
+                                                .resize(targetWidth, targetHeight)
+                                                .centerCrop()
+                                                .into(imageView);
+                                    }
+                                });
                             } else {
                                 // Set placeholder image
                                 imageView.setImageResource(R.drawable.placeholder_image);
@@ -64,6 +76,7 @@ public class CommunityRecipeCard extends Activity {
                     }
                 });
     }
+
 
 
     public void setOnClickListener(Context context) {
