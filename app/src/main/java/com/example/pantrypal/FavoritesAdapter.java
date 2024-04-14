@@ -49,11 +49,15 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         holder.recipeNameTextView.setText(recipeName);
 
         if (!imageURL.contentEquals(" ")) {
-            Picasso.get().load(imageURL).placeholder(R.drawable.placeholder_image).into(holder.recipeImageView);
+            Picasso.get().load(imageURL)
+                    .placeholder(R.drawable.placeholder_image)
+                    .fit() // Fit the image into ImageView
+                    .into(holder.recipeImageView);
         } else {
             holder.recipeImageView.setImageResource(R.drawable.placeholder_image);
         }
     }
+
 
     @Override
     public int getItemCount() {
