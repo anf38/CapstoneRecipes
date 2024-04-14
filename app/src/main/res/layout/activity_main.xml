@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/yellow"
-    tools:ignore="RtlCompat"
-    tools:context=".activities.MainActivity">
+    tools:context=".MainActivity"
+    tools:ignore="RtlCompat">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,10 +26,10 @@
 
 
             <GridLayout
-                android:paddingTop = "20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="20dp">
 
                 <!-- Recipe of the day -->
                 <androidx.cardview.widget.CardView
@@ -128,10 +128,10 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe1"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
 
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
@@ -162,10 +162,10 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe2"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -195,10 +195,10 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe3"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -228,10 +228,10 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe4"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -261,10 +261,10 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe5"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -276,9 +276,9 @@
                             android:layout_column="5"
                             android:layout_gravity="bottom"
                             android:layout_margin="8dp"
+                            android:layout_marginRight="20dp"
                             app:cardCornerRadius="20dp"
-                            app:cardElevation="10dp"
-                            android:layout_marginRight="20dp">
+                            app:cardElevation="10dp">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -295,10 +295,10 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe6"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
                     </GridLayout>
@@ -315,6 +315,7 @@
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
+
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -354,10 +355,10 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe1"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -387,10 +388,10 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe2"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -420,10 +421,10 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe3"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -453,10 +454,10 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe4"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -486,10 +487,10 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe5"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -501,9 +502,9 @@
                             android:layout_column="5"
                             android:layout_gravity="bottom"
                             android:layout_margin="8dp"
+                            android:layout_marginRight="20dp"
                             app:cardCornerRadius="20dp"
-                            app:cardElevation="10dp"
-                            android:layout_marginRight="20dp">
+                            app:cardElevation="10dp">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -520,10 +521,10 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe6"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
                     </GridLayout>
@@ -540,12 +541,13 @@
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
+
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <GridLayout
-                        android:id="@+id/gridLayoutTrend"
+                        android:id="@+id/gridLayoutCommunity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -554,7 +556,7 @@
                         android:rowCount="1">
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/firstTrendCard"
+                            android:id="@+id/firstCommunityCard"
                             android:layout_width="115dp"
                             android:layout_height="wrap_content"
                             android:layout_row="0"
@@ -579,15 +581,15 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe1"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/secondTrendCard"
+                            android:id="@+id/secondCommunityCard"
                             android:layout_width="115dp"
                             android:layout_height="wrap_content"
                             android:layout_row="0"
@@ -612,15 +614,15 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe2"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/thirdTrendCard"
+                            android:id="@+id/thirdCommunityCard"
                             android:layout_width="115dp"
                             android:layout_height="wrap_content"
                             android:layout_row="0"
@@ -645,15 +647,15 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe3"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/fourthTrendCard"
+                            android:id="@+id/fourthCommunityCard"
                             android:layout_width="115dp"
                             android:layout_height="wrap_content"
                             android:layout_row="0"
@@ -678,15 +680,15 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe4"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/fifthTrendCard"
+                            android:id="@+id/fifthCommunityCard"
                             android:layout_width="115dp"
                             android:layout_height="wrap_content"
                             android:layout_row="0"
@@ -711,24 +713,24 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe5"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical" />
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/sixthTrendCard"
+                            android:id="@+id/sixthCommunityCard"
                             android:layout_width="115dp"
                             android:layout_height="wrap_content"
                             android:layout_row="0"
                             android:layout_column="5"
                             android:layout_gravity="bottom"
                             android:layout_margin="8dp"
+                            android:layout_marginRight="20dp"
                             app:cardCornerRadius="20dp"
-                            app:cardElevation="10dp"
-                            android:layout_marginRight="20dp">
+                            app:cardElevation="10dp">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -745,18 +747,19 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
+                                    android:gravity="center_vertical"
                                     android:text="recipe6"
                                     android:textAlignment="center"
-                                    android:textStyle="bold"
-                                    android:gravity="center_vertical"/>
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
                     </GridLayout>
                 </HorizontalScrollView>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center" />
             </GridLayout>
         </RelativeLayout>
     </ScrollView>

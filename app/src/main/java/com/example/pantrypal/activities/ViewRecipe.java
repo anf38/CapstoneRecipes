@@ -2,8 +2,6 @@ package com.example.pantrypal.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,23 +16,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pantrypal.Comment;
 import com.example.pantrypal.CommentsListAdapter;
 import com.example.pantrypal.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,15 +37,13 @@ import java.util.Map;
 
 public class ViewRecipe extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseStorage storage;
-    private StorageReference storageRef;
     private TextView recipeNameTextView;
     private TextView ingredientsTextView;
+    private String recipeName;
 
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private TextView instructionsTextView;
     private ImageView star1, star2, star3, star4, star5;
-    private ImageView recipeImageView;
     private TextView tagsBox;
     private TextView ratingCount, commentCount;
     private Button reviewButton;
@@ -72,14 +63,14 @@ public class ViewRecipe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewrecipe);
 
+
         //Initialize firebase user
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
         // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReference();
+
 
         recipeNameTextView = findViewById(R.id.recipeNameTextView);
         favoriteButton = findViewById(R.id.favoriteButton);
@@ -97,7 +88,6 @@ public class ViewRecipe extends AppCompatActivity {
         commentsList = findViewById(R.id.commentsList);
         commentsAL = new ArrayList<>();
         backButton = findViewById(R.id.backButton);
-        recipeImageView = findViewById(R.id.imageView);
 
         adapter = new CommentsListAdapter(this, R.layout.comments_listview_layout, commentsAL);
         commentsList.setAdapter(adapter);
@@ -111,6 +101,7 @@ public class ViewRecipe extends AppCompatActivity {
                 toggleFavoriteStatus(recipeId);
             }
         });
+
 
         reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +117,7 @@ public class ViewRecipe extends AppCompatActivity {
         });
 
         // Set onClickListener for backButton to finish current activity and go back to previous
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +127,7 @@ public class ViewRecipe extends AppCompatActivity {
 
         // Get recipe ID passed from previous activity
         String recipeId = getIntent().getStringExtra("recipeId");
+
 
         commentsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -147,6 +140,7 @@ public class ViewRecipe extends AppCompatActivity {
                 showReportDialog(commentId, commentTitle, commentMessage);
             }
         });
+
 
         fetchAndDisplayRecipeDetails(recipeId);
     }
@@ -281,7 +275,6 @@ public class ViewRecipe extends AppCompatActivity {
                             String recipeName = task.getResult().getString("Name");
                             List<String> ingredients = (List<String>) task.getResult().get("Ingredients");
                             List<String> instructions = (List<String>) task.getResult().get("Instructions");
-                            String imageUrl = task.getResult().getString("ImageUrl");
                             String tags = task.getResult().getString("Tags");
                             getRatings();
 
@@ -290,22 +283,6 @@ public class ViewRecipe extends AppCompatActivity {
                             ingredientsTextView.setText(formatList(ingredients));
                             instructionsTextView.setText(formatList(instructions));
                             tagsBox.setText("Tags: " + tags);
-                            if (imageUrl != null && !imageUrl.isEmpty()) {
-                                StorageReference gsReference = storage.getReferenceFromUrl(imageUrl);
-                                gsReference.getBytes(1024 * 1024) // Max image size in bytes
-                                        .addOnCompleteListener(new OnCompleteListener<byte[]>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<byte[]> task) {
-                                                if (task.isSuccessful()) {
-                                                    byte[] bytes = task.getResult();
-                                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                    recipeImageView.setImageBitmap(bitmap);
-                                                } else {
-                                                    Log.d("ViewRecipe", "Failed to load image: " + task.getException());
-                                                }
-                                            }
-                                        });
-                            }
                         } else {
                             Log.d("ViewRecipe", "No such document");
                         }
@@ -341,7 +318,8 @@ public class ViewRecipe extends AppCompatActivity {
                             double averageRating = totalRating / numberOfRatings;
                             String numberOfRatingsString = String.valueOf(numberOfRatings);
                             commentCount.setText(numberOfRatingsString);
-                            String averageRatingString = String.format(Locale.US, "$%.1f", averageRating);
+                            //String averageRatingString = String.valueOf(averageRating);
+                            String averageRatingString = String.format(Locale.US, "%.1f", averageRating);
                             ratingCount.setText(averageRatingString);
                             setStarRating(averageRating);
                             commentCount.setText(numberOfRatingsString);
