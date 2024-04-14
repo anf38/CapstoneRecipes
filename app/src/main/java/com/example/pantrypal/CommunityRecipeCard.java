@@ -51,7 +51,7 @@ public class CommunityRecipeCard extends Activity {
                             textView.setText(recipeName);
                             if (imageUrl != null) {
                                 // Load image asynchronously
-                                Picasso.get().load(imageUrl).into(imageView);
+                                Picasso.get().load(imageUrl).fit().into(imageView);
                             } else {
                                 // Set placeholder image
                                 imageView.setImageResource(R.drawable.placeholder_image);
