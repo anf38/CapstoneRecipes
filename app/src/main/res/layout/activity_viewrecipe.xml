@@ -37,8 +37,9 @@
                 android:layout_height="200dp"
                 android:layout_marginBottom="20dp"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/placeholder_image" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/placeholder_image">
+            </ImageView>
 
             <TextView
                 android:layout_width="match_parent"
