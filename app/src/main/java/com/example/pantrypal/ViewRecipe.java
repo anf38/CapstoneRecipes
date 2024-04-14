@@ -316,7 +316,7 @@ public class ViewRecipe extends AppCompatActivity {
                             String numberOfRatingsString = String.valueOf(numberOfRatings);
                             commentCount.setText(numberOfRatingsString);
                             //String averageRatingString = String.valueOf(averageRating);
-                            String averageRatingString = String.format(Locale.US, "$%.1f", averageRating);
+                            String averageRatingString = String.format(Locale.US, "%.1f", averageRating);
                             ratingCount.setText(averageRatingString);
                             setStarRating(averageRating);
                             commentCount.setText(numberOfRatingsString);
