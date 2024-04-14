@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <RadioButton
+            android:id="@+id/radio_inappropriate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Inappropriate" />
+
+        <RadioButton
+            android:id="@+id/radio_unrelated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Unrelated" />
+
+        <RadioButton
+            android:id="@+id/radio_spam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Spam" />
+
+        <RadioButton
+            android:id="@+id/radio_hateSpeech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hate Speech" />
+
+        <RadioButton
+            android:id="@+id/radio_bullyingHarrassment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bullying/Harrassment" />
+
+        <RadioButton
+            android:id="@+id/radio_violence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Violence" />
+
+        <RadioButton
+            android:id="@+id/radio_somethingElse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Something else" />
+
+    </RadioGroup>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

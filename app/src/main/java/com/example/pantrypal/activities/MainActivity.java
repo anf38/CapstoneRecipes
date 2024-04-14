@@ -1,14 +1,16 @@
-package com.example.pantrypal;
+package com.example.pantrypal.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ImageButton;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pantrypal.R;
 import com.example.pantrypal.apiTools.MealDBJSONParser;
 import com.example.pantrypal.apiTools.MealDBRecipe;
 import com.example.pantrypal.apiTools.RecipeRetriever;
@@ -23,10 +25,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
-    private ImageButton logoutBtn;
+    private ImageView logoutBtn;
     private BottomNavigationView nav;
 
-    private final RecipeRetriever recipeRetriever = new RecipeRetriever("capstone-recipes-server-a64f8333ac1b.herokuapp.com");
+    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
     private final List<RecipeCard> newRecipeCards = new ArrayList<>();
     private final List<RecipeCard> recRecipeCards = new ArrayList<>();
     private final List<RecipeCard> trendRecipeCards = new ArrayList<>();
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         nav = findViewById(R.id.nav);
         nav.setSelectedItemId(R.id.homeIcon);
-        //logoutBtn = findViewById(R.id.logoutIcon);
+        logoutBtn = findViewById(R.id.logoutBtn);
 
         RecipeCard recipeOfTheDayCard = new RecipeCard(findViewById(R.id.recipeOfTheDay),
                 findViewById(R.id.recipeOfTheDayImage),
@@ -111,15 +113,15 @@ public class MainActivity extends AppCompatActivity {
 // Set OnClickListener for other CardViews as needed
 
 
-//        logoutBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FirebaseAuth.getInstance().signOut();
-//                Intent intent = new Intent(getApplicationContext(), Login.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

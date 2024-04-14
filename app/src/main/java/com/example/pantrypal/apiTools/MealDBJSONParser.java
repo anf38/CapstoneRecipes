@@ -114,13 +114,13 @@ public class MealDBJSONParser {
     }
 
     private static MealDBRecipe parseRecipe(JSONObject recipe) {
-        List<Map.Entry<String, String>> ingredients = new ArrayList<>();
+        List<String> ingredients = new ArrayList<>();
         for (int i = 1; i <= 20; ++i) {
             String ingredient = recipe.optString("strIngredient" + i);
             String measurement = recipe.optString("strMeasure" + i);
             if (!ingredient.isEmpty() && !ingredient.equals("null")
                     && !measurement.isEmpty() && !measurement.equals("null")) {
-                ingredients.add(new AbstractMap.SimpleEntry<>(ingredient, measurement));
+                ingredients.add(measurement + " " + ingredient);
             }
         }
 
