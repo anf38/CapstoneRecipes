@@ -47,7 +47,7 @@ public class CommunityRecipeCard extends Activity {
                         if (task.getResult() != null && task.getResult().exists()) {
                             // Extract recipe details from the document
                             String recipeName = task.getResult().getString("Name");
-                            String imageUrl = task.getResult().getString("imageURL");
+                            String imageUrl = task.getResult().getString("ImageUrl");
                             textView.setText(recipeName);
                             if (imageUrl != null) {
                                 // Load image asynchronously
