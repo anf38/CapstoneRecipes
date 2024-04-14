@@ -1,7 +1,5 @@
 package com.example.pantrypal;
 
-import android.net.Uri;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
