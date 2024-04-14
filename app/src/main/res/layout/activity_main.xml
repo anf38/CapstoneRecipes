@@ -545,7 +545,7 @@
                     android:layout_height="wrap_content">
 
                     <GridLayout
-                        android:id="@+id/gridLayoutTrend"
+                        android:id="@+id/gridLayoutCommunity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -554,7 +554,7 @@
                         android:rowCount="1">
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/firstTrendCard"
+                            android:id="@+id/firstCommunityCard"
                             android:layout_width="115dp"
                             android:layout_height="wrap_content"
                             android:layout_row="0"
@@ -587,7 +587,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/secondTrendCard"
+                            android:id="@+id/secondCommunityCard"
                             android:layout_width="115dp"
                             android:layout_height="wrap_content"
                             android:layout_row="0"
@@ -620,7 +620,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/thirdTrendCard"
+                            android:id="@+id/thirdCommunityCard"
                             android:layout_width="115dp"
                             android:layout_height="wrap_content"
                             android:layout_row="0"
@@ -653,7 +653,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/fourthTrendCard"
+                            android:id="@+id/fourthCommunityCard"
                             android:layout_width="115dp"
                             android:layout_height="wrap_content"
                             android:layout_row="0"
@@ -686,7 +686,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/fifthTrendCard"
+                            android:id="@+id/fifthCommunityCard"
                             android:layout_width="115dp"
                             android:layout_height="wrap_content"
                             android:layout_row="0"
@@ -719,7 +719,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/sixthTrendCard"
+                            android:id="@+id/sixthCommunityCard"
                             android:layout_width="115dp"
                             android:layout_height="wrap_content"
                             android:layout_row="0"
