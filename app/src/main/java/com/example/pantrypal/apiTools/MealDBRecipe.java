@@ -25,7 +25,7 @@ public class MealDBRecipe extends ResultsRecipe implements Serializable {
                         List<String> tags,
                         String youtubeLink,
                         List<String> ingredients) {
-        super(name, String.valueOf(id), ingredients);
+        super(name, String.valueOf(id), ingredients, imageURL);
 
         this.drinkAlternate = drinkAlternate;
         this.category = category;

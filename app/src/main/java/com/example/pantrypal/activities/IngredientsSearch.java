@@ -1,6 +1,7 @@
 package com.example.pantrypal.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -42,7 +43,6 @@ public class IngredientsSearch extends AppCompatActivity {
     private EditText etIngredientInput;
     private Button btnAddIngredient;
     private ImageButton expandButton;
-
     private final ArrayList<ResultsRecipe> communityRecipes = new ArrayList<>();
     private final ArrayList<ResultsRecipe> filteredRecipes = new ArrayList<>();
 
@@ -124,24 +124,24 @@ public class IngredientsSearch extends AppCompatActivity {
 
     private void fetchRecipesFromFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("recipes").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String recipeName = document.getString("Name");
-                                String recipeId = document.getId();
-                                List<String> recipeIngredients = (List<String>) document.get("Ingredients");
-                                ResultsRecipe resultsRecipe = new ResultsRecipe(recipeName, recipeId, recipeIngredients);
+        db.collection("recipes").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String recipeName = document.getString("Name");
+                        String recipeId = document.getId();
+                        String imageURL = document.getString("ImageUrl");
+                        List<String> recipeIngredients = (List<String>) document.get("Ingredients");
+                        ResultsRecipe resultsRecipe = new ResultsRecipe(recipeName, recipeId, recipeIngredients, imageURL);
 
-                                communityRecipes.add(resultsRecipe);
-                                filteredRecipes.add(resultsRecipe);
-                            }
-                            searchListAdapter.notifyDataSetChanged();
-                        }
+                        communityRecipes.add(resultsRecipe);
+                        filteredRecipes.add(resultsRecipe);
                     }
-                });
+                    searchListAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     // Method to handle delete ImageView click event
@@ -161,12 +161,10 @@ public class IngredientsSearch extends AppCompatActivity {
         // Get API recipes
         if (!ingredients.isEmpty()) {
             new Thread(() -> {
-                List<MealDBRecipe> recipeIds =
-                        MealDBJSONParser.parseRecipes(recipeRetriever.filterByIngredients(ingredients));
+                List<MealDBRecipe> recipeIds = MealDBJSONParser.parseRecipes(recipeRetriever.filterByIngredients(ingredients));
 
                 if (recipeIds != null) {
-                    recipeIds.parallelStream().forEach(id ->
-                            filteredRecipes.add(MealDBJSONParser.parseFirstRecipe(recipeRetriever.lookUp(id.getIDInt()))));
+                    recipeIds.parallelStream().forEach(id -> filteredRecipes.add(MealDBJSONParser.parseFirstRecipe(recipeRetriever.lookUp(id.getIDInt()))));
 
                     runOnUiThread(() -> searchListAdapter.notifyDataSetChanged());
                 }

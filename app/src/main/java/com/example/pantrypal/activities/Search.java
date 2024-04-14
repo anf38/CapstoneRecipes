@@ -3,11 +3,13 @@ package com.example.pantrypal.activities;
 import static android.widget.Toast.makeText;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -49,7 +51,6 @@ public class Search extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         fStore = FirebaseFirestore.getInstance();
-
         listView = findViewById(R.id.listView);
         searchListAdapter = new SearchListAdapter(this, R.layout.list_item_recipe, new ArrayList<>());
         listView.setAdapter(searchListAdapter);
@@ -78,24 +79,24 @@ public class Search extends AppCompatActivity {
 
     private void fetchRecipesFromFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("recipes").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String recipeName = document.getString("Name");
-                                String recipeId = document.getId(); // Get recipe document ID
-                                List<String> recipeIngredients = (List<String>) document.get("Ingredients");
-                                ResultsRecipe resultsRecipe = new ResultsRecipe(recipeName, recipeId, recipeIngredients);
-                                // Populate the original list as well
-                                communityRecipes.add(resultsRecipe);
-                                resultRecipes.add(resultsRecipe);
-                            }
-                            updateList();
-                        }
+        db.collection("recipes").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String recipeName = document.getString("Name");
+                        String recipeId = document.getId(); // Get recipe document ID
+                        String recipeImage = document.getString("ImageUrl");
+                        List<String> recipeIngredients = (List<String>) document.get("Ingredients");
+                        ResultsRecipe resultsRecipe = new ResultsRecipe(recipeName, recipeId, recipeIngredients, recipeImage);
+                        // Populate the original list as well
+                        communityRecipes.add(resultsRecipe);
+                        resultRecipes.add(resultsRecipe);
                     }
-                });
+                    updateList();
+                }
+            }
+        });
     }
 
     @Override
@@ -115,8 +116,7 @@ public class Search extends AppCompatActivity {
                     // find recipes by name
                     List<MealDBRecipe> foundRecipes;
                     foundRecipes = MealDBJSONParser.parseRecipes(apiRecipeRetriever.searchByName(query));
-                    if (foundRecipes != null)
-                        apiRecipes.addAll(foundRecipes);
+                    if (foundRecipes != null) apiRecipes.addAll(foundRecipes);
 
                     runOnUiThread(() -> {
                         filterRecipes(query);
@@ -162,8 +162,7 @@ public class Search extends AppCompatActivity {
             String[] words = filterText.split("\\W+");
 
             for (String word : words)
-                if (recipe.getTitle().toLowerCase().contains(word.toLowerCase()))
-                    return true;
+                if (recipe.getTitle().toLowerCase().contains(word.toLowerCase())) return true;
 
             return false;
         }).collect(Collectors.toList());
