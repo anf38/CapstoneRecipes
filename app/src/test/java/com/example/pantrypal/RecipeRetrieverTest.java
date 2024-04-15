@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import com.example.pantrypal.apiTools.RecipeRetriever;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONObject;
 import org.junit.AfterClass;
@@ -16,7 +17,7 @@ import org.junit.Test;
  * Address: capstone-recipes-server-a64f8333ac1b.herokuapp.com
  */
 public class RecipeRetrieverTest {
-    private static final RecipeRetriever recipeRetriever = new RecipeRetriever();
+    private static final RecipeRetriever recipeRetriever = RecipeRetriever.getInstance();
 
     @AfterClass
     public static void shutdown() {

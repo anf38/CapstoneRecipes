@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView logoutBtn;
     private BottomNavigationView nav;
 
-    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
+    private RecipeRetriever recipeRetriever;
     private final List<RecipeCard> newRecipeCards = new ArrayList<>();
     private final List<RecipeCard> recRecipeCards = new ArrayList<>();
     private final List<RecipeCard> trendRecipeCards = new ArrayList<>();
@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         newRecipeCards.add(new RecipeCard(findViewById(R.id.fifthNewCard)));
         newRecipeCards.add(new RecipeCard(findViewById(R.id.sixthNewCard)));
 
-        // TODO: Use Firebase to recommend & get trending recipes
         recRecipeCards.add(new RecipeCard(findViewById(R.id.firstRecCard)));
         recRecipeCards.add(new RecipeCard(findViewById(R.id.secondRecCard)));
         recRecipeCards.add(new RecipeCard(findViewById(R.id.thirdRecCard)));
@@ -69,49 +68,54 @@ public class MainActivity extends AppCompatActivity {
         trendRecipeCards.add(new RecipeCard(findViewById(R.id.fifthTrendCard)));
         trendRecipeCards.add(new RecipeCard(findViewById(R.id.sixthTrendCard)));
 
-        new Thread(() -> {
-            JSONObject recipeOfTheDayJSON = recipeRetriever.getRecipeOfTheDay();
-            MealDBRecipe recipeOfTheDay = MealDBJSONParser.parseFirstRecipe(recipeOfTheDayJSON);
-            recipeOfTheDayCard.setRecipe(recipeOfTheDay);
+        // Initialize the RecipeRetriever with users ID token
+        auth.getCurrentUser().getIdToken(true).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                recipeRetriever = RecipeRetriever.getInstance(task.getResult().getToken());
 
-            JSONObject latestRecipesJSON = recipeRetriever.latestRecipes();
-            List<MealDBRecipe> latestRecipes = MealDBJSONParser.parseRecipes(latestRecipesJSON);
-            for (int i = 0; i < newRecipeCards.size() && i < latestRecipes.size(); ++i) {
-                newRecipeCards.get(i).setRecipe(latestRecipes.get(i));
+                // grab all the recipes needed to show in the main page
+                new Thread(() -> {
+                    JSONObject recipeOfTheDayJSON = recipeRetriever.getRecipeOfTheDay();
+                    MealDBRecipe recipeOfTheDay = MealDBJSONParser.parseFirstRecipe(recipeOfTheDayJSON);
+                    recipeOfTheDayCard.setRecipe(recipeOfTheDay);
+
+                    JSONObject latestRecipesJSON = recipeRetriever.latestRecipes();
+                    List<MealDBRecipe> latestRecipes = MealDBJSONParser.parseRecipes(latestRecipesJSON);
+                    for (int i = 0; i < newRecipeCards.size() && i < latestRecipes.size(); ++i) {
+                        newRecipeCards.get(i).setRecipe(latestRecipes.get(i));
+                    }
+
+                    JSONObject randomRecipesJSON = recipeRetriever.randomRecipe(true);
+                    List<MealDBRecipe> randomRecipes = MealDBJSONParser.parseRecipes(randomRecipesJSON);
+                    for (int i = 0; i < recRecipeCards.size() && i < randomRecipes.size(); ++i) {
+                        recRecipeCards.get(i).setRecipe(randomRecipes.get(i));
+                    }
+
+                    JSONObject moreRandomRecipesJSON = recipeRetriever.randomRecipe(true);
+                    List<MealDBRecipe> moreRandomRecipes = MealDBJSONParser.parseRecipes(moreRandomRecipesJSON);
+                    for (int i = 0; i < recRecipeCards.size() && i < moreRandomRecipes.size(); ++i) {
+                        trendRecipeCards.get(i).setRecipe(moreRandomRecipes.get(i));
+                    }
+
+                    runOnUiThread(() -> {
+                        recipeOfTheDayCard.setOnClickListener(MainActivity.this);
+
+                        for (RecipeCard newCard : newRecipeCards) {
+                            newCard.setOnClickListener(MainActivity.this);
+                        }
+
+                        for (RecipeCard recCard : recRecipeCards) {
+                            recCard.setOnClickListener(MainActivity.this);
+                        }
+
+                        for (RecipeCard trendCard : trendRecipeCards) {
+                            trendCard.setOnClickListener(MainActivity.this);
+                        }
+                    });
+
+                }).start();
             }
-
-            JSONObject randomRecipesJSON = recipeRetriever.randomRecipe(true);
-            List<MealDBRecipe> randomRecipes = MealDBJSONParser.parseRecipes(randomRecipesJSON);
-            for (int i = 0; i < recRecipeCards.size() && i < randomRecipes.size(); ++i) {
-                recRecipeCards.get(i).setRecipe(randomRecipes.get(i));
-            }
-
-            JSONObject moreRandomRecipesJSON = recipeRetriever.randomRecipe(true);
-            List<MealDBRecipe> moreRandomRecipes = MealDBJSONParser.parseRecipes(moreRandomRecipesJSON);
-            for (int i = 0; i < recRecipeCards.size() && i < moreRandomRecipes.size(); ++i) {
-                trendRecipeCards.get(i).setRecipe(moreRandomRecipes.get(i));
-            }
-
-            runOnUiThread(() -> {
-                recipeOfTheDayCard.setOnClickListener(MainActivity.this);
-
-                for (RecipeCard newCard : newRecipeCards) {
-                    newCard.setOnClickListener(MainActivity.this);
-                }
-
-                for (RecipeCard recCard : recRecipeCards) {
-                    recCard.setOnClickListener(MainActivity.this);
-                }
-
-                for (RecipeCard trendCard : trendRecipeCards) {
-                    trendCard.setOnClickListener(MainActivity.this);
-                }
-            });
-
-        }).start();
-
-// Set OnClickListener for other CardViews as needed
-
+        });
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override

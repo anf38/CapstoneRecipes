@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ViewMealDBRecipe extends AppCompatActivity {
-    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
+    private RecipeRetriever recipeRetriever;
     private ImageView recipeImageView;
     private TextView recipeNameTextView;
     private TextView ingredientsTextView;
@@ -39,6 +39,8 @@ public class ViewMealDBRecipe extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewrecipe);
+
+        recipeRetriever = RecipeRetriever.getInstance();
 
         recipe = (MealDBRecipe) getIntent().getSerializableExtra("recipe");
         new Thread(() -> {
@@ -101,13 +103,6 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                 }
             });
         }
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        recipeRetriever.shutdown();
     }
 
     private String formatList(List<String> list) {

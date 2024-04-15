@@ -37,7 +37,7 @@ public class Favorites extends AppCompatActivity {
     private FirebaseUser currentUser;
     private RecyclerView recyclerView;
     private FavoritesAdapter adapter;
-    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
+    private RecipeRetriever recipeRetriever;
 
     private List<FavoriteRecipe> favoritesList;
     FavoriteRecipe recipe;
@@ -50,6 +50,7 @@ public class Favorites extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         currentUser = mAuth.getCurrentUser();
+        recipeRetriever = RecipeRetriever.getInstance();
         recyclerView = findViewById(R.id.recyclerView);
         favoritesList = new ArrayList<>();
         adapter = new FavoritesAdapter(this, favoritesList);
@@ -68,22 +69,24 @@ public class Favorites extends AppCompatActivity {
                 recipe = favoritesList.get(position);
                 String mealdb = recipe.getMealDB();
                 if (mealdb.contentEquals("1")) {
-                    String recipeId = recipe.getId();
-                    Future<JSONObject> future = recipeRetriever.lookUpAsync(Integer.parseInt(recipeId));
-                    try {
-                        JSONObject j = future.get(); // This will block until the result is available
-                        // Now you can proceed with using the JSONObject j
-                        MealDBRecipe recipe = MealDBJSONParser.parseFirstRecipe(j);
-                        if (recipe != null) {
-                            Intent intent = new Intent(Favorites.this, ViewMealDBRecipe.class);
-                            intent.putExtra("recipe", recipe);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(Favorites.this, "Recipe details not found", Toast.LENGTH_SHORT).show();
+                    if (recipeRetriever != null) {
+                        String recipeId = recipe.getId();
+                        Future<JSONObject> future = recipeRetriever.lookUpAsync(Integer.parseInt(recipeId));
+                        try {
+                            JSONObject j = future.get(); // This will block until the result is available
+                            // Now you can proceed with using the JSONObject j
+                            MealDBRecipe recipe = MealDBJSONParser.parseFirstRecipe(j);
+                            if (recipe != null) {
+                                Intent intent = new Intent(Favorites.this, ViewMealDBRecipe.class);
+                                intent.putExtra("recipe", recipe);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(Favorites.this, "Recipe details not found", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (InterruptedException | ExecutionException e) {
+                            // Handle any exceptions
+                            e.printStackTrace();
                         }
-                    } catch (InterruptedException | ExecutionException e) {
-                        // Handle any exceptions
-                        e.printStackTrace();
                     }
                 } else {
                     String recipeId = recipe.getId();

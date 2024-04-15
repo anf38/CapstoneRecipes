@@ -37,13 +37,11 @@ public class RecipeCard extends Activity {
         this.recipe = recipe;
 
         new Thread(() -> {
-            RecipeRetriever recipeRetriever = new RecipeRetriever();
-            Bitmap recipeImage = recipeRetriever.getRecipeImage(recipe.getImageURL(), false);
+            Bitmap recipeImage = RecipeRetriever.getInstance().getRecipeImage(recipe.getImageURL(), false);
             new Handler(Looper.getMainLooper()).post(() -> {
                 imageView.setImageBitmap(recipeImage);
                 textView.setText(recipe.getTitle());
             });
-            recipeRetriever.shutdown();
         }, "loadRecipeImage").start();
     }
 

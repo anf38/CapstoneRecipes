@@ -1,7 +1,5 @@
 package com.example.pantrypal.activities;
 
-import static android.widget.Toast.makeText;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +31,7 @@ import java.util.stream.Collectors;
 public class Search extends AppCompatActivity {
     private static final String TAG = "SEARCH";
     private FirebaseFirestore fStore;
-    private final RecipeRetriever apiRecipeRetriever = new RecipeRetriever();
+    private RecipeRetriever apiRecipeRetriever;
 
     private ListView listView;
     private SearchListAdapter searchListAdapter;
@@ -43,12 +40,12 @@ public class Search extends AppCompatActivity {
 
     private List<ResultsRecipe> resultRecipes = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         fStore = FirebaseFirestore.getInstance();
+        apiRecipeRetriever = RecipeRetriever.getInstance();
 
         listView = findViewById(R.id.listView);
         searchListAdapter = new SearchListAdapter(this, R.layout.list_item_recipe, new ArrayList<>());
@@ -145,13 +142,6 @@ public class Search extends AppCompatActivity {
 
         });
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        apiRecipeRetriever.shutdown();
     }
 
     private void filterRecipes(String filterText) {
