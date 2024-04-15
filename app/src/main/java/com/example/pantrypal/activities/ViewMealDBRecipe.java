@@ -42,7 +42,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
 
         recipe = (MealDBRecipe) getIntent().getSerializableExtra("recipe");
         new Thread(() -> {
-            Bitmap recipeImage = recipeRetriever.getRecipeImage(recipe.getImageURL(), false);
+            Bitmap recipeImage = recipeRetriever.getRecipeImage(recipe.getImageUrl(), false);
             runOnUiThread(() -> recipeImageView.setImageBitmap(recipeImage));
         }).start();
 
@@ -181,7 +181,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                     .document(recipeIdString);
 
             String recipeName = recipe.getTitle();
-            String image = recipe.getImageURL();
+            String image = recipe.getImageUrl();
 
             Map<String, Object> data = new HashMap<>();
             data.put("name", recipeName);
