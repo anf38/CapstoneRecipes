@@ -220,6 +220,7 @@ public class ViewRecipe extends AppCompatActivity {
                     DocumentSnapshot recipeDoc = task.getResult();
                     if (recipeDoc.exists()) {
                         String recipeName = recipeDoc.getString("Name");
+                        String imageURL = recipeDoc.getString("ImageUrl");
 
 
                         DocumentReference favoritesRef = db.collection("users")
@@ -232,6 +233,7 @@ public class ViewRecipe extends AppCompatActivity {
                         data.put("name", recipeName);
                         data.put("id", recipeId);
                         data.put("mealDB", "0");
+                        data.put("imageURL",imageURL);
 
                         favoritesRef.set(data)
                                 .addOnSuccessListener(aVoid -> {
@@ -341,7 +343,7 @@ public class ViewRecipe extends AppCompatActivity {
                             double averageRating = totalRating / numberOfRatings;
                             String numberOfRatingsString = String.valueOf(numberOfRatings);
                             commentCount.setText(numberOfRatingsString);
-                            String averageRatingString = String.format(Locale.US, "$%.1f", averageRating);
+                            String averageRatingString = String.format(Locale.US, "%.1f", averageRating);
                             ratingCount.setText(averageRatingString);
                             setStarRating(averageRating);
                             commentCount.setText(numberOfRatingsString);
