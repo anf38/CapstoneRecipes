@@ -237,7 +237,7 @@ public class RecipeRetriever {
         try {
             URL url = new URL("https", SERVER_ADDRESS, request);
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            connection.setRequestProperty("Authorization", idToken);
+            connection.setRequestProperty("Authorization", "Bearer " + idToken);
             InputStream response = new BufferedInputStream(connection.getInputStream());
 
             long contentLenght = Integer.parseInt(connection.getHeaderField("Content-length"));
@@ -270,7 +270,7 @@ public class RecipeRetriever {
         try {
             URL url = new URL("https", SERVER_ADDRESS, imageRequest);
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            connection.setRequestProperty("Authorization", idToken);
+            connection.setRequestProperty("Authorization", "Bearer " + idToken);
             InputStream imageStream = new BufferedInputStream(connection.getInputStream());
 
             image = BitmapFactory.decodeStream(imageStream);
