@@ -136,11 +136,4 @@ public class Favorites extends AppCompatActivity {
                     }
                 });
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        recipeRetriever.shutdown();
-    }
 }
