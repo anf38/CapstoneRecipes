@@ -64,9 +64,16 @@ public class AddTags extends AppCompatActivity {
         CheckBox fishTag = findViewById(R.id.fishTag);
         CheckBox lambTag = findViewById(R.id.lambTag);
         CheckBox rabbitTag = findViewById(R.id.rabbitTag);
-        CheckBox shellfishTag = findViewById(R.id.shellfishTag);
+        CheckBox deerTag = findViewById(R.id.deerTag);
         CheckBox vegetarianTag = findViewById(R.id.vegetarianTag);
         CheckBox veganTag = findViewById(R.id.veganTag);
+
+        CheckBox nutsTag = findViewById(R.id.nutsTag);
+        CheckBox dairyTag = findViewById(R.id.dairyTag);
+        CheckBox eggsTag = findViewById(R.id.eggsTag);
+        CheckBox glutenTag = findViewById(R.id.glutenTag);
+        CheckBox shellfishTag = findViewById(R.id.shellfishTag);
+        CheckBox sesameTag = findViewById(R.id.sesameTag);
 
         checkBoxes.add(beginnerTag);
         checkBoxes.add(easyTag);
@@ -95,9 +102,15 @@ public class AddTags extends AppCompatActivity {
         checkBoxes.add(fishTag);
         checkBoxes.add(lambTag);
         checkBoxes.add(rabbitTag);
-        checkBoxes.add(shellfishTag);
+        checkBoxes.add(deerTag);
         checkBoxes.add(vegetarianTag);
         checkBoxes.add(veganTag);
+        checkBoxes.add(nutsTag);
+        checkBoxes.add(dairyTag);
+        checkBoxes.add(eggsTag);
+        checkBoxes.add(glutenTag);
+        checkBoxes.add(shellfishTag);
+        checkBoxes.add(sesameTag);
 
 
         createRecipeButton.setOnClickListener(new View.OnClickListener() {
