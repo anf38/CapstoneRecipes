@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -32,7 +33,7 @@ public class Search extends AppCompatActivity {
     private static final String TAG = "SEARCH";
     private FirebaseFirestore fStore;
     private RecipeRetriever apiRecipeRetriever;
-
+    private Button cancelButton;
     private ListView listView;
     private SearchListAdapter searchListAdapter;
     private final ArrayList<ResultsRecipe> communityRecipes = new ArrayList<>();
@@ -50,8 +51,19 @@ public class Search extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         searchListAdapter = new SearchListAdapter(this, R.layout.list_item_recipe, new ArrayList<>());
         listView.setAdapter(searchListAdapter);
+        cancelButton = findViewById(R.id.backButton);
 
         fetchRecipesFromFirestore();
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Search.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -106,6 +118,7 @@ public class Search extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                listView.setVisibility(View.VISIBLE);
                 searchView.clearFocus();
 
                 new Thread(() -> {
@@ -127,6 +140,7 @@ public class Search extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 if (newText.isEmpty()) {
                     // If search query is empty, restore the original list
+                    listView.setVisibility(View.GONE);
                     apiRecipes.clear();
                     resultRecipes.clear();
                     resultRecipes.addAll(communityRecipes);
