@@ -65,6 +65,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         new Thread(() -> {
             Bitmap recipeImage = recipeRetriever.getRecipeImage(recipe.getImageURL(), false);
             runOnUiThread(() -> recipeImageView.setImageBitmap(recipeImage));
+            getRatings();
         }).start();
 
         // Initialize UI components
@@ -98,7 +99,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
             public void onClick(View view) {
                 if (recipe.getId()!= null) {
                     recipeId = recipe.getId();
-                    Intent intent = new Intent(getApplicationContext(), Reviews.class);
+                    Intent intent = new Intent(getApplicationContext(), FavoritesReviews.class);
                     intent.putExtra("recipeId", recipeId);
                     startActivity(intent);
                 } else {
@@ -132,7 +133,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                 finish(); // Close the current activity and return to the previous one
             }
         });
-        getRatings();
+
     }
 
     @Override
