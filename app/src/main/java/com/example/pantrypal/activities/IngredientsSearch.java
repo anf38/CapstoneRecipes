@@ -193,9 +193,11 @@ public class IngredientsSearch extends AppCompatActivity {
             for (String ingredient : ingredients) {
                 boolean containsIngredient = false;
                 for (String recipeIngredient : recipe.getIngredients()) {
-                    if (recipeIngredient.toLowerCase().contains(ingredient.toLowerCase())) {
-                        containsIngredient = true;
-                        break; // No need to check other ingredients if one match is found
+                    for (String ingredientPart : recipeIngredient.split("\\W+")) {
+                        if (ingredientPart.toLowerCase().startsWith(ingredient.toLowerCase())) {
+                            containsIngredient = true;
+                            break; // No need to check other ingredients if one match is found
+                        }
                     }
                 }
                 if (!containsIngredient) {
