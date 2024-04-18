@@ -109,6 +109,7 @@ public class Search extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                listView.setVisibility(View.VISIBLE);
                 searchView.clearFocus();
 
                 new Thread(() -> {
@@ -131,6 +132,7 @@ public class Search extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 if (newText.isEmpty()) {
                     // If search query is empty, restore the original list
+                    listView.setVisibility(View.GONE);
                     apiRecipes.clear();
                     resultRecipes.clear();
                     resultRecipes.addAll(communityRecipes);

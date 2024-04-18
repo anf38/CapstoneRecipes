@@ -82,6 +82,7 @@ public class IngredientsSearch extends AppCompatActivity {
                 String ingredient = etIngredientInput.getText().toString().trim();
                 if (!TextUtils.isEmpty(ingredient)) {
                     if (ingredients.size() < 7) {
+                        resultsListView.setVisibility(View.VISIBLE);
                         ingredients.add(ingredient);
                         ingredientsArrayAdapter.notifyDataSetChanged();
                         etIngredientInput.setText("");
@@ -171,6 +172,8 @@ public class IngredientsSearch extends AppCompatActivity {
                     runOnUiThread(() -> searchListAdapter.notifyDataSetChanged());
                 }
             }, "SearchByIngredients").start();
+        } else {
+            resultsListView.setVisibility(View.GONE);
         }
 
         // Filter community recipes
