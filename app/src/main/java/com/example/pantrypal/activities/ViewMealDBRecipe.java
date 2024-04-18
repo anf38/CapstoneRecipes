@@ -156,7 +156,10 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                 tags.add("Pork");
             }
 
-            if (item.contains("fish")) {
+            if (item.contains("fish") ||
+                    item.contains("salmon")
+                    || item.contains("anchov")
+                    || item.contains("tuna")) {
                 tags.add("Fish");
             }
 
