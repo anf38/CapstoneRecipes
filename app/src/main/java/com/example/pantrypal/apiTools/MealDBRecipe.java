@@ -12,6 +12,7 @@ public class MealDBRecipe extends ResultsRecipe implements Serializable {
     private final List<String> instructionLines;
     private final List<String> tags;
     private final String youtubeLink;
+    String imageURL;
     private final List<String> ingredients;
 
     public MealDBRecipe(int id,
@@ -29,6 +30,7 @@ public class MealDBRecipe extends ResultsRecipe implements Serializable {
         this.drinkAlternate = drinkAlternate;
         this.category = category;
         this.area = area;
+        this.imageURL = imageURL;
         this.instructionLines = instructionLines;
         this.tags = tags;
         this.youtubeLink = youtubeLink;
@@ -37,6 +39,9 @@ public class MealDBRecipe extends ResultsRecipe implements Serializable {
 
     public int getIDInt() {
         return Integer.parseInt(super.getId());
+    }
+    public String getImageURL() {
+        return imageURL;
     }
 
     public String getDrinkAlternate() {
