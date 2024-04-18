@@ -6,12 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.squareup.picasso.Picasso;
 
 public class SearchListAdapter extends ArrayAdapter<ResultsRecipe> implements Filterable {
     private static final String TAG = "SearchListAdapter";
@@ -24,20 +27,28 @@ public class SearchListAdapter extends ArrayAdapter<ResultsRecipe> implements Fi
         mResource = resource;
     }
 
-    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        String title = getItem(position).getTitle();
-        String id = getItem(position).getId();
+        // Get the current recipe object
+        ResultsRecipe currentRecipe = getItem(position);
 
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        convertView = inflater.inflate(mResource, parent, false);
+        // Check if the view is being reused, otherwise inflate the view
+        if (convertView == null) {
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            convertView = inflater.inflate(mResource, parent, false);
+        }
 
-        TextView titleTV = (TextView) convertView.findViewById(R.id.textViewRecipeName);
-        TextView idTV = (TextView) convertView.findViewById(R.id.hiddenId);
+        // Get references to the TextViews and ImageView in the list item layout
+        TextView titleTV = convertView.findViewById(R.id.textViewRecipeName);
+        TextView idTV = convertView.findViewById(R.id.hiddenId);
+        ImageView imageView = convertView.findViewById(R.id.textViewUri);
 
-        titleTV.setText(title);
-        idTV.setText(id);
+        // Set the text and ID to the TextViews
+        titleTV.setText(currentRecipe.getTitle());
+        idTV.setText(currentRecipe.getId());
+
+        // Load and display the recipe image using Picasso
+        Picasso.get().load(currentRecipe.getImageUrl()).into(imageView);
 
         return convertView;
     }
