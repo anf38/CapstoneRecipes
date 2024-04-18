@@ -388,12 +388,12 @@
                 android:background="@color/white">
 
                 <CheckBox
-                    android:id="@+id/shellfishTag"
+                    android:id="@+id/deerTag"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:layout_weight="1"
-                    android:text="Shellfish" />
+                    android:text="Deer" />
 
                 <CheckBox
                     android:id="@+id/vegetarianTag"
@@ -409,8 +409,91 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:layout_weight="1"
-                    android:text="Vegan" />
+                    android:text="Vegan"
+                    />
             </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/allergyFlavor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/red"
+                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="8dp"
+                android:text="Allergies"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:background="@color/white">
+
+                <CheckBox
+                    android:id="@+id/nutsTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:text="Tree nuts" />
+
+                <CheckBox
+                    android:id="@+id/dairyTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:text="Dairy" />
+
+                <CheckBox
+                    android:id="@+id/eggsTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:text="Eggs" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:layout_marginBottom="20dp">
+
+                <CheckBox
+                    android:id="@+id/glutenTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:text="Gluten" />
+
+                <CheckBox
+                    android:id="@+id/shellfishTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:text="Shellfish" />
+
+                <CheckBox
+                    android:id="@+id/sesameTag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:text="Sesame" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

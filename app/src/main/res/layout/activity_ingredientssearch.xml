@@ -49,11 +49,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ingredientsListView"
+        android:visibility="gone"
         android:layout_marginHorizontal="5dp"
         android:layout_marginTop="16dp"
         android:background="@color/pale_yellow"
         android:divider="@color/yellow"
         android:dividerHeight="8dp"
         android:textColor="@color/black" />
+
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:layout_gravity="center"
+        android:textColor="@android:color/white"
+        android:text="Back"
+        android:paddingHorizontal="10dp"
+        android:textSize="18sp" />
 
 </RelativeLayout>

@@ -311,7 +311,7 @@
                     android:paddingLeft="10dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:text="Recommended for you"
+                    android:text="Explore"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />

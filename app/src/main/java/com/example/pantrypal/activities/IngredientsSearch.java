@@ -39,6 +39,7 @@ public class IngredientsSearch extends AppCompatActivity {
     private ArrayAdapter<String> ingredientsArrayAdapter;
     private final List<String> ingredients = new ArrayList<>();
     private SearchListAdapter searchListAdapter;
+    private Button cancelButton;
 
     private EditText etIngredientInput;
     private Button btnAddIngredient;
@@ -63,7 +64,18 @@ public class IngredientsSearch extends AppCompatActivity {
         searchListAdapter = new SearchListAdapter(this, R.layout.list_item_recipe, filteredRecipes);
         ingredientsListView.setAdapter(ingredientsArrayAdapter);
         resultsListView.setAdapter(searchListAdapter);
+        cancelButton = findViewById(R.id.backButton);
 
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(IngredientsSearch.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         expandButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +96,7 @@ public class IngredientsSearch extends AppCompatActivity {
                 String ingredient = etIngredientInput.getText().toString().trim();
                 if (!TextUtils.isEmpty(ingredient)) {
                     if (ingredients.size() < 7) {
+                        resultsListView.setVisibility(View.VISIBLE);
                         ingredients.add(ingredient);
                         ingredientsArrayAdapter.notifyDataSetChanged();
                         etIngredientInput.setText("");
@@ -164,6 +177,8 @@ public class IngredientsSearch extends AppCompatActivity {
                     runOnUiThread(() -> searchListAdapter.notifyDataSetChanged());
                 }
             }, "SearchByIngredients").start();
+        } else {
+            resultsListView.setVisibility(View.GONE);
         }
 
         // Filter community recipes
