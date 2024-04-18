@@ -130,6 +130,20 @@ public class AddTags extends AppCompatActivity {
                 finish();
             }
         });
+
+        cancelRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(AddTags.this, NewRecipe.class);
+                intent.putExtra("name", name);
+                intent.putExtra("instructions", getIntent().getStringArrayExtra("instructions"));
+                intent.putExtra("ingredients", getIntent().getStringArrayExtra("ingredients"));
+                intent.putStringArrayListExtra("tags", checkedTags);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void onCheckBoxClicked(CheckBox checkBox) {
