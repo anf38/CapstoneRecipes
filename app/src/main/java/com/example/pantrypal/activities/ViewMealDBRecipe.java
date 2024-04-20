@@ -68,6 +68,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
             getRatings();
         }).start();
 
+
         // Initialize UI components
         recipeImageView = findViewById(R.id.imageView);
         recipeNameTextView = findViewById(R.id.recipeNameTextView);
@@ -282,6 +283,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         }
     }
     private void getRatings() {
+        recipeId = recipe.getId();
         db.collection("mealDBrecipes").document(recipeId)
                 .collection("ratings")
                 .get()

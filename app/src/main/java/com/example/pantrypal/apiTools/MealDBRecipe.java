@@ -8,6 +8,7 @@ import java.util.List;
 public class MealDBRecipe extends ResultsRecipe implements Serializable {
     private final String drinkAlternate;
     private final String category;
+    private String name;
     private final String area;
     private final List<String> instructionLines;
     private final List<String> tags;
@@ -27,6 +28,7 @@ public class MealDBRecipe extends ResultsRecipe implements Serializable {
                         List<String> ingredients) {
         super(name, String.valueOf(id), ingredients, imageURL);
 
+        this.name = name;
         this.drinkAlternate = drinkAlternate;
         this.category = category;
         this.area = area;
@@ -40,6 +42,9 @@ public class MealDBRecipe extends ResultsRecipe implements Serializable {
     public int getIDInt() {
         return Integer.parseInt(super.getId());
     }
+
+    public String getName() { return name;}
+
     public String getImageURL() {
         return imageURL;
     }

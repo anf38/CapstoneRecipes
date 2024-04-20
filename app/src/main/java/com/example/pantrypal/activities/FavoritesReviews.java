@@ -2,6 +2,7 @@ package com.example.pantrypal.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,21 +36,20 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class FavoritesReviews  extends AppCompatActivity{
+public class FavoritesReviews extends AppCompatActivity {
     private FirebaseFirestore db;
     private ImageView reviewImageHeader;
     private TextView reviewHeader;
     private ImageView star1, star2, star3, star4, star5;
     private ImageView reviewImage;
+    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
+
     private TextInputEditText reviewTitle, reviewMessage;
     private Button cancelReviewButton, submitReviewButton;
     private String recipeId, user;
     private int rating = 0;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
-    private MealDBRecipe recipe;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class FavoritesReviews  extends AppCompatActivity{
         cancelReviewButton = findViewById(R.id.cancelReviewButton);
         submitReviewButton = findViewById(R.id.submitReviewButton);
         recipeId = getIntent().getStringExtra("recipeId");
-        fetchAndDisplayRecipeDetails(recipeId);
+
 
         cancelReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,108 +87,8 @@ public class FavoritesReviews  extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 if (rating != 0) {
-                    // Check if the user has already rated the recipe
-                    db.collection("mealDBrecipes").document(recipeId)
-                            .collection("ratings")
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        boolean alreadyRated = false;
-                                        String ratingId = null;
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            String rater = document.getString("Rater");
-                                            if (rater != null && rater.equals(currentUser.getUid())) {
-                                                Toast.makeText(FavoritesReviews.this, "this was triggerd true", Toast.LENGTH_SHORT).show();
-                                                alreadyRated = true;
-                                                ratingId = document.getId();
-                                                break;
-                                            }
-                                        }
 
-                                        if (alreadyRated) {
-                                            // Update existing rating
-                                            Map<String, Object> updateData = new HashMap<>();
-                                            updateData.put("Rating", rating);
-                                            String title = reviewTitle.getText().toString();
-                                            String message = reviewMessage.getText().toString();
-                                            if (!title.isEmpty())
-                                                updateData.put("ReviewTitle", title);
-                                            if (!message.isEmpty())
-                                                updateData.put("ReviewMessage", message);
 
-                                            db.collection("mealDBrecipes").document(recipeId)
-                                                    .collection("ratings").document(ratingId)
-                                                    .update(updateData)
-                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
-                                                            Toast.makeText(FavoritesReviews.this, "Rating updated successfully", Toast.LENGTH_SHORT).show();
-                                                            Intent intent = new Intent(getApplicationContext(), ViewRecipe.class);
-                                                            intent.putExtra("recipeId", recipeId);
-                                                            startActivity(intent);
-                                                            finish();
-                                                        }
-                                                    })
-                                                    .addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Toast.makeText(FavoritesReviews.this, "Failed to update rating", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
-                                        } else {
-                                            // Add new rating
-                                            Map<String, Object> ratingData = new HashMap<>();
-                                            ratingData.put("Rater", currentUser.getUid());
-                                            ratingData.put("Rating", rating);
-                                            String title = reviewTitle.getText().toString();
-                                            String message = reviewMessage.getText().toString();
-                                            if (!title.isEmpty())
-                                                ratingData.put("ReviewTitle", title);
-                                            else
-                                            if (!message.isEmpty())
-                                                ratingData.put("ReviewMessage", message);
-
-                                            db.collection("mealDBrecipes").document(recipeId)
-                                                    .collection("ratings")
-                                                    .add(ratingData)
-                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                        @Override
-                                                        public void onSuccess(DocumentReference documentReference) {
-                                                            Toast.makeText(FavoritesReviews.this, "Rating added successfully", Toast.LENGTH_SHORT).show();
-                                                            Future<JSONObject> future = recipeRetriever.lookUpAsync(Integer.parseInt(recipeId));
-                                                            try {
-                                                                JSONObject j = future.get(); // This will block until the result is available
-                                                                // Now you can proceed with using the JSONObject j
-                                                                MealDBRecipe recipe = MealDBJSONParser.parseFirstRecipe(j);
-                                                                if (recipe != null) {
-                                                                    Intent intent = new Intent(FavoritesReviews.this, ViewMealDBRecipe.class);
-                                                                    intent.putExtra("recipe", recipe);
-                                                                    startActivity(intent);
-                                                                } else {
-                                                                    Toast.makeText(FavoritesReviews.this, "Recipe details not found", Toast.LENGTH_SHORT).show();
-                                                                }
-                                                            } catch (InterruptedException | ExecutionException e) {
-                                                                // Handle any exceptions
-                                                                e.printStackTrace();
-                                                            }
-                                                            finish();
-                                                        }
-                                                    })
-                                                    .addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Toast.makeText(FavoritesReviews.this, "Failed to add rating", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
-
-                                        }
-                                    } else {
-                                        Toast.makeText(FavoritesReviews.this, "Failed to check user rating", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
                 } else {
                     Toast.makeText(FavoritesReviews.this, "You cannot rate the recipe with 0 stars", Toast.LENGTH_SHORT).show();
                 }
@@ -253,23 +153,4 @@ public class FavoritesReviews  extends AppCompatActivity{
         });
     }
 
-    private void fetchAndDisplayRecipeDetails(String recipeId) {
-        db.collection("mealDBrecipes").document(recipeId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                String recipeName = document.getString("Name");
-                                //get recipe image from here
-                                user = document.getString("Author");
-                            } else
-                                Toast.makeText(FavoritesReviews.this, "Couldn't find recipe", Toast.LENGTH_SHORT).show();
-                        } else
-                            Toast.makeText(FavoritesReviews.this, "Couldn't retrieve data", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 }
