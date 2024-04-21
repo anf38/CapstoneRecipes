@@ -99,7 +99,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (recipe.getId()!= null) {
-                    recipeId = recipe.getId();
+                    recipeId = String.valueOf(recipe.getId());
                     Intent intent = new Intent(getApplicationContext(), FavoritesReviews.class);
                     intent.putExtra("recipeId", recipeId);
                     startActivity(intent);
@@ -134,6 +134,8 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                 finish(); // Close the current activity and return to the previous one
             }
         });
+
+
 
     }
 
@@ -284,7 +286,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
     }
     private void getRatings() {
         recipeId = recipe.getId();
-        db.collection("mealDBrecipes").document(recipeId)
+        db.collection("mealDB").document(recipeId)
                 .collection("ratings")
                 .get()
                 .addOnCompleteListener(task -> {
