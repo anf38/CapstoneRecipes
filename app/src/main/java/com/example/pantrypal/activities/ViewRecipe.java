@@ -35,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -293,20 +294,11 @@ public class ViewRecipe extends AppCompatActivity {
                             instructionsTextView.setText(formatList(instructions));
                             tagsBox.setText("Tags: " + tags);
                             if (imageUrl != null && !imageUrl.isEmpty()) {
-                                StorageReference gsReference = storage.getReferenceFromUrl(imageUrl);
-                                gsReference.getBytes(1024 * 1024) // Max image size in bytes
-                                        .addOnCompleteListener(new OnCompleteListener<byte[]>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<byte[]> task) {
-                                                if (task.isSuccessful()) {
-                                                    byte[] bytes = task.getResult();
-                                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                    recipeImageView.setImageBitmap(bitmap);
-                                                } else {
-                                                    Log.d("ViewRecipe", "Failed to load image: " + task.getException());
-                                                }
-                                            }
-                                        });
+                                recipeImageView.post(() -> {
+                                    Picasso.get().load(imageUrl)
+                                            .placeholder(R.drawable.placeholder_image)
+                                            .into(recipeImageView);
+                                });
                             }
                         } else {
                             Log.d("ViewRecipe", "No such document");
