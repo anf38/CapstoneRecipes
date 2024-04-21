@@ -8,10 +8,12 @@ import java.util.List;
 public class MealDBRecipe extends ResultsRecipe implements Serializable {
     private final String drinkAlternate;
     private final String category;
+    private String name;
     private final String area;
     private final List<String> instructionLines;
     private final List<String> tags;
     private final String youtubeLink;
+    String imageURL;
     private final List<String> ingredients;
 
     public MealDBRecipe(int id,
@@ -26,9 +28,11 @@ public class MealDBRecipe extends ResultsRecipe implements Serializable {
                         List<String> ingredients) {
         super(name, String.valueOf(id), ingredients, imageURL);
 
+        this.name = name;
         this.drinkAlternate = drinkAlternate;
         this.category = category;
         this.area = area;
+        this.imageURL = imageURL;
         this.instructionLines = instructionLines;
         this.tags = tags;
         this.youtubeLink = youtubeLink;
@@ -37,6 +41,12 @@ public class MealDBRecipe extends ResultsRecipe implements Serializable {
 
     public int getIDInt() {
         return Integer.parseInt(super.getId());
+    }
+
+    public String getName() { return name;}
+
+    public String getImageURL() {
+        return imageURL;
     }
 
     public String getDrinkAlternate() {

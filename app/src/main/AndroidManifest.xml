@@ -55,6 +55,8 @@
         <activity
             android:name=".activities.Reviews"
             android:exported="false" />
+        <activity android:name=".activities.FavoritesReviews"/>
+
 
     </application>
 
