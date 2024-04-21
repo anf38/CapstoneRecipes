@@ -33,9 +33,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public class ViewMealDBRecipe extends AppCompatActivity {
     private final RecipeRetriever recipeRetriever = new RecipeRetriever();
@@ -53,6 +55,8 @@ public class ViewMealDBRecipe extends AppCompatActivity {
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private Button backButton;
     private MealDBRecipe recipe;
+    private ArrayList<String> tags = new ArrayList<>();
+    private TextView tagsBox;
     String recipeId;
     private ToggleButton favoriteButton;
 
@@ -87,6 +91,8 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         commentCount = findViewById(R.id.commentCount);
         commentsList = findViewById(R.id.commentsList);
         commentsAL = new ArrayList<>();
+        tagsBox = findViewById(R.id.tagsBox);
+
 
         adapter = new CommentsListAdapter(this, R.layout.comments_listview_layout, commentsAL);
         commentsList.setAdapter(adapter);
@@ -500,14 +506,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                 });
     }
 
-    private String formatList(List<String> list) {
-        // Helper method to format a list of strings
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String item : list) {
-            stringBuilder.append("- ").append(item).append("\n\n");
-        }
-        return stringBuilder.toString();
-    }
+
 
 }
 
