@@ -173,6 +173,89 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         recipeRetriever.shutdown();
     }
 
+        private String formatList(List<String> list) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String item : list) {
+            stringBuilder.append("- ").append(item).append("\n");
+            if (item.contains("pecan") ||
+                    item.contains("cashew") ||
+                    item.contains("walnut") ||
+                    item.contains("almond") ||
+                    item.contains("pistachio") ||
+                    item.contains("macadamia") ||
+                    item.contains("peanut")) {
+                tags.add("tree nuts");
+            }
+
+            if (item.contains("milk") ||
+                    item.contains("butter") ||
+                    item.contains("cheese")) {
+                tags.add("Dairy");
+            }
+
+            if (item.contains("bread") || item.contains("flour")) {
+                tags.add("Gluten");
+            }
+
+            if (item.contains("egg")) {
+                tags.add("Eggs");
+            }
+
+            if (item.contains("chicken")) {
+                tags.add("Chicken");
+            }
+
+            if (item.contains("beef") || item.contains("steak")) {
+                tags.add("Beef");
+            }
+
+            if (item.contains("pork")) {
+                tags.add("Pork");
+            }
+
+            if (item.contains("fish") ||
+                    item.contains("salmon")
+                    || item.contains("anchov")
+                    || item.contains("tuna")) {
+                tags.add("Fish");
+            }
+
+            if (item.contains("mussel") ||
+                    item.contains("shrimp") ||
+                    item.contains("clam") ||
+                    item.contains("crab") ||
+                    item.contains("lobster") ||
+                    item.contains("scallop") ||
+                    item.contains("crawfish")) {
+                tags.add("shellfish");
+            }
+
+            if (item.contains("sesame")) {
+                tags.add("Sesame");
+            }
+        }
+        StringBuilder tagsText = new StringBuilder();
+        tagsText.append("Tags: ");
+        Set<String> uniqueTags = new HashSet<>();
+
+        for (String tag : tags) {
+            if (!uniqueTags.contains(tag)) {
+                tagsText.append(tag).append(", ");
+                uniqueTags.add(tag);
+            }
+        }
+
+
+        // Remove the last comma and space
+        if (tagsText.length() > 0) {
+            tagsText.setLength(tagsText.length() - 2);
+        }
+
+        tagsBox.setText(tagsText.toString());
+
+        return stringBuilder.toString();
+    }
+
 
     private String formatIngredientsList(List<String> ingredients) {
         StringBuilder ingredientQuantityList = new StringBuilder();
