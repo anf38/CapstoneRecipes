@@ -21,15 +21,33 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.HttpsURLConnection;
 
 public class RecipeRetriever {
+    private static RecipeRetriever INSTANCE = null;
+
     private static final String SERVER_ADDRESS = "capstone-recipes-server-a64f8333ac1b.herokuapp.com";
 
     private final ExecutorService asyncExecutor = Executors.newCachedThreadPool();
+    private final String idToken;
 
-    public RecipeRetriever() {
+    private RecipeRetriever(String idToken) {
+        this.idToken = idToken;
+    }
 
+    public static RecipeRetriever getInstance(String idToken) {
+        if (INSTANCE == null)
+            INSTANCE = new RecipeRetriever(idToken);
+
+        return INSTANCE;
+    }
+
+    public static RecipeRetriever getInstance() {
+        return INSTANCE;
     }
 
     public void shutdown() {
+        Log.i(this.getClass().getSimpleName(), "Shutting Down");
+
+        INSTANCE = null;
+
         asyncExecutor.shutdown(); // Disable new tasks from being submitted
         try {
             // Wait a while for existing tasks to terminate
@@ -219,6 +237,7 @@ public class RecipeRetriever {
         try {
             URL url = new URL("https", SERVER_ADDRESS, request);
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setRequestProperty("Authorization", "Bearer " + idToken);
             InputStream response = new BufferedInputStream(connection.getInputStream());
 
             long contentLenght = Integer.parseInt(connection.getHeaderField("Content-length"));
@@ -251,6 +270,7 @@ public class RecipeRetriever {
         try {
             URL url = new URL("https", SERVER_ADDRESS, imageRequest);
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setRequestProperty("Authorization", "Bearer " + idToken);
             InputStream imageStream = new BufferedInputStream(connection.getInputStream());
 
             image = BitmapFactory.decodeStream(imageStream);

@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 public class Search extends AppCompatActivity {
     private static final String TAG = "SEARCH";
     private FirebaseFirestore fStore;
-    private final RecipeRetriever apiRecipeRetriever = new RecipeRetriever();
+    private RecipeRetriever apiRecipeRetriever;
     private Button cancelButton;
     private ListView listView;
     private SearchListAdapter searchListAdapter;
@@ -41,12 +41,13 @@ public class Search extends AppCompatActivity {
 
     private List<ResultsRecipe> resultRecipes = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         fStore = FirebaseFirestore.getInstance();
+        apiRecipeRetriever = RecipeRetriever.getInstance();
+
         listView = findViewById(R.id.listView);
         searchListAdapter = new SearchListAdapter(this, R.layout.list_item_recipe, new ArrayList<>());
         listView.setAdapter(searchListAdapter);
@@ -154,13 +155,6 @@ public class Search extends AppCompatActivity {
 
         });
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        apiRecipeRetriever.shutdown();
     }
 
     private void filterRecipes(String filterText) {

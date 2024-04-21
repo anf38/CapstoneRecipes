@@ -33,7 +33,7 @@ import java.util.List;
 
 public class IngredientsSearch extends AppCompatActivity {
     private FirebaseFirestore fStore;
-    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
+    private RecipeRetriever recipeRetriever;
 
     private ListView ingredientsListView, resultsListView;
     private ArrayAdapter<String> ingredientsArrayAdapter;
@@ -52,6 +52,8 @@ public class IngredientsSearch extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredientssearch);
         fStore = FirebaseFirestore.getInstance();
+        recipeRetriever = RecipeRetriever.getInstance();
+
         etIngredientInput = findViewById(R.id.etIngredientInput);
         btnAddIngredient = findViewById(R.id.btnAddIngredient);
         expandButton = findViewById(R.id.expandButton);
@@ -126,13 +128,6 @@ public class IngredientsSearch extends AppCompatActivity {
         });
 
         fetchRecipesFromFirestore();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        recipeRetriever.shutdown();
     }
 
     private void fetchRecipesFromFirestore() {

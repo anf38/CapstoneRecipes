@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class ViewMealDBRecipe extends AppCompatActivity {
-    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
+    private RecipeRetriever recipeRetriever;
     private ImageView recipeImageView;
     private ListView commentsList;
     private ArrayList<Comment> commentsAL;
@@ -65,13 +65,14 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewrecipe);
 
+        recipeRetriever = RecipeRetriever.getInstance();
+
         recipe = (MealDBRecipe) getIntent().getSerializableExtra("recipe");
         new Thread(() -> {
-            Bitmap recipeImage = recipeRetriever.getRecipeImage(recipe.getImageURL(), false);
+            Bitmap recipeImage = recipeRetriever.getRecipeImage(recipe.getImageUrl(), false);
             runOnUiThread(() -> recipeImageView.setImageBitmap(recipeImage));
             getRatings();
         }).start();
-
 
         // Initialize UI components
         recipeImageView = findViewById(R.id.imageView);
@@ -92,7 +93,6 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         commentsList = findViewById(R.id.commentsList);
         commentsAL = new ArrayList<>();
         tagsBox = findViewById(R.id.tagsBox);
-
 
         adapter = new CommentsListAdapter(this, R.layout.comments_listview_layout, commentsAL);
         commentsList.setAdapter(adapter);
@@ -140,9 +140,6 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                 finish(); // Close the current activity and return to the previous one
             }
         });
-
-
-
     }
 
     @Override
@@ -172,14 +169,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         }
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        recipeRetriever.shutdown();
-    }
-
-        private String formatList(List<String> list) {
+    private String formatList(List<String> list) {
         StringBuilder stringBuilder = new StringBuilder();
         for (String item : list) {
             stringBuilder.append("- ").append(item).append("\n");
@@ -262,7 +252,6 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         return stringBuilder.toString();
     }
 
-
     private String formatIngredientsList(List<String> ingredients) {
         StringBuilder ingredientQuantityList = new StringBuilder();
         for (String ingredient : ingredients) {
@@ -326,7 +315,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                     .document(recipeIdString);
 
             String recipeName = recipe.getTitle();
-            String image = recipe.getImageURL();
+            String image = recipe.getImageUrl();
 
             Map<String, Object> data = new HashMap<>();
             data.put("name", recipeName);
@@ -373,6 +362,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                     });
         }
     }
+
     private void getRatings() {
         recipeId = recipe.getId();
         db.collection("mealDB").document(recipeId)
@@ -505,8 +495,5 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                     Log.e("ViewRecipe", "Error adding report to Firestore", e);
                 });
     }
-
-
-
 }
 

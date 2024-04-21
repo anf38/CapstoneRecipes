@@ -45,7 +45,7 @@ public class FavoritesReviews extends AppCompatActivity {
     private TextView reviewHeader;
     private ImageView star1, star2, star3, star4, star5;
     private ImageView reviewImage;
-    private final RecipeRetriever recipeRetriever = new RecipeRetriever();
+    private RecipeRetriever recipeRetriever;
 
     private TextInputEditText reviewTitle, reviewMessage;
     private Button cancelReviewButton, submitReviewButton;
@@ -60,6 +60,7 @@ public class FavoritesReviews extends AppCompatActivity {
         setContentView(R.layout.activity_reviews);
 
         mAuth = FirebaseAuth.getInstance();
+        recipeRetriever = RecipeRetriever.getInstance();
         currentUser = mAuth.getCurrentUser();
         Toast.makeText(this, "c: " + currentUser.getUid(), Toast.LENGTH_SHORT).show();
         db = FirebaseFirestore.getInstance();
