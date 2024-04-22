@@ -52,3 +52,5 @@ out/
 /captures
 .externalNativeBuild
 .cxx
+app/release
+app/release/*
