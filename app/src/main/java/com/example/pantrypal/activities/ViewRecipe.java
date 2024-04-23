@@ -2,8 +2,6 @@ package com.example.pantrypal.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,15 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pantrypal.Comment;
 import com.example.pantrypal.CommentsListAdapter;
 import com.example.pantrypal.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -35,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -293,20 +289,11 @@ public class ViewRecipe extends AppCompatActivity {
                             instructionsTextView.setText(formatList(instructions));
                             tagsBox.setText("Tags: " + tags);
                             if (imageUrl != null && !imageUrl.isEmpty()) {
-                                StorageReference gsReference = storage.getReferenceFromUrl(imageUrl);
-                                gsReference.getBytes(1024 * 1024) // Max image size in bytes
-                                        .addOnCompleteListener(new OnCompleteListener<byte[]>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<byte[]> task) {
-                                                if (task.isSuccessful()) {
-                                                    byte[] bytes = task.getResult();
-                                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                    recipeImageView.setImageBitmap(bitmap);
-                                                } else {
-                                                    Log.d("ViewRecipe", "Failed to load image: " + task.getException());
-                                                }
-                                            }
-                                        });
+                                recipeImageView.post(() -> {
+                                    Picasso.get().load(imageUrl)
+                                            .placeholder(R.drawable.placeholder_image)
+                                            .into(recipeImageView);
+                                });
                             }
                         } else {
                             Log.d("ViewRecipe", "No such document");
