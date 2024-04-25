@@ -62,7 +62,6 @@ public class FavoritesReviews extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         recipeRetriever = RecipeRetriever.getInstance();
         currentUser = mAuth.getCurrentUser();
-        Toast.makeText(this, "c: " + currentUser.getUid(), Toast.LENGTH_SHORT).show();
         db = FirebaseFirestore.getInstance();
 
         reviewImageHeader = findViewById(R.id.reviewImageHeader);
@@ -104,7 +103,6 @@ public class FavoritesReviews extends AppCompatActivity {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             String rater = document.getString("Rater");
                                             if (rater != null && rater.equals(currentUser.getUid())) {
-                                                Toast.makeText(FavoritesReviews.this, "this was triggerd true", Toast.LENGTH_SHORT).show();
                                                 alreadyRated = true;
                                                 ratingId = document.getId();
                                                 break;

@@ -48,7 +48,6 @@ public class Reviews extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        Toast.makeText(this, "c: " + currentUser.getUid(), Toast.LENGTH_SHORT).show();
         db = FirebaseFirestore.getInstance();
 
         reviewImageHeader = findViewById(R.id.reviewImageHeader);

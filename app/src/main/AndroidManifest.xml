@@ -35,27 +35,24 @@
         <activity
             android:name=".activities.Search"
             android:exported="false"
-            android:theme="@style/Theme.PantryPal2"/>
+            android:theme="@style/Theme.PantryPal2" />
         <activity
             android:name=".activities.Favorites"
             android:exported="false" />
         <activity
             android:name=".activities.IngredientsSearch"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".activities.ViewRecipe"
             android:exported="false" />
         <activity android:name="com.example.pantrypal.activities.ViewMealDBRecipe" />
-        <activity
-            android:name=".activities.Home"
-            android:exported="false" />
         <activity
             android:name=".activities.AddTags"
             android:exported="false" />
         <activity
             android:name=".activities.Reviews"
             android:exported="false" />
-        <activity android:name=".activities.FavoritesReviews"/>
+        <activity android:name=".activities.FavoritesReviews" />
 
 
     </application>
