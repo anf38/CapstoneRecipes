@@ -70,9 +70,6 @@ public class IngredientsSearch extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent = new Intent(IngredientsSearch.this, MainActivity.class);
-                startActivity(intent);
                 finish();
             }
         });

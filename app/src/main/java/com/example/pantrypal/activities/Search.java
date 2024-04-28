@@ -58,9 +58,6 @@ public class Search extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent = new Intent(Search.this, MainActivity.class);
-                startActivity(intent);
                 finish();
             }
         });

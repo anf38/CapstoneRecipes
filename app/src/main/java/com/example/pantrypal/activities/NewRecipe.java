@@ -2,11 +2,11 @@ package com.example.pantrypal.activities;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.widget.ImageView;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,8 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pantrypal.CreateRecipe;
 import com.example.pantrypal.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -105,9 +103,6 @@ public class NewRecipe extends AppCompatActivity {
         cancelRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
                 finish();
             }
         });
@@ -126,7 +121,6 @@ public class NewRecipe extends AppCompatActivity {
                 intent.putExtra("instructions", instructions);
                 intent.putExtra("ingredients", ingredients);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -176,6 +170,22 @@ public class NewRecipe extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        setIntent(intent);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            ArrayList<String> tags = getIntent().getStringArrayListExtra("tags");
+            if (tags != null) {
+                String tagsText = TextUtils.join(", ", tags);
+                tagsBox.setText(tagsText);
+            }
+        }
     }
 
     private void uploadImageAndCreateRecipe(String name, String[] ingredients, String[] instructions, String tagsText) {
