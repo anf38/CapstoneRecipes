@@ -395,7 +395,6 @@ public class ViewRecipe extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 RadioButton radioButton = view.findViewById(selectedId);
-                Toast.makeText(ViewRecipe.this, "Checkpoint 4", Toast.LENGTH_SHORT).show();
                 if (radioButton != null) {
                     String reason = radioButton.getText().toString();
                     submitReportToFirestore(commentTitle, commentMessage, reason);
