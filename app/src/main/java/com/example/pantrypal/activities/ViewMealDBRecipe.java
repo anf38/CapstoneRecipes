@@ -118,11 +118,10 @@ public class ViewMealDBRecipe extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the comment ID and content from the clicked item
-                String commentId = commentsAL.get(position).getId();
                 String commentTitle = commentsAL.get(position).getTitle();
                 String commentMessage = commentsAL.get(position).getMessage();
 
-                showReportDialog(commentId, commentTitle, commentMessage);
+                showReportDialog(commentTitle, commentMessage);
             }
         });
         favoriteButton.setOnClickListener(new View.OnClickListener() {
@@ -210,9 +209,9 @@ public class ViewMealDBRecipe extends AppCompatActivity {
             }
 
             if (item.contains("fish") ||
-                    item.contains("salmon")
-                    || item.contains("anchov")
-                    || item.contains("tuna")) {
+                    item.contains("salmon") ||
+                    item.contains("anchov") ||
+                    item.contains("tuna")) {
                 tags.add("Fish");
             }
 
@@ -440,7 +439,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
         star5.setImageResource(resourceId);
     }
 
-    private void showReportDialog(String commentId, String commentTitle, String commentMessage) {
+    private void showReportDialog(String commentTitle, String commentMessage) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Report Comment");
         builder.setMessage("Please select the reason for reporting:");
@@ -457,7 +456,7 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                 RadioButton radioButton = view.findViewById(selectedId);
                 if (radioButton != null) {
                     String reason = radioButton.getText().toString();
-                    submitReportToFirestore(commentId, commentTitle, commentMessage, reason);
+                    submitReportToFirestore(commentTitle, commentMessage, reason);
                 } else {
                     Toast.makeText(ViewMealDBRecipe.this, "Please select a reason for reporting.", Toast.LENGTH_SHORT).show();
                 }
@@ -470,14 +469,17 @@ public class ViewMealDBRecipe extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+
+        builder.show();
     }
 
+
+
     // Method to submit report to Firestore
-    private void submitReportToFirestore(String commentId, String commentTitle, String commentMessage, String reason) {
+    private void submitReportToFirestore(String commentTitle, String commentMessage, String reason) {
         String currentUserID = currentUser.getUid();
 
         Map<String, Object> reportData = new HashMap<>();
-        reportData.put("commentId", commentId);
         reportData.put("commentTitle", commentTitle);
         reportData.put("commentMessage", commentMessage);
         reportData.put("reason", reason);

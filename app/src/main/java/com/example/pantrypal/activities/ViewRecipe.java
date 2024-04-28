@@ -24,6 +24,7 @@ import com.example.pantrypal.CommentsListAdapter;
 import com.example.pantrypal.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.TotpSecret;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -136,11 +137,10 @@ public class ViewRecipe extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the comment ID and content from the clicked item
-                String commentId = commentsAL.get(position).getId();
                 String commentTitle = commentsAL.get(position).getTitle();
                 String commentMessage = commentsAL.get(position).getMessage();
 
-                showReportDialog(commentId, commentTitle, commentMessage);
+                showReportDialog(commentTitle, commentMessage);
             }
         });
 
@@ -380,7 +380,7 @@ public class ViewRecipe extends AppCompatActivity {
         star5.setImageResource(resourceId);
     }
 
-    private void showReportDialog(String commentId, String commentTitle, String commentMessage) {
+    private void showReportDialog(String commentTitle, String commentMessage) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Report Comment");
         builder.setMessage("Please select the reason for reporting:");
@@ -395,9 +395,11 @@ public class ViewRecipe extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 RadioButton radioButton = view.findViewById(selectedId);
+                Toast.makeText(ViewRecipe.this, "Checkpoint 4", Toast.LENGTH_SHORT).show();
                 if (radioButton != null) {
                     String reason = radioButton.getText().toString();
-                    submitReportToFirestore(commentId, commentTitle, commentMessage, reason);
+                    submitReportToFirestore(commentTitle, commentMessage, reason);
+
                 } else {
                     Toast.makeText(ViewRecipe.this, "Please select a reason for reporting.", Toast.LENGTH_SHORT).show();
                 }
@@ -410,14 +412,17 @@ public class ViewRecipe extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+
+        // Show the dialog
+        builder.show();
     }
 
+
     // Method to submit report to Firestore
-    private void submitReportToFirestore(String commentId, String commentTitle, String commentMessage, String reason) {
+    private void submitReportToFirestore(String commentTitle, String commentMessage, String reason) {
         String currentUserID = currentUser.getUid();
 
         Map<String, Object> reportData = new HashMap<>();
-        reportData.put("commentId", commentId);
         reportData.put("commentTitle", commentTitle);
         reportData.put("commentMessage", commentMessage);
         reportData.put("reason", reason);
@@ -435,6 +440,7 @@ public class ViewRecipe extends AppCompatActivity {
                     Log.e("ViewRecipe", "Error adding report to Firestore", e);
                 });
     }
+
 
     private String formatList(List<String> list) {
         // Helper method to format a list of strings

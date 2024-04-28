@@ -29,7 +29,6 @@ public class CommentsListAdapter extends ArrayAdapter<Comment> {
         mResource = resource;
         mCommentsList = objects;
     }
-
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -37,65 +36,19 @@ public class CommentsListAdapter extends ArrayAdapter<Comment> {
         String title = getItem(position).getTitle();
         String message = getItem(position).getMessage();
 
-        // Comment comment = new Comment(id, title, message); // Remove this line
-
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
         TextView titleTV = convertView.findViewById(R.id.commentTitle);
         TextView messageTV = convertView.findViewById(R.id.commentMessage);
-        TextView reportTV = convertView.findViewById(R.id.report);
 
         titleTV.setText(title);
         messageTV.setText(message);
 
-        reportTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showReportDialog(title, message);
-            }
-        });
+        // Set the id of the comment
+        Comment comment = getItem(position);
+        comment.setId(id);
 
         return convertView;
     }
-
-
-    private void showReportDialog(final String title, final String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("Report Comment");
-        builder.setMessage("Please select the reason for reporting:");
-
-        // Inflate custom view for radio buttons
-        View view = LayoutInflater.from(mContext).inflate(R.layout.report_dialog_layout, null);
-        builder.setView(view);
-
-        // Find radio buttons in the custom layout
-        final RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
-
-        builder.setPositiveButton("Report", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                int selectedId = radioGroup.getCheckedRadioButtonId();
-                RadioButton radioButton = view.findViewById(selectedId);
-                if (radioButton != null) {
-                    String reason = radioButton.getText().toString();
-                    // Submit report action here with selected reason
-                    Toast.makeText(mContext, "Report submitted for: " + title + "\nReason: " + reason, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(mContext, "Please select a reason for reporting.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
 }
