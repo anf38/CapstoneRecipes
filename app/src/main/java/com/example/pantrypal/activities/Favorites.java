@@ -2,6 +2,8 @@ package com.example.pantrypal.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,6 +40,7 @@ public class Favorites extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FavoritesAdapter adapter;
     private RecipeRetriever recipeRetriever;
+    private Button backButton;
 
     private List<FavoriteRecipe> favoritesList;
     FavoriteRecipe recipe;
@@ -52,6 +55,7 @@ public class Favorites extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         recipeRetriever = RecipeRetriever.getInstance();
         recyclerView = findViewById(R.id.recyclerView);
+        backButton = findViewById(R.id.backButton);
         favoritesList = new ArrayList<>();
         adapter = new FavoritesAdapter(this, favoritesList);
         recyclerView.setAdapter(adapter);
@@ -62,6 +66,16 @@ public class Favorites extends AppCompatActivity {
         } else {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
         }
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Favorites.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         adapter.setOnItemClickListener(new FavoritesAdapter.OnItemClickListener() {
             @Override

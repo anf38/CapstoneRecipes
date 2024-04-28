@@ -92,7 +92,6 @@ public class Reviews extends AppCompatActivity {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             String rater = document.getString("Rater");
                                             if (rater != null && rater.equals(currentUser.getUid())) {
-                                                Toast.makeText(Reviews.this, "this was triggerd true", Toast.LENGTH_SHORT).show();
                                                 alreadyRated = true;
                                                 ratingId = document.getId();
                                                 break;
