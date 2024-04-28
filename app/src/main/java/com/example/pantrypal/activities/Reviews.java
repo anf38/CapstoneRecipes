@@ -137,7 +137,6 @@ public class Reviews extends AppCompatActivity {
                                             String message = reviewMessage.getText().toString();
                                             if (!title.isEmpty())
                                                 ratingData.put("ReviewTitle", title);
-                                            else
                                             if (!message.isEmpty())
                                                 ratingData.put("ReviewMessage", message);
 

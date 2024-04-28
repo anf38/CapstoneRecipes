@@ -37,12 +37,13 @@ public class CommentsListAdapter extends ArrayAdapter<Comment> {
         String title = getItem(position).getTitle();
         String message = getItem(position).getMessage();
 
-        Comment comment = new Comment(id, title, message);
+        // Comment comment = new Comment(id, title, message); // Remove this line
+
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
-        TextView titleTV = (TextView) convertView.findViewById(R.id.commentTitle);
-        TextView messageTV = (TextView) convertView.findViewById(R.id.commentMessage);
+        TextView titleTV = convertView.findViewById(R.id.commentTitle);
+        TextView messageTV = convertView.findViewById(R.id.commentMessage);
         TextView reportTV = convertView.findViewById(R.id.report);
 
         titleTV.setText(title);
@@ -57,6 +58,7 @@ public class CommentsListAdapter extends ArrayAdapter<Comment> {
 
         return convertView;
     }
+
 
     private void showReportDialog(final String title, final String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
